@@ -1,0 +1,217 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    body {
+        @apply antialiased bg-white min-h-screen text-gray-900;
+    }
+
+    a:not(.btn, .btn-navbar, .btn-dropdown, .btn-sidebar) {
+        @apply hover:text-areakerja;
+    }
+
+    section, .section {
+        @apply mb-20;
+    }
+
+    section:first-child, .section:first-child {
+        @apply mt-20;
+    }
+
+    button, .btn {
+        @apply py-2 px-4 font-semibold rounded-md text-white hover:ring hover:ring-transparent;
+    }
+
+    .btn-small {
+        @apply !py-1 !px-2 !text-sm;
+    }
+
+    .btn-primary {
+        @apply bg-areakerja ring-1 ring-areakerja/50 hover:ring hover:ring-areakerja/50;
+    }
+
+    .btn-secondary {
+        @apply bg-gray-500 ring-1 ring-gray-400 hover:ring hover:ring-gray-500/50;
+    }
+
+    .btn-tertiary {
+        @apply bg-white ring-1 ring-gray-200 hover:ring hover:ring-gray-300/50 text-black;
+    }
+
+    .btn-disabled {
+        @apply bg-white ring-1 ring-gray-200 hover:ring-1 hover:ring-gray-200 text-gray-300;
+    }
+
+    .btn-currentPage {
+        @apply bg-areakerja ring-1 ring-areakerja/50 hover:ring-1 hover:ring-areakerja/50;
+    }
+
+    .btn-error {
+        @apply bg-red-300 ring-1 ring-red-200 hover:ring hover:ring-red-300/50 text-black;
+    }
+
+    .btn-success {
+        @apply bg-green-300 ring-1 ring-green-200 hover:ring hover:ring-green-300/50 text-black;
+    }
+
+    .btn-danger {
+        @apply bg-orange-300 ring-1 ring-orange-200 hover:ring hover:ring-orange-300/50 text-black;
+    }
+
+    .btn-warning {
+        @apply bg-yellow-300 ring-1 ring-yellow-200 hover:ring hover:ring-yellow-300/50 text-black;
+    }
+
+    .textbox-group {
+        @apply space-y-2;
+    }
+
+    .checkbox-group {
+        @apply flex items-center space-x-2 space-y-0;
+    }
+
+    .textbox, input[type="number"], input[type="text"], input[type="email"], input[type="password"], input[type="date"], input[type="month"], textarea, select {
+        @apply w-full py-3 px-4 rounded-md ring-2 ring-gray-200 focus:ring focus:ring-areakerja/50 outline-none;
+    }
+
+    select {
+        @apply cursor-pointer;
+    }
+
+    input, button, a {
+        @apply transform duration-200 ease-in-out;
+    }
+
+    input[type="date"], input[type="month"] {
+        @apply cursor-pointer;
+    }
+
+    input[type="checkbox"] {
+        @apply h-4 w-4 cursor-pointer appearance-none rounded border-2 border-areakerja checked:bg-areakerja checked:border-areakerja;
+    }
+
+    input[type="file"] {
+        @apply w-full rounded-md ring-2 ring-areakerja/30 cursor-pointer file:cursor-pointer file:mr-4 file:py-3 file:px-4 file:rounded-md file:border-0 file:font-semibold file:bg-areakerja/20 file:text-areakerja hover:file:bg-areakerja/30;
+    }
+
+    form:not(table form) {
+        @apply space-y-5;
+    }
+
+    form > div {
+        @apply space-y-2;
+    }
+
+    form label {
+        @apply font-semibold text-base cursor-pointer;
+    }
+
+    .alert {
+        @apply py-3 px-4 border-2 rounded-md;
+    }
+
+    .alert.alert-error {
+        @apply border-red-300 bg-red-200 text-red-700;
+    }
+
+    .alert.alert-danger {
+        @apply border-orange-300 bg-orange-200 text-orange-700;
+    }
+
+    .alert.alert-warning {
+        @apply border-yellow-300 bg-yellow-200 text-yellow-700;
+    }
+
+    .alert.alert-success {
+        @apply border-green-300 bg-green-200 text-green-700;
+    }
+
+    .alert.alert-visited {
+        @apply border-purple-300 bg-purple-200 text-purple-700;
+    }
+
+    .alert.alert-info {
+        @apply border-blue-300 bg-blue-200 text-blue-700;
+    }
+
+    .table-group {
+        @apply overflow-x-auto relative rounded-md;
+    }
+
+    table {
+        @apply w-full text-sm border;
+    }
+
+    thead {
+        @apply uppercase font-semibold bg-storm2 border-b;
+    }
+
+    tbody {
+        @apply bg-gray-50;
+    }
+
+    thead th, tbody td {
+        @apply py-3 px-4 border-r;
+    }
+
+    tbody tr {
+        @apply hover:bg-storm3 border-b;
+    }
+
+    .card-group {
+        @apply flex flex-col h-full bg-white ring-2 ring-gray-100 rounded-lg shadow transition duration-300 ease-in-out hover:shadow-lg hover:ring-areakerja/40;
+    }
+
+    .card-group .thumbnail {
+        @apply rounded-t-lg max-h-52;
+    }
+
+    .card-group .body {
+        @apply py-2 px-4 my-4;
+    }
+
+    .card-group .title {
+        @apply text-xl font-semibold leading-6 mb-2;
+    }
+
+    .card-group .desc {
+        @apply text-gray-500 font-normal leading-5 text-sm;
+    }
+
+    .card-group .jobdesc {
+        @apply flex items-center justify-between mb-0.5;
+    }
+
+    .card-group .footer {
+        @apply flex flex-row items-end h-full w-full px-4;
+    }
+
+    .card-group .footer .information {
+        @apply flex border-t border-gray-200 w-full py-4;
+    }
+
+    .card-group .author {
+        @apply flex items-center space-x-3 border-gray-200 w-full;
+    }
+
+    .card-group .author img {
+        @apply object-cover w-8 h-8 border border-gray-300 rounded-full;
+    }
+
+    .card-group .author .name {
+        @apply text-sm font-semibold
+    }
+
+    .card-group .author .created {
+        @apply text-xs tracking-wide;
+    }
+
+    .card-group .another {
+        @apply flex items-center justify-center space-x-2 space-y-0;
+    }
+
+    .new-badge {
+        @apply bg-areakerja/25 text-areakerja text-xs font-medium mr-2 px-2.5 py-0.5 rounded;
+    }
+}

@@ -41,7 +41,7 @@ return [
     |
     */
 
-    'debug' => (bool) env('APP_DEBUG', false),
+    'debug' => (bool)env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -69,7 +69,8 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+//    'timezone' => 'UTC',
+    'timezone' => 'Asia/Jakarta',
 
     /*
     |--------------------------------------------------------------------------
@@ -82,7 +83,8 @@ return [
     |
     */
 
-    'locale' => 'en',
+//    'locale' => 'en',
+    'locale' => 'id',
 
     /*
     |--------------------------------------------------------------------------
@@ -96,6 +98,7 @@ return [
     */
 
     'fallback_locale' => 'en',
+//    'fallback_locale' => 'id',
 
     /*
     |--------------------------------------------------------------------------
@@ -108,7 +111,8 @@ return [
     |
     */
 
-    'faker_locale' => 'en_US',
+//    'faker_locale' => 'en_US',
+    'faker_locale' => 'id_ID',
 
     /*
     |--------------------------------------------------------------------------
@@ -194,10 +198,18 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
         // Spatie Permission
         Spatie\Permission\PermissionServiceProvider::class,
-
+        // Fortify
+        App\Providers\FortifyServiceProvider::class,
+        // SweetAlert 2
+        RealRashid\SweetAlert\SweetAlertServiceProvider::class,
+        // Intervention Image
+        Intervention\Image\ImageServiceProvider::class,
+        // HTML Purifier (Optional)
+//        Mews\Purifier\PurifierServiceProvider::class,
+        // BBCode
+        Genert\BBCode\BBCodeServiceProvider::class,
     ],
 
     /*
@@ -213,6 +225,14 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        // SweetAlert 2
+        'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
+        // Intervention Image
+        'Image' => Intervention\Image\Facades\Image::class,
+        // HTML Purifier (Optional)
+//        'Purifier' => Mews\Purifier\Facades\Purifier::class,
+        // BBCode
+        'BBCode' => \Genert\BBCode\Facades\BBCode::class,
     ])->toArray(),
 
 ];

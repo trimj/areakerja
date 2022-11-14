@@ -1,0 +1,79 @@
+@tailwind components;
+
+@layer components {
+    section, .section {
+        /*@apply py-16;*/
+    }
+
+    .section1 {
+        @apply relative;
+    }
+
+    .section1 .bg-img {
+        @apply h-full object-contain object-left absolute -z-10 opacity-10 hidden lg:block;
+    }
+
+    .section2 {
+        @apply grid grid-cols-4 justify-items-center lg:py-20;
+    }
+
+    .section2 > div {
+        @apply flex flex-col items-center w-full;
+    }
+
+    .section2 .feature1, .section2 .feature3 {
+        /*@apply transform duration-200 ease-in-out mt-32 hover:mt-20;*/
+        @apply mt-20 lg:mt-32;
+    }
+
+    /*.section2 .feature2, .section2 .feature4 {*/
+    /*    @apply transform duration-200 ease-in-out mt-0 hover:mt-10;*/
+    /*}*/
+    .section2 .icon {
+        @apply w-16 h-16 lg:w-28 lg:h-28 rounded-3xl flex items-center justify-center text-2xl lg:text-4xl;
+    }
+
+    .section2 .info {
+        @apply text-center mt-5 lg:mt-12;
+    }
+
+    .section2 .info .title {
+        @apply font-bold text-lg lg:text-2xl uppercase;
+    }
+
+    .section2 .info .desc {
+        @apply font-normal text-sm lg:text-base;
+    }
+
+    .section2 .feature1 .icon {
+        @apply bg-indigo-200/50 text-indigo-500/70 rotate-[28deg];
+    }
+
+    .section2 .feature1 .icon i {
+        @apply -rotate-[28deg];
+    }
+
+    .section2 .feature2 .icon {
+        @apply bg-orange-200/50 text-orange-500/70 rotate-[68deg];
+    }
+
+    .section2 .feature2 .icon i {
+        @apply -rotate-[68deg];
+    }
+
+    .section2 .feature3 .icon {
+        @apply bg-cyan-200/50 text-cyan-500/70 rotate-[12deg];
+    }
+
+    .section2 .feature3 .icon i {
+        @apply -rotate-[12deg];
+    }
+
+    .section2 .feature4 .icon {
+        @apply bg-pink-200/50 text-pink-500/70 rotate-[58deg];
+    }
+
+    .section2 .feature4 .icon i {
+        @apply -rotate-[58deg];
+    }
+}

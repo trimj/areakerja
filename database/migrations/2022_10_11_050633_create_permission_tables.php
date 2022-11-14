@@ -29,6 +29,9 @@ class CreatePermissionTables extends Migration
             $table->bigIncrements('id'); // permission id
             $table->string('name');       // For MySQL 8.0 use string('name', 125);
             $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
+            $table->string('bgColor')->default('#FFFFFF'); // For MySQL 8.0 use string('bgColor', 125);         // HTML Color Code
+            $table->string('textColor')->default('#000000'); // For MySQL 8.0 use string('textColor', 125);     // HTML Color Code
+            $table->string('borderColor')->default('#000000'); // For MySQL 8.0 use string('borderColor', 125); // HTML Color Code
             $table->timestamps();
 
             $table->unique(['name', 'guard_name']);

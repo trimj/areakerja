@@ -1,0 +1,31 @@
+@tailwind components;
+
+@layer components {
+    body.auth {
+        @apply max-w-screen-xl mx-auto min-h-screen px-5 2xl:p-0;
+    }
+
+    .auth a {
+        @apply font-semibold text-areakerja hover:underline;
+    }
+
+    .auth .section-auth {
+        @apply flex items-center justify-between h-screen;
+    }
+
+    .auth .section-img {
+        @apply basis-full md:basis-1/2 my-0;
+    }
+
+    .auth .section-img img {
+        @apply max-h-[650px]
+    }
+
+    .auth .section-img {
+        @apply hidden md:block;
+    }
+
+    .auth .section-form {
+        @apply basis-full md:basis-1/2 my-0;
+    }
+}

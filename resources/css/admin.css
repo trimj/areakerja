@@ -1,0 +1,71 @@
+@tailwind components;
+
+@layer components {
+    main, section, footer, .section {
+        @apply p-4;
+    }
+
+    footer {
+        @apply sticky top-[100vh] flex flex-col md:flex-row items-center md:justify-between border-t;
+    }
+
+    .sidebar {
+        @apply lg:flex flex-col lg:flex-row lg:min-h-screen border-0 lg:border-r;
+    }
+
+    .sidebar nav {
+        @apply lg:h-full;
+    }
+
+    .sidebar .menu {
+        @apply lg:!flex lg:flex-col w-full lg:h-full;
+    }
+
+    .btn-sidebar {
+        @apply block px-5 py-3 mt-2 hover:text-white hover:bg-polar4/20 lg:font-semibold;
+    }
+
+    .btn-sidebar.active {
+        @apply bg-polar4/20 text-white;
+    }
+
+    .btn-mobile-menu {
+        @apply lg:hidden rounded-lg text-black text-lg;
+    }
+
+    .table-group {
+        @apply overflow-auto relative rounded-md;
+    }
+
+    table {
+        @apply w-full text-sm border table-auto md:table-fixed;
+    }
+
+    thead {
+        @apply uppercase font-semibold bg-storm2 border-b;
+    }
+
+    tbody {
+        @apply bg-gray-50;
+    }
+
+    thead th, tbody td {
+        @apply py-3 px-4 border-r;
+    }
+
+    tbody tr {
+        @apply hover:bg-storm3 border-b;
+    }
+
+    .btn-dropdown {
+        @apply flex items-center space-x-2 w-full text-gray-900 hover:bg-gray-200 focus:bg-gray-200;
+    }
+
+    .dropdown {
+        @apply absolute right-0 w-full mt-2 origin-top rounded-md shadow-lg whitespace-nowrap;
+    }
+
+    .btn-navbar {
+        @apply px-4 py-2 mt-2 text-sm font-semibold rounded-md md:mt-0 hover:bg-gray-200 focus:bg-gray-200;
+    }
+}

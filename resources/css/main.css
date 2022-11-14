@@ -1,0 +1,87 @@
+@tailwind components;
+
+@layer components {
+    header {
+        @apply bg-white border-b top-0 z-10;
+    }
+
+    footer {
+        @apply bg-white border-t sticky top-[100vh];
+    }
+
+    main, section, .header, .footer, .section {
+        @apply px-5 2xl:p-0 max-w-screen-xl mx-auto;
+    }
+
+    .header {
+        @apply flex flex-col mx-auto md:items-center md:flex-row;
+    }
+
+    .header .auth-section {
+        @apply flex-col pb-4 md:pb-0 md:flex md:flex-row w-full md:justify-end md:space-x-2 space-x-0 md:space-y-0 space-y-2;
+    }
+
+    .header .user-dropdown {
+        @apply bg-white w-full p-2 origin-top absolute right-0 z-50 mt-2 rounded shadow-lg ring-2 ring-areakerja/50 whitespace-nowrap min-w-[128px];
+    }
+
+    .header .user-dropdown a {
+        @apply p-2 rounded-md;
+    }
+
+    .header .btn-dropdown {
+        @apply flex items-center space-x-2 w-full text-gray-900 hover:bg-gray-200 focus:bg-gray-200;
+    }
+
+    .dropdown {
+        @apply absolute left-0 w-full mt-2 origin-top rounded-md shadow-lg whitespace-nowrap min-w-[128px];
+    }
+
+    .navbar {
+        @apply flex flex-col items-center md:justify-between w-full md:flex-row;
+    }
+
+    .navbar .menu {
+        @apply md:!flex flex-col flex-grow pb-4 md:pb-0 md:flex-row w-full md:ml-10 md:space-x-3;
+    }
+
+    .btn-navbar {
+        @apply px-4 py-2 mt-2 text-sm font-semibold rounded-md md:mt-0 hover:bg-gray-200 focus:bg-gray-200 whitespace-nowrap;
+    }
+
+    .btn-mobile-menu {
+        @apply md:hidden rounded-lg text-black text-lg;
+    }
+
+    .btn-navbar.active {
+        @apply bg-areakerja/20 hover:bg-areakerja/50 focus:bg-areakerja/30;
+    }
+
+    .footer .newsletter {
+        @apply col-span-2 md:col-span-4 lg:col-span-2;
+    }
+
+    .footer .links a {
+        @apply block mb-1 last:mb-0;
+    }
+
+    .footer .newsletter .title, .footer .links .title {
+        @apply font-semibold pb-2 text-lg;
+    }
+
+    .footer .links a {
+        @apply hover:pl-2;
+    }
+
+    .footer .main-section {
+        @apply grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-10 py-10;
+    }
+
+    .footer .social-media {
+        @apply space-x-3;
+    }
+
+    .footer .secondary-section {
+        @apply py-4 px-2 border-t flex items-center justify-between;
+    }
+}
