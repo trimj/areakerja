@@ -4,6 +4,21 @@
     padding: 1rem
 }
 
+    section,  .section {
+
+    margin-bottom: 2.5rem
+}
+
+    section:first-child,  .section:first-child {
+
+    margin-top: 0px
+}
+
+    section:last-child,  .section:last-child {
+
+    margin-bottom: 0px
+}
+
     footer {
 
     position: sticky;
@@ -132,6 +147,15 @@
 
         display: none
     }
+}
+
+    .table-group {
+
+    position: relative;
+
+    overflow: auto;
+
+    border-radius: 0.375rem
 }
 
     table {

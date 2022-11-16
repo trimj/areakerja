@@ -5,6 +5,18 @@
         @apply p-4;
     }
 
+    section, .section {
+        @apply mb-10;
+    }
+
+    section:first-child, .section:first-child {
+        @apply mt-0;
+    }
+
+    section:last-child, .section:last-child {
+        @apply mb-0;
+    }
+
     footer {
         @apply sticky top-[100vh] flex flex-col md:flex-row items-center md:justify-between border-t;
     }
