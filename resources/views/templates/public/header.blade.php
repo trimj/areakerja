@@ -35,10 +35,12 @@
             </div>
             <div :class="{ 'flex': open, 'hidden': !open }" class="auth-section">
                 @auth
-                    @role('Member')
+                    @role(['Member', 'Calon Kandidat'])
                     <a href="{{ route('member.daftar.kandidat.index') }}" class="btn btn-tertiary text-sm font-semibold flex items-center"><i class="fas fa-user-tie fa-fw"></i>
                         <div class="block md:hidden xl:block ml-2 md:ml-0 xl:ml-2">Daftar Kandidat</div>
                     </a>
+                    @endrole
+                    @role(['Member', 'Calon Mitra'])
                     <a href="{{ route('member.daftar.mitra.index') }}" class="btn btn-tertiary text-sm font-semibold flex items-center"><i class="fas fa-handshake fa-fw"></i>
                         <div class="block md:hidden xl:block ml-2 md:ml-0 xl:ml-2">Daftar Mitra</div>
                     </a>

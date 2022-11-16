@@ -12,11 +12,11 @@
     }
 
     section, .section {
-        @apply mb-20;
+        @apply mb-10;
     }
 
     section:first-child, .section:first-child {
-        @apply mt-20;
+        @apply mt-10;
     }
 
     button, .btn {
@@ -48,7 +48,7 @@
     }
 
     .btn-error {
-        @apply bg-red-300 ring-1 ring-red-200 hover:ring hover:ring-red-300/50 text-black;
+        @apply bg-error ring-1 ring-error/50 hover:ring hover:ring-error/50 text-black;
     }
 
     .btn-success {
@@ -73,6 +73,10 @@
 
     .textbox, input[type="number"], input[type="text"], input[type="email"], input[type="password"], input[type="date"], input[type="month"], textarea, select {
         @apply w-full py-3 px-4 rounded-md ring-2 ring-gray-200 focus:ring focus:ring-areakerja/50 outline-none;
+    }
+
+    .textbox-error, .input-error {
+        @apply !ring-2 !ring-error/50;
     }
 
     select {

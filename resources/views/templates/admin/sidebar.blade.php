@@ -11,11 +11,18 @@
         </div>
         <nav>
             <div :class="{'block': open, 'hidden': !open}" class="menu">
-                <a class="btn-sidebar @if (Route::is('admin.cp', 'admin.dashboard')) active @endif" href="{{ route('admin.cp') }}"><i class="fas fa-home fa-fw mr-2"></i>Dashboard</a>
-                <a class="btn-sidebar @if (Route::is('admin.article.*')) active @endif" href="{{ route('admin.article.index') }}"><i class="fas fa-newspaper fa-fw mr-2"></i>Articles</a>
-                <a class="btn-sidebar @if (Route::is('admin.user.*')) active @endif" href="{{ route('admin.user.index') }}"><i class="fas fa-users fa-fw mr-2"></i>Users</a>
-                <a class="btn-sidebar" href="#"><i class="fas fa-handshake fa-fw mr-2"></i>Mitra</a>
-                <a class="btn-sidebar" href="#"><i class="fas fa-user-check fa-fw mr-2"></i>Kandidat</a>
+                @can('access-admincp')
+                    <a class="btn-sidebar @if (Route::is('admin.cp', 'admin.dashboard')) active @endif" href="{{ route('admin.cp') }}"><i class="fas fa-home fa-fw mr-2"></i>Dashboard</a>
+                @endcan
+                @can('manage-article')
+                    <a class="btn-sidebar @if (Route::is('admin.article.*')) active @endif" href="{{ route('admin.article.index') }}"><i class="fas fa-newspaper fa-fw mr-2"></i>Articles</a>
+                @endcan
+                @can('manage-user')
+                    <a class="btn-sidebar @if (Route::is('admin.user.*')) active @endif" href="{{ route('admin.user.index') }}"><i class="fas fa-users fa-fw mr-2"></i>Users</a>
+                @endcan
+                @can('manage-role')
+                    <a class="btn-sidebar @if (Route::is('admin.role.*')) active @endif" href="{{ route('admin.role.index') }}"><i class="fas fa-user-tag fa-fw mr-2"></i>Roles</a>
+                @endcan
                 <div class="md:mt-auto mt-2 border-t-2 border-polar4/20 lg:border-0 lg:border-transparent">
                     <div class="flex items-center justify-between cursor-pointer px-5 py-3 hover:bg-polar4/20" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <img class="h-10 w-10 rounded-full" src="{{ asset('assets/public/photo') . '/' . auth()->user()->photo }}" alt="" onerror="this.src='{{ asset('assets/public/photo/default_photo.png') }}'">

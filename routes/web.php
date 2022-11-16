@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
+use App\Http\Controllers\Admin\RolePermissionController as AdminRoleController;
 
 // Mitra
 use App\Http\Controllers\Mitra\PageController as MitraPageController;
@@ -23,17 +24,6 @@ use App\Http\Controllers\Public\ArticleController as PublicArticleController;
 use App\Http\Controllers\Public\JobVacancyController as PublicLowonganController;
 
 //use App\Http\Controllers\Public\MitraProfileController as PublicMitraProfileController;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 require_once __DIR__ . '/auth.php';
 
@@ -75,6 +65,16 @@ Route::middleware('auth')->group(function () {
                     return abort(404);
                 });
                 Route::put('/user/edit/{user:id}/role', 'updateRole')->name('.update.role');
+            });
+            // Manage Roles
+            Route::controller(AdminRoleController::class)->name('.role')->group(function () {
+                Route::get('/roles', 'index')->name('.index');
+                Route::get('/role/create', 'create')->name('.create');
+                Route::post('/role/create', 'store')->name('.store');
+                Route::get('/role/edit/{role:id}', 'edit')->name('.edit');
+                Route::put('/role/edit/{role:id}', 'update')->name('.update');
+                Route::post('/role/edit/{role:id}/sync', 'syncPermissions')->name('.permission.sync');
+                Route::delete('/role/edit/{role:id}/delete', 'destroy')->name('.destroy');
             });
         });
 
