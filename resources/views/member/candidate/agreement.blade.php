@@ -3,15 +3,60 @@
 @section('content')
     @include('templates.member.candidate.steps')
     <section>
-        <div class="font-bold text-2xl mb-5">Agreement</div>
         @if ($notComplete == true)
-            <div>
-                Lengkapin dulu lah bos!
-            </div>
+            <div class="font-bold text-2xl mb-5">Silahkan lengkapi data yang diperlukan</div>
+            <ol class="space-y-3 list-decimal list-inside">
+                @if(empty(auth()->user()->photo))
+                    <li>
+                        <span class="font-semibold">Photo</span>, <span class="text-error">Wajib*</span>
+                    </li>
+                @endif
+                @if(empty($candidate->birthday))
+                    <li>
+                        <span class="font-semibold">Tanggal lahir</span>, <span class="text-error">Wajib*</span>
+                    </li>
+                @endif
+                @if(empty($candidate->address) || empty($candidate->address['provinsi']) || empty($candidate->address['kota']) || empty($candidate->address['kecamatan']) || empty($candidate->address['kelurahan']) || empty($candidate->address['jalan']))
+                    <li>
+                        <span class="font-semibold">Alamat lengkap (Provinsi, Kota/Kabupaten, Kecamatan, Kelurahan, Jalan, No.Rumah, RT & RW</span>, <span class="text-error">Wajib*</span>
+                    </li>
+                @endif
+                @if(empty($candidate->about))
+                    <li>
+                        <span class="font-semibold">Biografi</span>, <span class="text-frost4">Opsional*</span>
+                    </li>
+                @endif
+                @if(empty($candidate->skill_id))
+                    <li>
+                        <span class="font-semibold">Main Skill</span>, <span class="text-error">Wajib*</span>
+                    </li>
+                @endif
+                @if(empty($candidate->skill))
+                    <li>
+                        <span class="font-semibold">Other Skill</span>, <span class="text-frost4">Opsional*</span>
+                    </li>
+                @endif
+                @if(empty($candidate->education))
+                    <li>
+                        <span class="font-semibold">Education</span>, <span class="text-error">Wajib*</span>
+                    </li>
+                @endif
+                @if(empty($candidate->certificate))
+                    <li>
+                        <span class="font-semibold">Certificate</span>, <span class="text-frost4">Opsional*</span>
+                    </li>
+                @endif
+                @if(empty($candidate->experience))
+                    <li>
+                        <span class="font-semibold">Experience</span>, <span class="text-frost4">Opsional*</span>
+                    </li>
+                @endif
+            </ol>
             <div class="text-center space-x-2">
                 <a href="{{ route('member.daftar.kandidat.experience.index') }}" class="btn btn-tertiary">Previous Step</a>
             </div>
         @else
+            <div class="font-bold text-2xl mb-5">Agreement</div>
             <form action="{{ route('member.daftar.kandidat.agreement.store') }}" method="post">
                 @csrf
                 @method('put')

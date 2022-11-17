@@ -69,17 +69,24 @@ class CandidateController extends Controller
     {
         $request->validate([
             'birthdate' => ['required', 'date'],
-            'address' => ['required', 'string', 'max:500'],
-            'address.*' => ['required', 'string', 'max:500'],
+            'address' => ['required', 'array', 'max:5'],
+            'address.provinsi' => ['required', 'string', 'max:125'],
+            'address.kota' => ['required', 'string', 'max:125'],
+            'address.kecamatan' => ['required', 'string', 'max:125'],
+            'address.kelurahan' => ['required', 'string', 'max:125'],
+            'address.jalan' => ['required', 'string', 'max:500'],
             'about' => ['nullable', 'string', 'max:1000'],
         ]);
 
-        Candidate::where('user_id', $user->id)->update([
-            'birthday' => $request->birthdate,
-//            'address' => $request->address,
-            'address' => !empty($request->address) ? array_filter($request->address) : null,
-            'about' => $request->about,
-        ]);
+        if (empty($candidate->submitted_at)) {
+            Candidate::where('user_id', auth()->user()->id)->update([
+                'birthday' => $request->birthdate,
+                'address' => !empty($request->address) ? array_filter($request->address) : null,
+                'about' => $request->about,
+            ]);
+        } else {
+            Alert::toast('You had submitted candidate form, please wait until approved', 'warning');
+        }
 
         return redirect()->route('member.daftar.kandidat.skill.index');
     }
@@ -110,10 +117,14 @@ class CandidateController extends Controller
             'otherSkill.*' => ['nullable', 'string', 'max:255'],
         ]);
 
-        Candidate::where('user_id', auth()->user()->id)->update([
-            'skill_id' => $request->mainSkill,
-            'skill' => !empty($request->otherSkill) ? array_filter($request->otherSkill) : null,
-        ]);
+        if (empty($candidate->submitted_at)) {
+            Candidate::where('user_id', auth()->user()->id)->update([
+                'skill_id' => $request->mainSkill,
+                'skill' => !empty($request->otherSkill) ? array_filter($request->otherSkill) : null,
+            ]);
+        } else {
+            Alert::toast('You had submitted candidate form, please wait until approved', 'warning');
+        }
 
         return redirect()->route('member.daftar.kandidat.education.index');
     }
@@ -144,9 +155,13 @@ class CandidateController extends Controller
             'education.*.to' => ['nullable', 'date'],
         ]);
 
-        Candidate::where('user_id', auth()->user()->id)->update([
-            'education' => !empty($request->education) ? array_filter($request->education) : null,
-        ]);
+        if (empty($candidate->submitted_at)) {
+            Candidate::where('user_id', auth()->user()->id)->update([
+                'education' => !empty($request->education) ? array_filter($request->education) : null,
+            ]);
+        } else {
+            Alert::toast('You had submitted candidate form, please wait until approved', 'warning');
+        }
 
         return redirect()->route('member.daftar.kandidat.certificate.index');
     }
@@ -176,9 +191,13 @@ class CandidateController extends Controller
             'certificate.*.get' => ['date'],
         ]);
 
-        Candidate::where('user_id', auth()->user()->id)->update([
-            'certificate' => !empty($request->certificate) ? array_filter($request->certificate) : null,
-        ]);
+        if (empty($candidate->submitted_at)) {
+            Candidate::where('user_id', auth()->user()->id)->update([
+                'certificate' => !empty($request->certificate) ? array_filter($request->certificate) : null,
+            ]);
+        } else {
+            Alert::toast('You had submitted candidate form, please wait until approved', 'warning');
+        }
 
         return redirect()->route('member.daftar.kandidat.experience.index');
     }
@@ -210,9 +229,13 @@ class CandidateController extends Controller
             'experience.*.to' => ['date'],
         ]);
 
-        Candidate::where('user_id', auth()->user()->id)->update([
-            'experience' => !empty($request->experience) ? array_filter($request->experience) : null,
-        ]);
+        if (empty($candidate->submitted_at)) {
+            Candidate::where('user_id', auth()->user()->id)->update([
+                'experience' => !empty($request->experience) ? array_filter($request->experience) : null,
+            ]);
+        } else {
+            Alert::toast('You had submitted candidate form, please wait until approved', 'warning');
+        }
 
         return redirect()->route('member.daftar.kandidat.agreement.index');
     }
@@ -228,9 +251,8 @@ class CandidateController extends Controller
         }
 
         $notComplete = false;
-        if (empty($candidate->photo) || empty($candidate->birthday) || empty($candidate->address) || empty($candidate->skill_id) || empty($candidate->education)) {
+        if (empty(auth()->user()->photo) || empty($candidate->birthday) || empty($candidate->address) || empty($candidate->address['provinsi']) || empty($candidate->address['kota']) || empty($candidate->address['kecamatan']) || empty($candidate->address['kelurahan']) || empty($candidate->address['jalan']) || empty($candidate->skill_id) || empty($candidate->education)) {
             $notComplete = true;
-            Alert::error('Silahkan isi yang diperlukan');
         }
 
         return view('member.candidate.agreement', [
@@ -244,9 +266,8 @@ class CandidateController extends Controller
     public function agreementStore(Request $request)
     {
         $candidate = Candidate::where('user_id', auth()->user()->id)->first();
-        if (empty($candidate->photo) || empty($candidate->birthday) || empty($candidate->address) || empty($candidate->skill_id) || empty($candidate->education)) {
+        if (empty(auth()->user()->photo) || empty($candidate->birthday) || empty($candidate->address) || empty($candidate->address['provinsi']) || empty($candidate->address['kota']) || empty($candidate->address['kecamatan']) || empty($candidate->address['kelurahan']) || empty($candidate->address['jalan']) || empty($candidate->skill_id) || empty($candidate->education)) {
             Alert::error('Silahkan isi yang diperlukan');
-            return redirect()->route('member.daftar.kandidat.agreement.index');
         }
 
         if (empty($candidate->submitted_at)) {
@@ -257,8 +278,9 @@ class CandidateController extends Controller
                 'tos' => true,
                 'submitted_at' => date('Y-m-d H:i:s', time()),
             ]);
+            auth()->user()->syncRoles(7); // Calon Kandidat (Role)
         } else {
-            Alert('warning', 'You had submitted candidate form, please wait until approved by Admin');
+            Alert::toast('You had submitted candidate form, please wait until approved', 'warning');
         }
 
         return redirect()->route('member.daftar.kandidat.agreement.index');
