@@ -87,16 +87,24 @@ class RolePermissionSeeder extends Seeder
         Permission::create(['name' => 'delete-expense']);
         Permission::create(['name' => 'export-report']);
 
+        // Member Permissioin
+        Permission::create(['name' => 'daftar-kandidat']);
+        Permission::create(['name' => 'daftar-mitra']);
+
         $calonKandidatRole->givePermissionTo([
             'access-usercp',
+            'daftar-kandidat',
         ]);
 
         $calonMitraRole->givePermissionTo([
             'access-usercp',
+            'daftar-mitra',
         ]);
 
         $userRole->givePermissionTo([
             'access-usercp',
+            'daftar-kandidat',
+            'daftar-mitra',
         ]);
 
         $candidateRole->givePermissionTo([

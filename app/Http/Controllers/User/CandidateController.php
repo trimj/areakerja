@@ -36,9 +36,7 @@ class CandidateController extends Controller
 
     public function __construct()
     {
-//        $this->middleware('can:access-admincp');
-//        $this->middleware('can:edit-user')->only('edit', 'update');
-//        $this->middleware('can:edit-user-role')->only('updateRole');
+        $this->middleware('permission:daftar-kandidat');
     }
 
     public function index()
@@ -67,6 +65,14 @@ class CandidateController extends Controller
 
     public function informationStore(Request $request)
     {
+        $candidate = Candidate::select('birthday', 'address', 'about', 'submitted_at', 'approved_at', 'rejected_at')->where('user_id', auth()->user()->id)->first();
+
+        if (empty($candidate)) {
+            Candidate::create([
+                'user_id' => auth()->user()->id,
+            ]);
+        }
+
         $request->validate([
             'birthdate' => ['required', 'date'],
             'address' => ['required', 'array', 'max:5'],
@@ -111,6 +117,14 @@ class CandidateController extends Controller
 
     public function skillStore(Request $request)
     {
+        $candidate = Candidate::select('skill_id', 'skill', 'submitted_at', 'approved_at', 'rejected_at')->where('user_id', auth()->user()->id)->first();
+
+        if (empty($candidate)) {
+            Candidate::create([
+                'user_id' => auth()->user()->id,
+            ]);
+        }
+
         $request->validate([
             'mainSkill' => ['required', 'exists:App\Models\SkillList,id'],
             'otherSkill' => ['nullable', 'array'],
@@ -139,6 +153,12 @@ class CandidateController extends Controller
             ]);
         }
 
+        if (empty($candidate)) {
+            Candidate::create([
+                'user_id' => auth()->user()->id,
+            ]);
+        }
+
         return view('member.candidate.education', [
             'step' => $this->steps(3, 6),
             'page_title' => $this->page_title,
@@ -148,6 +168,14 @@ class CandidateController extends Controller
 
     public function educationStore(Request $request)
     {
+        $candidate = Candidate::select('education', 'submitted_at', 'approved_at', 'rejected_at')->where('user_id', auth()->user()->id)->first();
+
+        if (empty($candidate)) {
+            Candidate::create([
+                'user_id' => auth()->user()->id,
+            ]);
+        }
+
         $request->validate([
             'education' => ['required', 'array'],
             'education.*.name' => ['required', 'string'],
@@ -185,6 +213,14 @@ class CandidateController extends Controller
 
     public function certificateStore(Request $request)
     {
+        $candidate = Candidate::select('certificate', 'submitted_at', 'approved_at', 'rejected_at')->where('user_id', auth()->user()->id)->first();
+
+        if (empty($candidate)) {
+            Candidate::create([
+                'user_id' => auth()->user()->id,
+            ]);
+        }
+
         $request->validate([
             'certificate' => ['nullable', 'array'],
             'certificate.*.title' => ['string'],
@@ -221,6 +257,14 @@ class CandidateController extends Controller
 
     public function experienceStore(Request $request)
     {
+        $candidate = Candidate::select('experience', 'submitted_at', 'approved_at', 'rejected_at')->where('user_id', auth()->user()->id)->first();
+
+        if (empty($candidate)) {
+            Candidate::create([
+                'user_id' => auth()->user()->id,
+            ]);
+        }
+
         $request->validate([
             'experience' => ['nullable', 'array'],
             'experience.*.title' => ['string'],
@@ -251,7 +295,7 @@ class CandidateController extends Controller
         }
 
         $notComplete = false;
-        if (empty(auth()->user()->photo) || empty($candidate->birthday) || empty($candidate->address) || empty($candidate->address['provinsi']) || empty($candidate->address['kota']) || empty($candidate->address['kecamatan']) || empty($candidate->address['kelurahan']) || empty($candidate->address['jalan']) || empty($candidate->skill_id) || empty($candidate->education)) {
+        if (empty($candidate->user->photo) || empty($candidate->birthday) || empty($candidate->address) || empty($candidate->address['provinsi']) || empty($candidate->address['kota']) || empty($candidate->address['kecamatan']) || empty($candidate->address['kelurahan']) || empty($candidate->address['jalan']) || empty($candidate->skill_id) || empty($candidate->education)) {
             $notComplete = true;
         }
 
@@ -266,15 +310,27 @@ class CandidateController extends Controller
     public function agreementStore(Request $request)
     {
         $candidate = Candidate::where('user_id', auth()->user()->id)->first();
-        if (empty(auth()->user()->photo) || empty($candidate->birthday) || empty($candidate->address) || empty($candidate->address['provinsi']) || empty($candidate->address['kota']) || empty($candidate->address['kecamatan']) || empty($candidate->address['kelurahan']) || empty($candidate->address['jalan']) || empty($candidate->skill_id) || empty($candidate->education)) {
+
+        if (empty($candidate)) {
+            Candidate::create([
+                'user_id' => auth()->user()->id,
+            ]);
+        }
+
+        if (empty($candidate->user->photo) || empty($candidate->birthday) || empty($candidate->address) || empty($candidate->address['provinsi']) || empty($candidate->address['kota']) || empty($candidate->address['kecamatan']) || empty($candidate->address['kelurahan']) || empty($candidate->address['jalan']) || empty($candidate->skill_id) || empty($candidate->education)) {
             Alert::error('Silahkan isi yang diperlukan');
         }
 
+        $request->validate([
+            'agreementTos' => ['required', 'accepted'],
+        ]);
+
         if (empty($candidate->submitted_at)) {
-            $request->validate([
-                'agreementTos' => ['required', 'accepted'],
-            ]);
-            Candidate::where('user_id', auth()->user()->id)->update([
+            $partner = Partner::where('user_id', auth()->user()->id)->first();
+            if (!empty($partner)) {
+                $partner->delete();
+            }
+            $candidate->update([
                 'tos' => true,
                 'submitted_at' => date('Y-m-d H:i:s', time()),
             ]);
