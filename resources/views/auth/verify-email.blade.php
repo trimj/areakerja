@@ -16,7 +16,7 @@
                     <label for="email">Email Address</label>
                     <input type="email" name="email" placeholder="Email" value="{{ old('email') ?? auth()->user()->email }}">
                 </div>
-                <button class="btn btn-primary">Send Verification</button>
+                <button class="btn btn-primary w-full">Send Verification</button>
             </form>
         </div>
     </div>
