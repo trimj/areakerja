@@ -20,3 +20,12 @@
         </div>
     </div>
 </section>
+<section>
+    @if(!empty($partner->approved_at))
+        <div class="alert alert-success">Approved on {{ date_format($partner->approved_at, 'd F Y H:i:s') }}</div>
+    @elseif(!empty($partner->rejected_at))
+        <div class="alert alert-error">Rejected on {{ date_format($partner->rejected_at, 'd F Y H:i:s') }}</div>
+    @elseif(!empty($partner->submitted_at))
+        <div class="alert alert-success">Submitted on {{ date_format($partner->submitted_at, 'd F Y H:i:s A') }}</div>
+    @endif
+</section>
