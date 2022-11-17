@@ -17,13 +17,11 @@
                 </div>
                 <div class="textbox-group">
                     <label for="name">Name</label>
-                    {{--                    <input type="text" value="{{ auth()->user()->name }}" disabled>--}}
                     <div class="textbox">{{ auth()->user()->name }}</div>
                     <div class="text-xs text-gray-500">Change on <a href="{{ route('member.settings') }}" target="_blank">Settings Page</a>.</div>
                 </div>
                 <div class="textbox-group">
                     <label for="email">Email</label>
-                    {{--                    <input type="text" value="{{ auth()->user()->email }}">--}}
                     <div class="textbox">{{ auth()->user()->email }}</div>
                     <div class="text-xs text-gray-500">Change on <a href="{{ route('member.settings') }}" target="_blank">Settings Page</a>.</div>
                 </div>
@@ -35,28 +33,35 @@
                     @enderror
                 </div>
                 <div class="textbox-group">
-                    <label for="address">Provinsi</label>
-                    <select id="provinsi" onchange="Kota();">
+                    <label for="provinsi">Provinsi</label>
+                    <select name="address[provinsi]" id="provinsi" onchange="Kota();" onclick="Provinsi();">
                         <option>Pilih Provinsi</option>
                     </select>
                 </div>
                 <div class="textbox-group">
-                    <label for="address">Kota/Kabupaten</label>
-                    <select id="kota_kabupaten" onchange="Kecamatan();">
+                    <label for="kota_kabupaten">Kota/Kabupaten</label>
+                    <select name="address[kota]" id="kota" onchange="Kecamatan();">
                         <option>Pilih Kota/Kabupaten</option>
                     </select>
                 </div>
                 <div class="textbox-group">
-                    <label for="address">Kecamatan</label>
-                    <select id="kecamatan" onchange="Kelurahan();">
+                    <label for="kecamatan">Kecamatan</label>
+                    <select name="address[kecamatan]" id="kecamatan" onchange="Kelurahan();">
                         <option>Pilih Kecamatan</option>
                     </select>
                 </div>
                 <div class="textbox-group">
-                    <label for="address">Kelurahan</label>
-                    <select id="kelurahan">
+                    <label for="kelurahan">Kelurahan</label>
+                    <select name="address[kelurahan]" id="kelurahan">
                         <option>Pilih Kelurahan</option>
                     </select>
+                </div>
+                <div class="textbox-group">
+                    <label for="jalan">Alamat Lengkap (Jalan, No.Rumah, RT & RW)</label>
+                    <textarea name="address[jalan]" id="jalan" rows="3">{{ !empty($candidate->address['jalan']) ? $candidate->address['jalan'] : null }}</textarea>
+                    @error('address')
+                    <span class="text-error">{{ $errors->first('address') }}</span>
+                    @enderror
                 </div>
                 <div class="textbox-group">
                     <label for="about">About Me</label>
@@ -76,55 +81,16 @@
     </div>
 @endsection
 @section('footerJS')
+    @include('templates.member.location.provinsi')
+    @include('templates.member.location.kota')
+    @include('templates.member.location.kecamatan')
+    @include('templates.member.location.kelurahan')
     <script>
-        function Provinsi() {
-            fetch('http://dev.farizdotid.com/api/daerahindonesia/provinsi').then((response) => {
-                return response.json()
-            }).then((data) => {
-                let html = '<option>Pilih Provinsi</option>';
-                for (var i = 0; i < data['provinsi'].length; i++) {
-                    html += "<option value=" + data['provinsi'][i].id + ">" + data['provinsi'][i].nama + "</option>"
-                }
-                document.getElementById("provinsi").innerHTML = html;
-            })
-        }
-
-        Provinsi();
-
-        function Kota() {
-            fetch('https://dev.farizdotid.com/api/daerahindonesia/kota?id_provinsi=' + document.getElementById("provinsi").value).then((response) => {
-                return response.json()
-            }).then((data) => {
-                let html = '<option>Pilih Kota/Kabupaten</option>';
-                for (var i = 0; i < data['kota_kabupaten'].length; i++) {
-                    html += "<option value=" + data['kota_kabupaten'][i].id + ">" + data['kota_kabupaten'][i].nama + "</option>"
-                }
-                document.getElementById("kota_kabupaten").innerHTML = html;
-            })
-        }
-
-        function Kecamatan() {
-            fetch('https://dev.farizdotid.com/api/daerahindonesia/kecamatan?id_kota=' + document.getElementById("kota_kabupaten").value).then((response) => {
-                return response.json()
-            }).then((data) => {
-                let html = '<option>Pilih Kecamatan</option>';
-                for (var i = 0; i < data['kecamatan'].length; i++) {
-                    html += "<option value=" + data['kecamatan'][i].id + ">" + data['kecamatan'][i].nama + "</option>"
-                }
-                document.getElementById("kecamatan").innerHTML = html;
-            })
-        }
-
-        function Kelurahan() {
-            fetch('https://dev.farizdotid.com/api/daerahindonesia/kelurahan?id_kecamatan=' + document.getElementById("kecamatan").value).then((response) => {
-                return response.json()
-            }).then((data) => {
-                let html = '<option>Pilih Kelurahan</option>';
-                for (var i = 0; i < data['kelurahan'].length; i++) {
-                    html += "<option value=" + data['kelurahan'][i].id + ">" + data['kelurahan'][i].nama + "</option>"
-                }
-                document.getElementById("kelurahan").innerHTML = html;
-            })
-        }
+        window.addEventListener("load", (event) => {
+            Provinsi({{ !empty($candidate->address['provinsi']) ? $candidate->address['provinsi'] : null }});
+            Kota({{ !empty($candidate->address['kota']) ? $candidate->address['kota'] : null }});
+            Kecamatan({{ !empty($candidate->address['kecamatan']) ? $candidate->address['kecamatan'] : null }});
+            Kelurahan({{ !empty($candidate->address['kelurahan']) ? $candidate->address['kelurahan'] : null }});
+        });
     </script>
 @endsection
