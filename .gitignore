@@ -34,3 +34,18 @@ public/css/main.css
 
 # Asset Generated JS
 public/js/global.js
+
+# Assets
+public/assets/admin/*
+!public/assets/admin/logo.svg
+
+public/assets/kandidat/*
+public/assets/member/*
+public/assets/mitra/*
+
+public/assets/public/article/*
+!public/assets/public/article/thumb/
+public/assets/public/article/thumb/*
+
+public/assets/public/photo/*
+!public/assets/public/photo/default_photo.png
