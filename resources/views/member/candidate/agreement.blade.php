@@ -91,7 +91,9 @@
                 </div>
                 <div class="text-center space-x-2">
                     <a href="{{ route('member.daftar.kandidat.experience.index') }}" class="btn btn-tertiary">Previous Step</a>
-                    <button class="btn btn-primary">Finish</button>
+                    @if(empty($candidate->submitted_at))
+                        <button class="btn btn-primary">Finish</button>
+                    @endif
                 </div>
             </form>
         @endif
