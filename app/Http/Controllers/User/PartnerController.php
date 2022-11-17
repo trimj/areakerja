@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 
 // Added
 use App\Models\Partner;
-use App\Models\User;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
+use App\Models\Candidate;
 use Image;
 use Alert;
 
@@ -65,54 +63,45 @@ class PartnerController extends Controller
 
     public function informationStore(Request $request)
     {
+        $partner = Partner::where('user_id', auth()->user()->id)->first();
+
+        if (empty($partner)) {
+            Partner::create([
+                'user_id' => auth()->user()->id,
+            ]);
+        }
+
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'logo' => ['nullable', 'image', 'mimes:png,jpg,jpeg'],
-            'phone' => ['nullable', 'digits_between:11,14'],
-            'address' => ['required', 'string', 'max:1000'],
+            'phone' => ['nullable', 'string', 'between:11,14'],
             'description' => ['nullable', 'string', 'max:1000'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:App\Models\Partner,email'],
             'website' => ['nullable', 'string', 'url', 'max:255'],
+
+            'address' => ['required', 'array', 'max:5'],
+
+            'address.provinsi' => ['required', 'numeric'],
+            'address.kota' => ['required', 'numeric'],
+            'address.kecamatan' => ['required', 'numeric'],
+            'address.kelurahan' => ['required', 'numeric'],
+            'address.jalan' => ['required', 'string', 'max:500'],
         ]);
 
-        DB::transaction(function () use ($request) {
-            $partner = Partner::where('user_id', auth()->user()->id)->first();
+        if ($partner->email != $request->email) {
+            $request->validate([
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:App\Models\Partner,email'],
+            ]);
+        }
 
-            if ($request->hasfile('logo')) {
-                if (!empty($partner->logo)) {
-                    File::delete(public_path('assets/mitra/logo/' . $partner->logo));
-                }
-
-                $img = Image::make($request->file('logo'));
-
-                $img->resize(500, 500, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                });
-
-                $photoName = auth()->user()->id . '_' . time() . '.' . $request->file('logo')->extension();
-                $img->save(public_path('assets/mitra/logo/' . $photoName));
-                $img->destroy();
-            } else {
-                $logoName = $partner->logo;
-            }
-
-            if ($request->name != auth()->user()->name) {
-                User::where('id', auth()->user()->id)->update([
-                    'name' => $request->name,
-                ]);
-            }
-
+        if (empty($partner->submitted_at)) {
             Partner::where('user_id', auth()->user()->id)->update([
-                'logo' => $logoName,
                 'email' => $request->email,
                 'phone' => str_replace(' ', '', $request->phone),
-                'address' => $request->address,
                 'description' => $request->description,
-                'emailKantor' => $request->emailKantor,
                 'website' => $request->website,
+                'address' => !empty($request->address) ? array_filter($request->address) : null,
             ]);
-        });
+        } else {
+            Alert::toast('You had submitted partner form, please wait until approved by Admin', 'warning');
+        }
 
         return redirect()->route('member.daftar.mitra.agreement.index');
     }
@@ -121,10 +110,15 @@ class PartnerController extends Controller
     {
         $partner = Partner::where('user_id', auth()->user()->id)->first();
 
+        if (empty($partner)) {
+            Partner::create([
+                'user_id' => auth()->user()->id,
+            ]);
+        }
+
         $notComplete = false;
-        if (empty($partner->logo) || empty($partner->phone) || empty($partner->address) || empty($partner->description)) {
+        if (empty($partner->user->photo) || empty($partner->phone) || empty($partner->email) || empty($partner->description) || empty($partner->address) || empty($partner->address['provinsi']) || empty($partner->address['kota']) || empty($partner->address['kecamatan']) || empty($partner->address['kelurahan']) || empty($partner->address['jalan'])) {
             $notComplete = true;
-            Alert::error('Silahkan isi yang diperlukan');
         }
 
         return view('member.partner.agreement', [
@@ -145,22 +139,28 @@ class PartnerController extends Controller
             ]);
         }
 
-        if (empty($partner->submitted_at)) {
-            $request->validate([
-                'agreementTos' => ['required', 'accepted'],
-            ]);
+        if (empty($partner->user->photo) || empty($partner->phone) || empty($partner->email) || empty($partner->description) || empty($partner->address) || empty($partner->address['provinsi']) || empty($partner->address['kota']) || empty($partner->address['kecamatan']) || empty($partner->address['kelurahan']) || empty($partner->address['jalan'])) {
+            Alert::error('Silahkan isi yang diperlukan');
+        }
 
-            Partner::where('user_id', auth()->user()->id)->update([
+        $request->validate([
+            'agreementTos' => ['required', 'accepted'],
+        ]);
+
+        if (empty($partner->submitted_at)) {
+            $candidate = Candidate::where('user_id', auth()->user()->id)->first();
+            if (!empty($candidate)) {
+                $candidate->delete();
+            }
+            $partner->update([
                 'tos' => true,
                 'submitted_at' => date('Y-m-d H:i:s', time()),
             ]);
+            auth()->user()->syncRoles(8); // Calon Mitra (Role)
         } else {
-            Alert('warning', 'You had submitted partner form, please wait until approved by Admin');
+            Alert::toast('You had submitted partner form, please wait until approved by Admin', 'warning');
         }
 
-        if (empty($partner->logo) || empty($partner->phone) || empty($partner->address) || empty($partner->description)) {
-            Alert::error('Silahkan isi yang diperlukan');
-            return redirect()->route('member.daftar.mitra.agreement.index');
-        }
+        return redirect()->route('member.daftar.mitra.agreement.index');
     }
 }

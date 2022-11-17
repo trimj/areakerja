@@ -12,9 +12,11 @@ class Partner extends Model
     protected $fillable = [
         'user_id',
         // Information
-        'address',
         'description',
+        'email',
+        'website',
         'phone',
+        'address',
         // Agreement
         'tos',
         // Status
@@ -24,6 +26,7 @@ class Partner extends Model
     ];
 
     protected $casts = [
+        'address' => 'array',
         'submitted_at' => 'datetime',
         'approved_at' => 'datetime',
         'rejected_at' => 'datetime',

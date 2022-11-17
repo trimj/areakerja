@@ -3,15 +3,45 @@
 @section('content')
     @include('templates.member.partner.steps')
     <section>
-        <div class="font-bold text-2xl mb-5">Agreement</div>
         @if ($notComplete == true)
-            <div>
-                Lengkapin dulu lah bos!
-            </div>
+            <div class="font-bold text-2xl mb-5">Silahkan lengkapi data yang diperlukan</div>
+            <ol class="space-y-3 list-decimal list-inside">
+                @if(empty($partner->user->photo))
+                    <li>
+                        <span class="font-semibold">Logo Perusahaan</span>, <span class="text-error">Wajib*</span>
+                    </li>
+                @endif
+                @if(empty($partner->email))
+                    <li>
+                        <span class="font-semibold">Email Perusahaan</span>, <span class="text-frost4">Wajib*</span>
+                    </li>
+                @endif
+                @if(empty($partner->phone))
+                    <li>
+                        <span class="font-semibold">No.Telepon Perusahaan</span>, <span class="text-error">Wajib*</span>
+                    </li>
+                @endif
+                @if(empty($partner->website))
+                    <li>
+                        <span class="font-semibold">Website Perusahaan</span>, <span class="text-frost4">Opsional*</span>
+                    </li>
+                @endif
+                @if(empty($partner->description))
+                    <li>
+                        <span class="font-semibold">Tentang Perusahaan</span>, <span class="text-frost4">Wajib*</span>
+                    </li>
+                @endif
+                @if(empty($partner->address) || empty($partner->address['provinsi']) || empty($partner->address['kota']) || empty($partner->address['kecamatan']) || empty($partner->address['kelurahan']) || empty($partner->address['jalan']))
+                    <li>
+                        <span class="font-semibold">Alamat lengkap (Provinsi, Kota/Kabupaten, Kecamatan, Kelurahan, Jalan, No.Rumah, RT & RW</span>, <span class="text-error">Wajib*</span>
+                    </li>
+                @endif
+            </ol>
             <div class="text-center space-x-2">
                 <a href="{{ route('member.daftar.mitra.information.index') }}" class="btn btn-tertiary">Previous Step</a>
             </div>
         @else
+            <div class="font-bold text-2xl mb-5">Agreement</div>
             <form action="{{ route('member.daftar.mitra.agreement.store') }}" method="post">
                 @csrf
                 @method('put')
@@ -46,12 +76,14 @@
                 </div>
                 <div class="text-center space-x-2">
                     <a href="{{ route('member.daftar.mitra.information.index') }}" class="btn btn-tertiary">Previous Step</a>
-                    <button class="btn btn-primary">Finish</button>
+                    @if(empty($partner->submitted_at))
+                        <button class="btn btn-primary">Finish</button>
+                    @endif
                 </div>
             </form>
         @endif
     </section>
     <div class="mt-20 md:mt-32 lg:mt-40">
-        <img src="{{ asset('assets/member/kandidat/daftar-kandidat.png') }}" alt="Daftar Kandidat" class=" w-[50%]">
+        <img src="{{ asset('assets/public/images/daftar-kandidat.png') }}" alt="Daftar Kandidat" class=" w-[50%]">
     </div>
 @endsection
