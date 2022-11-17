@@ -5,11 +5,6 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('partners', function (Blueprint $table) {
@@ -18,11 +13,11 @@ return new class extends Migration {
             $table->bigInteger('user_id')->unsigned()->unique();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->text('address')->nullable();
             $table->text('description')->nullable();
             $table->bigInteger('phone')->unsigned()->nullable();
             $table->string('email')->nullable()->unique();
             $table->string('website', 255)->nullable();
+            $table->json('address')->nullable();
 
             $table->boolean('tos')->nullable()->default(false);
 
@@ -34,11 +29,6 @@ return new class extends Migration {
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('partners');

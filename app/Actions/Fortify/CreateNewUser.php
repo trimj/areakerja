@@ -10,18 +10,11 @@ use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 // Added
 use DB;
-// use Spatie\Permission\Models\Role;
 
 class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
 
-    /**
-     * Validate and create a newly registered user.
-     *
-     * @param  array  $input
-     * @return \App\Models\User
-     */
     public function create(array $input)
     {
         Validator::make($input, [
@@ -36,15 +29,13 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
         ])->validate();
 
-        DB::transaction(function () use ($input, &$user) {
-            $user = new User;
-            $user->create([
-                'name' => $input['name'],
-                'email' => $input['email'],
-                'password' => Hash::make($input['password']),
-            ]);
-            $user->syncRoles('Member');
-        });
+        $user = User::create([
+            'name' => $input['name'],
+            'email' => $input['email'],
+            'password' => Hash::make($input['password']),
+        ]);
+
+        $user->syncRoles('Member');
 
         return $user;
     }
