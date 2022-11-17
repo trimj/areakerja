@@ -75,7 +75,7 @@
         </form>
     </section>
     <div class="mt-20 md:mt-32 lg:mt-40">
-        <img src="{{ asset('assets/member/kandidat/daftar-kandidat.png') }}" alt="Daftar Kandidat" class=" w-[50%]">
+        <img src="{{ asset('assets/public/images/daftar-kandidat.png') }}" alt="Daftar Kandidat" class=" w-[50%]">
     </div>
 @endsection
 @section('footerJS')
