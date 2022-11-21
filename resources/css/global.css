@@ -71,7 +71,7 @@
         @apply flex items-center space-x-2 space-y-0;
     }
 
-    .textbox, input[type="number"], input[type="text"], input[type="email"], input[type="password"], input[type="date"], input[type="month"], textarea, select {
+    .textbox, input[type="number"], input[type="text"], input[type="email"], input[type="password"], input[type="date"], input[type="datetime-local"], input[type="time"], input[type="month"], textarea, select {
         @apply w-full py-3 px-4 rounded-md ring-2 ring-gray-200 focus:ring focus:ring-areakerja/50 outline-none;
     }
 
@@ -87,7 +87,7 @@
         @apply transform duration-200 ease-in-out;
     }
 
-    input[type="date"], input[type="month"] {
+    input[type="date"], input[type="datetime-local"], input[type="time"], input[type="month"] {
         @apply cursor-pointer;
     }
 

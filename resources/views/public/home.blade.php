@@ -59,39 +59,40 @@
             <div class="capitalize">Coba Lowongan Kerja Rekomendasi dari kami</div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div class="card-group">
-                <img class="thumbnail p-5" src="#" alt="image" loading="lazy" onerror="this.src='{{ asset('assets/public/images/logo.png') }}'">
-                <div class="body">
-                    <div class="title">
-                        <a href="#">Laravel Programmer (Backend)</a>
+            @foreach($jobs as $job)
+                <div class="card-group">
+                    <div class="body">
+                        <div class="title">
+                            <a href="{{ route('public.lowongan.show', $job->id) }}">{{ $job->title }}</a>
+                        </div>
+                        <div class="desc mt-5">
+                            <div class="jobdesc">
+                                <div class="font-semibold">Main Skill:</div>
+                                <div>{{ $job->skill_list->name }}</div>
+                            </div>
+                            <div class="jobdesc">
+                                <div class="font-semibold">Salary:</div>
+                                <div>Rp. {{ number_format($job->maxSalary, 0) }}</div>
+                            </div>
+                            <div class="jobdesc">
+                                <div class="font-semibold">Location:</div>
+                                <div id="{{ 'provinsi' . $job->id }}"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="desc">
-                        <div class="jobdesc">
-                            <div class="font-semibold">Main Skill:</div>
-                            <div>Backend Programmer</div>
-                        </div>
-                        <div class="jobdesc">
-                            <div class="font-semibold">Salary:</div>
-                            <div>Rp. {{ number_format(7000000, 0) }}</div>
-                        </div>
-                        <div class="jobdesc">
-                            <div class="font-semibold">Location:</div>
-                            <div>D.I. Yogyakarta</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="footer">
-                    <div class="information">
-                        <div class="author">
-                            <img src="#" alt="avatar" loading="lazy" onerror="this.src='{{ asset('assets/public/photo/default_photo.png') }}'">
-                            <div>
-                                <div class="name">Seven Inc</div>
-                                <div class="created">{{ date_format(date_create(now()), 'd F Y') }}</div>
+                    <div class="footer">
+                        <div class="information">
+                            <div class="author">
+                                <img src="#" alt="avatar" loading="lazy" onerror="this.src='{{ asset('assets/public/photo/default_photo.png') }}'">
+                                <div>
+                                    <div class="name">{{ $job->mitra->user->name }}</div>
+                                    <div class="created">{{ date_format(date_create($job->deadline), 'd F Y H:i') }}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
         </div>
     </section>
     <section class="section4">
@@ -181,4 +182,23 @@
             <a class="btn btn-tertiary" href="{{ route('public.article.index') }}">Load More</a>
         </div>
     </section>
+@endsection
+
+@section('footerJS')
+    <script>
+        function Provinsi(divId, id) {
+            fetch('https://dev.farizdotid.com/api/daerahindonesia/provinsi/' + id).then((response) => {
+                return response.json();
+            }).then((data) => {
+                document.getElementById(divId).innerHTML = data.nama;
+            });
+        }
+    </script>
+    <script>
+        window.addEventListener("load", (event) => {
+            @foreach($jobs as $job)
+            Provinsi('{{ 'provinsi' . $job->id }}', {{ $job->address['provinsi'] }})
+            @endforeach
+        });
+    </script>
 @endsection
