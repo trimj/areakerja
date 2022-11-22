@@ -15,22 +15,22 @@ class JobVacancy extends Model
         'title',
         'slug',
         'description',
-        // Category
-        'mainCat',
-        'subCat',
         // Requirements
         'mainSkill',
         'otherSkill',
         // Location
-        'province',
-        'city',
-        'district',
-        'village',
+        'address',
         // Salary
         'minSalary',
         'maxSalary',
         // Deadline
         'deadline',
+    ];
+
+    protected $casts = [
+        'otherSkill' => 'array',
+        'address' => 'array',
+        'deadline' => 'datetime',
     ];
 
     public function mitra()

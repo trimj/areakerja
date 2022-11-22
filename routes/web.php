@@ -95,9 +95,9 @@ Route::middleware('auth')->group(function () {
                 Route::get('/create', 'create')->name('.create');
                 Route::post('/create', 'store')->name('.store');
 //                Route::get('/show/{lowongan:id}', 'show')->name('.show');
-                Route::get('/edit{lowongan:id}', 'edit')->name('.edit');
-                Route::put('/edit/{lowongan:id}', 'update')->name('.update');
-                Route::delete('/delete/{lowongan:id}', 'destroy')->name('.destroy');
+                Route::get('/edit/{jobVacancy:id}', 'edit')->name('.edit');
+                Route::put('/edit/{jobVacancy:id}', 'update')->name('.update');
+                Route::delete('/delete/{jobVacancy:id}', 'destroy')->name('.destroy');
             });
         });
 

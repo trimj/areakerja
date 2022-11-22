@@ -1,18 +1,19 @@
 @extends('templates.mitra.page')
 
 @section('content')
-    <div class="text-right mb-5">
-        <a class="btn btn-primary" href="{{ route('mitra.lowongan.create') }}">Add New</a>
-    </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
+    @can('create-job-vacancy')
+        <section class="text-right mb-5">
+            <a class="btn btn-primary" href="{{ route('mitra.lowongan.create') }}">Add New</a>
+        </section>
+    @endcan
+    <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
         @forelse ($jobs as $job)
             <div class="card-group">
-                <img class="thumbnail p-5" src="{{ asset('assets/public/avatar') . '/' . $job->mitra->user->avatar }}" alt="image" loading="lazy" onerror="this.src='{{ asset('assets/public/images/logo.png') }}'">
                 <div class="body">
                     <div class="title">
                         <a href="{{ route('public.lowongan.show', $job->id) }}">{{ $job->title }}</a>
                     </div>
-                    <div class="desc">
+                    <div class="desc mt-5">
                         <div class="jobdesc">
                             <div class="font-semibold">Main Skill:</div>
                             <div>{{ $job->skill_list->name }}</div>
@@ -23,18 +24,24 @@
                         </div>
                         <div class="jobdesc">
                             <div class="font-semibold">Location:</div>
-                            <div>{{ $job->province }}</div>
+                            <div id="{{ 'provinsi' . $job->id }}"></div>
                         </div>
                     </div>
                 </div>
                 <div class="footer">
                     <div class="information">
-                        <div class="author">
-                            <img src="{{ asset('assets/public/avatar') . '/' . $job->mitra->user->avatar }}" alt="avatar" loading="lazy" onerror="this.src='{{ asset('assets/public/avatar/default_avatar.png') }}'">
-                            <div>
-                                <div class="name">Seven Inc</div>
-                                <div class="created">{{ date_format(date_create(now()), 'd F Y') }}</div>
-                            </div>
+                        <div class="author"></div>
+                        <div class="another">
+                            @can('edit-job-vacancy')
+                                <a href="{{ route('mitra.lowongan.edit', $job->id) }}" class="btn btn-small btn-secondary"><i class="fas fa-edit"></i></a>
+                            @endcan
+                            @can('delete-job-vacancy')
+                                <form action="{{ route('mitra.lowongan.destroy', $job->id) }}" method="post" onsubmit="return confirm('Are you sure?');" class="space-y-0">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-small btn-error"><i class="fas fa-trash"></i></button>
+                                </form>
+                            @endcan
                         </div>
                     </div>
                 </div>
@@ -42,5 +49,24 @@
         @empty
             <div class="col-span-full text-center">Nothing Here</div>
         @endforelse
-    </div>
+    </section>
+@endsection
+
+@section('footerJS')
+    <script>
+        function Provinsi(divId, id) {
+            fetch('https://dev.farizdotid.com/api/daerahindonesia/provinsi/' + id).then((response) => {
+                return response.json();
+            }).then((data) => {
+                document.getElementById(divId).innerHTML = data.nama;
+            });
+        }
+    </script>
+    <script>
+        window.addEventListener("load", (event) => {
+            @foreach($jobs as $job)
+            Provinsi('{{ 'provinsi' . $job->id }}', {{ $job->address['provinsi'] }})
+            @endforeach
+        });
+    </script>
 @endsection

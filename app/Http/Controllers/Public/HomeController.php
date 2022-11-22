@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
+use App\Models\JobVacancy;
 use Illuminate\Http\Request;
 
 // Added
@@ -12,10 +13,10 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $articles = Article::orderBy('created_at', 'desc')->limit(4)->get();
 
         return view('public.home', [
-            'articles' => $articles,
+            'articles' => Article::orderBy('created_at', 'desc')->limit(4)->get(),
+            'jobs' => JobVacancy::orderBy('created_at', 'desc')->limit(4)->get(),
         ]);
     }
 }
