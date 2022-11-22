@@ -43,13 +43,17 @@ class RolePermissionSeeder extends Seeder
         Permission::create(['name' => 'create-job-vacancy']);
         Permission::create(['name' => 'edit-job-vacancy']);
         Permission::create(['name' => 'delete-job-vacancy']);
-        Permission::create(['name' => 'register-job']);
 
         // Manage Candidate
         Permission::create(['name' => 'manage-kandidat']);
         Permission::create(['name' => 'create-kandidat']);
         Permission::create(['name' => 'edit-kandidat']);
         Permission::create(['name' => 'delete-kandidat']);
+        Permission::create(['name' => 'manage-job-candidate']);
+        Permission::create(['name' => 'add-job-candidate']);
+        Permission::create(['name' => 'remove-job-candidate']);
+        Permission::create(['name' => 'view-job-candidate']);
+        Permission::create(['name' => 'unlock-job-candidate']);
 
         // Manage User
         Permission::create(['name' => 'manage-user']);
@@ -87,7 +91,10 @@ class RolePermissionSeeder extends Seeder
         Permission::create(['name' => 'delete-expense']);
         Permission::create(['name' => 'export-report']);
 
-        // Member Permissioin
+        // Kandidat
+        Permission::create(['name' => 'register-job']);
+
+        // Member
         Permission::create(['name' => 'daftar-kandidat']);
         Permission::create(['name' => 'daftar-mitra']);
 
@@ -120,6 +127,11 @@ class RolePermissionSeeder extends Seeder
             'create-job-vacancy',
             'edit-job-vacancy',
             'delete-job-vacancy',
+            'manage-job-candidate',
+            'add-job-candidate',
+            'remove-job-candidate',
+            'view-job-candidate',
+            'unlock-job-candidate',
         ]);
 
         $financeRole->givePermissionTo([

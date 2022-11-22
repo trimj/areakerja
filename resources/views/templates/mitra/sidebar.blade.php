@@ -15,7 +15,6 @@
                 @can('manage-job-vacancy')
                     <a class="btn-sidebar @if (Route::is('mitra.lowongan.*')) active @endif" href="{{ route('mitra.lowongan.index') }}"><i class="fas fa-user-check fa-fw mr-2"></i>Lowongan</a>
                 @endcan
-                <a class="btn-sidebar" href="#"><i class="fas fa-users fa-fw mr-2"></i>Kandidat</a>
                 <div class="md:mt-auto mt-2 border-t-2 border-polar4/20 lg:border-0 lg:border-transparent">
                     <div class="flex items-center justify-between cursor-pointer px-5 py-3 hover:bg-polar4/20" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <img class="h-10 w-10 rounded-full" src="{{ asset('assets/public/photo') . '/' . auth()->user()->photo }}" alt="" onerror="this.src='{{ asset('assets/public/photo/default_photo.png') }}'">

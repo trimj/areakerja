@@ -38,8 +38,13 @@ class JobVacancy extends Model
         return $this->hasOne(Partner::class, 'id', 'partner_id');
     }
 
-    public function skill_list()
+    public function main_skill()
     {
         return $this->hasOne(SkillList::class, 'id', 'mainSkill');
+    }
+
+    public function candidates()
+    {
+        return $this->hasMany(Candidate::class, 'skill_id', 'mainSkill');
     }
 }
