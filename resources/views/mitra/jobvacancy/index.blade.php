@@ -13,7 +13,7 @@
                     <div class="title">
                         <a href="{{ route('public.lowongan.show', $job->id) }}">{{ $job->title }}</a>
                     </div>
-                    <div class="desc">
+                    <div class="desc mt-5">
                         <div class="jobdesc">
                             <div class="font-semibold">Main Skill:</div>
                             <div>{{ $job->skill_list->name }}</div>
@@ -25,6 +25,23 @@
                         <div class="jobdesc">
                             <div class="font-semibold">Location:</div>
                             <div id="{{ 'provinsi' . $job->id }}"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer">
+                    <div class="information">
+                        <div class="author"></div>
+                        <div class="another">
+                            @can('edit-job-vacancy')
+                                <a href="{{ route('mitra.lowongan.edit', $job->id) }}" class="btn btn-small btn-secondary"><i class="fas fa-edit"></i></a>
+                            @endcan
+                            @can('delete-job-vacancy')
+                                <form action="{{ route('mitra.lowongan.destroy', $job->id) }}" method="post" onsubmit="return confirm('Are you sure?');" class="space-y-0">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-small btn-error"><i class="fas fa-trash"></i></button>
+                                </form>
+                            @endcan
                         </div>
                     </div>
                 </div>
