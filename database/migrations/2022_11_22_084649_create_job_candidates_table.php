@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up()
     {
         Schema::create('job_candidates', function (Blueprint $table) {
@@ -17,14 +16,16 @@ return new class extends Migration
             $table->bigInteger('candidate_id')->unsigned();
             $table->foreign('candidate_id')->references('id')->on('candidates')->onDelete('cascade');
 
-            $table->dateTime('unlocked')->nullable();
+            $table->boolean('unlocked')->default(false);
+            $table->dateTime('unlocked_at')->nullable();
 
-            $table->dateTime('sByMitra')->nullable();        // Submitted by Mitra
-            $table->dateTime('aByMitra')->nullable();        // Accepted by Mitra
-            $table->dateTime('rByMitra')->nullable();        // Rejected by Mitra
-            $table->dateTime('sByCandidate')->nullable();    // Submitted by Candidate
-            $table->dateTime('aByCandidate')->nullable();    // Accepted by Candidate
-            $table->dateTime('rByCandidate')->nullable();    // Rejected by Candidate
+            $table->dateTime('s_mitra')->nullable();        // Submitted by Mitra
+            $table->dateTime('a_mitra')->nullable();        // Accepted by Mitra
+            $table->dateTime('r_mitra')->nullable();        // Rejected by Mitra
+
+            $table->dateTime('s_candidate')->nullable();    // Submitted by Candidate
+            $table->dateTime('a_candidate')->nullable();    // Accepted by Candidate
+            $table->dateTime('r_candidate')->nullable();    // Rejected by Candidate
 
             $table->timestamps();
         });

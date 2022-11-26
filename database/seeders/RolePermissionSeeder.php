@@ -49,9 +49,12 @@ class RolePermissionSeeder extends Seeder
         Permission::create(['name' => 'create-kandidat']);
         Permission::create(['name' => 'edit-kandidat']);
         Permission::create(['name' => 'delete-kandidat']);
+
+        // Manage Job Candidate (Mitra)
         Permission::create(['name' => 'manage-job-candidate']);
-        Permission::create(['name' => 'add-job-candidate']);
+        Permission::create(['name' => 'submit-job-candidate']);
         Permission::create(['name' => 'remove-job-candidate']);
+        Permission::create(['name' => 'reject-job-candidate']);
         Permission::create(['name' => 'view-job-candidate']);
         Permission::create(['name' => 'unlock-job-candidate']);
 
@@ -128,8 +131,9 @@ class RolePermissionSeeder extends Seeder
             'edit-job-vacancy',
             'delete-job-vacancy',
             'manage-job-candidate',
-            'add-job-candidate',
+            'submit-job-candidate',
             'remove-job-candidate',
+            'reject-job-candidate',
             'view-job-candidate',
             'unlock-job-candidate',
         ]);
@@ -192,6 +196,9 @@ class RolePermissionSeeder extends Seeder
         User::find(4)->syncRoles('Mitra');
         User::find(5)->syncRoles('Kandidat');
         User::find(6)->syncRoles('Member');
+        User::find(8)->syncRoles('Kandidat');
+        User::find(9)->syncRoles('Kandidat');
+        User::find(10)->syncRoles('Kandidat');
 
         app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
     }

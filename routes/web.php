@@ -101,8 +101,11 @@ Route::middleware('auth')->group(function () {
                 Route::delete('/{jobVacancy:id}/delete', 'destroy')->name('.destroy');
 
                 // Manage Job Candidate
-                Route::controller(MitraJobCandidateController::class)->name('.candidate')->group(function () {
-                    Route::get('/{jobVacancy:id}/candidate', 'show')->name('.show');
+                Route::controller(MitraJobCandidateController::class)->prefix('{job:id}')->name('.candidate')->group(function () {
+                    Route::get('/candidates', 'index')->name('.index');
+                    Route::get('/candidate/{candidate:id}', 'showCandidate')->name('.show');
+                    Route::post('/candidate/{candidate:id}', 'unlockCandidate')->name('.unlock');
+                    Route::put('/candidate/{jobCandidate:id}', 'submitCandidate')->name('.submit');
                 });
             });
         });
