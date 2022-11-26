@@ -23,6 +23,7 @@ use App\Http\Controllers\User\UserControlPanelController as UserCPController;
 use App\Http\Controllers\Public\HomeController as PublicHomeController;
 use App\Http\Controllers\Public\ArticleController as PublicArticleController;
 use App\Http\Controllers\Public\JobVacancyController as PublicLowonganController;
+use App\http\Controllers\Public\ContactController as PublicContactController;
 
 //use App\Http\Controllers\Public\MitraProfileController as PublicMitraProfileController;
 
@@ -158,6 +159,7 @@ Route::middleware('auth')->group(function () {
 
 Route::name('public')->group(function () {
     Route::get('/', [PublicHomeController::class, 'index'])->name('.home');
+    Route::get('/contact', [PublicContactController::class, 'index'])->name('.contact');
 
     Route::controller(PublicArticleController::class)->prefix('/article')->name('.article')->group(function () {
         Route::get('/', 'index')->name('.index');
