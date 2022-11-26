@@ -68,7 +68,7 @@
                         <div class="desc mt-5">
                             <div class="jobdesc">
                                 <div class="font-semibold">Main Skill:</div>
-                                <div>{{ $job->skill_list->name }}</div>
+                                <div>{{ $job->main_skill->name }}</div>
                             </div>
                             <div class="jobdesc">
                                 <div class="font-semibold">Salary:</div>

@@ -42,17 +42,12 @@ class Candidate extends Model
         'rejected_at' => 'datetime',
     ];
 
-    /**
-     * Get the user associated with the Candidate
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
-    public function skill_list()
+    public function main_skill()
     {
         return $this->hasOne(SkillList::class, 'id', 'skill_id');
     }

@@ -83,6 +83,33 @@ class UserSeeder extends Seeder
                 'created_at' => date('Y-m-d h:i:s', time()),
                 'updated_at' => date('Y-m-d h:i:s', time()),
             ],
+            [
+                'name' => 'Kandidat 2',
+                'email' => 'kandidat2@kandidat.test',
+                'email_verified_at' => now(),
+                'password' => Hash::make('test-kandidat'),
+                'remember_token' => Str::random(60),
+                'created_at' => date('Y-m-d h:i:s', time()),
+                'updated_at' => date('Y-m-d h:i:s', time()),
+            ],
+            [
+                'name' => 'Kandidat 3',
+                'email' => 'kandidat3@kandidat.test',
+                'email_verified_at' => now(),
+                'password' => Hash::make('test-kandidat'),
+                'remember_token' => Str::random(60),
+                'created_at' => date('Y-m-d h:i:s', time()),
+                'updated_at' => date('Y-m-d h:i:s', time()),
+            ],
+            [
+                'name' => 'Kandidat 4',
+                'email' => 'kandidat4@kandidat.test',
+                'email_verified_at' => now(),
+                'password' => Hash::make('test-kandidat'),
+                'remember_token' => Str::random(60),
+                'created_at' => date('Y-m-d h:i:s', time()),
+                'updated_at' => date('Y-m-d h:i:s', time()),
+            ],
         ];
         User::insert($data);
     }
