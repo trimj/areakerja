@@ -28,7 +28,7 @@
                          x-transition:leave-end="transform opacity-0 scale-95">
                         <div class="px-2 py-2 bg-white rounded-md shadow">
                             <a class="block btn-navbar" href="#">About</a>
-                            <a class="block btn-navbar" href="#">Contact</a>
+                            <a class="block btn-navbar" href="{{ route('public.contact') }}">Contact</a>
                         </div>
                     </div>
                 </div>
