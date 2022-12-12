@@ -80,9 +80,12 @@ Route::middleware('auth')->group(function () {
             });
         });
 
-//        Route::prefix('finance')->name('finance')->middleware('permission:access-financecp')->group(function () {
-//            //
-//        });
+       Route::prefix('finance')->name('finance')->middleware('permission:access-financecp')->group(function () {
+           Route::get('/', function()
+           {
+                return view('finance.dashboard');
+           });
+       });
 
         Route::prefix('mitra')->name('mitra')->middleware('permission:access-mitracp')->group(function () {
             Route::any('/', function () {
