@@ -1,7 +1,7 @@
 <div class="sidebar">
     <div @click.away="open = false" class="flex flex-col w-full lg:w-64 bg-areakerja" x-data="{ open: false }">
         <div class="px-8 py-4 flex flex-row items-center justify-between">
-            <a href="{{ route('mitra.cp') }}" class="lg:mx-auto">
+            <a href="{{ route('member.cp') }}" class="lg:mx-auto">
                 <img src="{{ asset('assets/admin/logo.svg') }}" alt="Logo" class="w-14 lg:w-32 lg:py-5">
             </a>
             <button class="btn-mobile-menu" @click="open = !open">
