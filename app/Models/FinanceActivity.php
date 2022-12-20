@@ -7,5 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class FinanceActivity extends Model
 {
-    use HasFactory;
+    // use HasFactory;
+    public $fillable = [
+        'date',
+        'name',
+        'company',
+    ];
 }

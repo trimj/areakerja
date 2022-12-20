@@ -24,6 +24,7 @@ use App\Http\Controllers\Public\HomeController as PublicHomeController;
 use App\Http\Controllers\Public\ArticleController as PublicArticleController;
 use App\Http\Controllers\Public\JobVacancyController as PublicLowonganController;
 use App\http\Controllers\Public\ContactController as PublicContactController;
+use App\Http\Controllers\Finance\DashboardFinanceController;
 
 //use App\Http\Controllers\Public\MitraProfileController as PublicMitraProfileController;
 

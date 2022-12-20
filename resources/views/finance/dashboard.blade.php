@@ -218,35 +218,17 @@
                 <div class="flex flex-row w-full ">
                     <p class="text-base">Activity </p>
                 </div>
-
+                @foreach($finance as $data)
                 <div class="flex flex-row w-full gap-1 mt-2 items-center bg-white rounded-full">
                     <div class="flex flex-col w-32 p-2">
-                        <span class="text-base">16 Nov</span>
+                        <span class="text-base">{{$data->date}}</span>
                     </div>
                     <div class="flex flex-col w-full">
-                        <span class="text-base">rekapitulasi bulan desember</span>
+                        <span class="text-base">{{$data->name}}</span>
                         <p class="text-sm text-right">read more</p>
                     </div>
                 </div>
-
-                <div class="flex flex-row w-full gap-1 mt-2 items-center bg-white rounded-full">
-                    <div class="flex flex-col w-32 p-2">
-                        <span class="text-base">16 Nov</span>
-                    </div>
-                    <div class="flex flex-col w-full">
-                        <span class="text-base">rekapitulasi bulan desember</span>
-                        <p class="text-sm text-right">read more</p>
-                    </div>
-                </div>
-                <div class="flex flex-row w-full gap-1 mt-2 items-center bg-white rounded-full">
-                    <div class="flex flex-col w-32 p-2">
-                        <span class="text-base">16 Nov</span>
-                    </div>
-                    <div class="flex flex-col w-full">
-                        <span class="text-base">rekapitulasi bulan desember</span>
-                        <p class="text-sm text-right">read more</p>
-                    </div>
-                </div>
+                @endforeach
                 <div class="flex flex-row w-full gap-4 mt-2 rounded-full">
                     <div class="flex flex-col w-full p-2 items-center">
                         <button class="rounded-full items-center bg-main mt-4 w-28 h-8"
@@ -464,42 +446,17 @@
                     </nav>
                 </div>
                 <div class="mt-3 p-4">
+                    @foreach($finance as $data)
                     <div class="bg-gray-300 rounded-lg flex flex-row px-4 py-2 my-4">
                         <div class="w-30% text-slate-500">
-                            1 Desember 2022
+                            {{$data->date}}
                         </div>
                         <div>
-                            <h3 class="font-bold">Rekapitulasi Bulan November</h3>
-                            <p class="text-slate-500 text-sm">Google inc.</p>
+                            <h3 class="font-bold">{{$data->name}}</h3>
+                            <p class="text-slate-500 text-sm">{{$data->company}}</p>
                         </div>
                     </div>
-                    <div class="bg-gray-300 rounded-lg flex flex-row px-4 py-2 my-4">
-                        <div class="w-30% text-slate-500">
-                            1 Desember 2022
-                        </div>
-                        <div>
-                            <h3 class="font-bold">Rekapitulasi Bulan November</h3>
-                            <p class="text-slate-500 text-sm">Google inc.</p>
-                        </div>
-                    </div>
-                    <div class="bg-gray-300 rounded-lg flex flex-row px-4 py-2 my-4">
-                        <div class="w-30% text-slate-500">
-                            1 Desember 2022
-                        </div>
-                        <div>
-                            <h3 class="font-bold">Rekapitulasi Bulan November</h3>
-                            <p class="text-slate-500 text-sm">Google inc.</p>
-                        </div>
-                    </div>
-                    <div class="bg-gray-300 rounded-lg flex flex-row px-4 py-2 my-4">
-                        <div class="w-30% text-slate-500">
-                            1 Desember 2022
-                        </div>
-                        <div>
-                            <h3 class="font-bold">Rekapitulasi Bulan November</h3>
-                            <p class="text-slate-500 text-sm">Google inc.</p>
-                        </div>
-                    </div>
+                    @endforeach
                     <button class="rounded-lg border px-4 py-2 font-bold mx-auto block mt-12">Load More</button>
                     <button
                         class="bg-orange-500 block mt-7 font-bold text-xs text-white px-4 py-2 rounded-lg">CETAK</button>
