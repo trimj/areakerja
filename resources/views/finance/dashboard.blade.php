@@ -315,79 +315,104 @@
                     <p class="text-xl">Riwayat Transaksi Terakhir</p>
                 </div>
                 <div class="flex flex-row mr-16 gap-8">
-                    <span data-modal-toggle="tambahriwayattransaksi" class="cursor-pointer"><i
-                            class="fa-solid fa-pen-to-square"></i></span>
+                    <span data-modal-toggle="tambahriwayattransaksi" class="cursor-pointer">
+                        <i class="fa-solid fa-pen-to-square"></i></span>
                     <span><i class="fa-sharp fa-solid fa-trash"></i></span>
                 </div>
             </div>
 
             <div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative h-80">
-                <table
-                    class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
-                    <thead>
-                        <tr class="text-left">
-                            <th class="py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100">
-                                <label
-                                    class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
-                                    <input type="checkbox"
-                                        class="form-checkbox focus:outline-none focus:shadow-outline"
-                                        @click="selectAllCheckbox($event);">
-                                </label>
-                            </th>
-                            <template x-for="heading in headings">
-                                <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs"
-                                    x-text="heading.value" :x-ref="heading.key"
-                                    :class="{ [heading.key]: true }"></th>
-                            </template>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <template x-for="user in users" :key="user.userId">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover" id="save-stage" style="width:100%;">
+                        <thead>
                             <tr>
-                                <td class="border-dashed border-t border-gray-200 px-3">
+                                <th>ID Order</th>
+                                <th>Nama</th>
+                                <th>Date</th>
+                                <th>Total</th>
+                                <th>Payment Status</th>
+                                <th>Payment Method</th>
+                                <th>Aksi</th>
+                            </tr>
+                            {{-- <tr class="text-left">
+                                <th class="py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100">
                                     <label
                                         class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
                                         <input type="checkbox"
-                                            class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline"
-                                            :name="user.userId"
-                                            @click="getRowDetail($event, user.userId)">
+                                            class="form-checkbox focus:outline-none focus:shadow-outline"
+                                            @click="selectAllCheckbox($event);">
                                     </label>
-                                </td>
-                                <td class="border-dashed border-t border-gray-200 userId">
-                                    <span class="text-gray-700 px-6 py-3 flex items-center"
-                                        x-text="user.userId"></span>
-                                </td>
-                                <td class="border-dashed border-t border-gray-200 Name">
-                                    <span class="text-gray-700 px-6 py-3 flex items-center"
-                                        x-text="user.Name"></span>
-                                </td>
-                                <td class="border-dashed border-t border-gray-200 Umur">
-                                    <span class="text-gray-700 px-6 py-3 flex items-center"
-                                        x-text="user.Umur"></span>
-                                </td>
-                                <td class="border-dashed border-t border-gray-200 Total">
-                                    <span class="text-gray-700 px-6 py-3 flex items-center"
-                                        x-text="user.Total"></span>
-                                </td>
-                                <td class="border-dashed border-t border-gray-200 Status">
-                                    <span class="text-gray-700 px-6 py-3 flex items-center"
-                                        x-text="user.Status"></span>
-                                </td>
-                                <td class="border-dashed border-t border-gray-200 PaymentMethod">
-                                    <span class="text-gray-700 px-6 py-3 flex items-center"
-                                        x-text="user.PaymentMethod"></span>
-                                </td>
-                                <td class="border-dashed border-t border-gray-200 Detail">
-                                    <a href="#">
+                                </th>
+                                <template x-for="heading in headings">
+                                    <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs"
+                                        x-text="heading.value" :x-ref="heading.key"
+                                        :class="{ [heading.key]: true }"></th>
+                                </template>
+                            </tr> --}}
+                        </thead>
+                        <tbody>
+                            @foreach($riwayat as $key=>$value)
+                            <tr>
+                                <td class="text-center">{{ $value->id }}</td>
+                                <td class="text-center">{{ $value->billing_name }}</td>
+                                <td class="text-center">{{ $value->date }}</td>
+                                <td class="text-center">{{ $value->total }}</td>
+                                <td class="text-center">{{ $value->payment_status }}</td>
+                                <td class="text-center">{{ $value->payment_method }}</td>
+                                <td class="">
                                         <button
-                                            class="mt-10 px-4 py-1 text-sm text-white bg-main rounded-full w-28">View
+                                            class="py-1 text-sm item-center text-white bg-main rounded-full w-28">View
                                             Details</button>
-                                    </a>
                                 </td>
                             </tr>
-                        </template>
-                    </tbody>
-                </table>
+                            @endforeach
+                            {{-- <template x-for="user in users" :key="user.id">
+                                <tr>
+                                    <td class="border-dashed border-t border-gray-200 px-3">
+                                        <label
+                                            class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
+                                            <input type="checkbox"
+                                                class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline"
+                                                :name="user.id"
+                                                @click="getRowDetail($event, user.id)">
+                                        </label>
+                                    </td>
+                                    <td class="border-dashed border-t border-gray-200 userId">
+                                        <span class="text-gray-700 px-6 py-3 flex items-center"
+                                            x-text="user.id"></span>{{ $value->id }}
+                                    </td>
+                                    <td class="border-dashed border-t border-gray-200 Name">
+                                        <span class="text-gray-700 px-6 py-3 flex items-center"
+                                            x-text="user.billing_name"></span>{{ $value->billing_name }}
+                                    </td>
+                                    <td class="border-dashed border-t border-gray-200 Umur">
+                                        <span class="text-gray-700 px-6 py-3 flex items-center"
+                                            x-text="user.date"></span>{{ $value->date }}
+                                    </td>
+                                    <td class="border-dashed border-t border-gray-200 Total">
+                                        <span class="text-gray-700 px-6 py-3 flex items-center"
+                                            x-text="user.total"></span>{{ $value->total }}
+                                    </td>
+                                    <td class="border-dashed border-t border-gray-200 Status">
+                                        <span class="text-gray-700 px-6 py-3 flex items-center"
+                                            x-text="user.payment_status"></span>{{ $value->payment_status }}
+                                    </td>
+                                    <td class="border-dashed border-t border-gray-200 PaymentMethod">
+                                        <span class="text-gray-700 px-6 py-3 flex items-center"
+                                            x-text="user.payment_method"></span>{{ $value->payment_method }}
+                                    </td>
+                                    <td class="border-dashed border-t border-gray-200 Detail">
+                                        <a href="#">
+                                            <button
+                                                class="mt-10 px-4 py-1 text-sm text-white bg-main rounded-full w-28">View
+                                                Details</button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </template> --}}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -1015,6 +1040,7 @@
     <!-- All javascript code in this project for now is just for demo DON'T RELY ON IT  -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.bundle.min.js"></script>
     <script src="{{asset('js/finance.js')}}"></script>
+    <script src="{{asset('vendor/datatable/datatables.js')}}"></script>
     <script src="https://kit.fontawesome.com/d770eb273a.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/flowbite@1.5.3/dist/flowbite.js"></script>
 
@@ -1185,27 +1211,27 @@
             return {
                 headings: [
                     {
-                        'key': 'userId',
+                        'key': 'id',
                         'value': 'Order ID'
                     },
                     {
-                        'key': 'Name',
+                        'key': 'billing_name',
                         'value': 'Billing Name'
                     },
                     {
-                        'key': 'Umur',
+                        'key': 'date',
                         'value': 'Date'
                     },
                     {
-                        'key': 'Total',
+                        'key': 'total',
                         'value': 'Total'
                     },
                     {
-                        'key': 'Status',
+                        'key': 'payment_status',
                         'value': 'Payment Status'
                     },
                     {
-                        'key': 'PaymentMethod',
+                        'key': 'payment_method',
                         'value': 'Payment Method'
                     },
                     {
@@ -1213,111 +1239,14 @@
                         'value': 'Detail'
                     }
                 ],
+
                 users: [{
-                    "userId": 1,
-                    "Name": "Cort",
-                    "Umur": "07 Oct, 2022",
-                    "Total": "Rp 10.000.000",
-                    "Status": "Selesai",
-                    "PaymentMethod": "Visa"
-                }, {
-                    "userId": 2,
-                    "Name": "Brianne",
-                    "Umur": "07 Oct, 2022",
-                    "Total": "Rp 10.000.000",
-                    "Status": "Selesai",
-                    "PaymentMethod": "Visa"
-                }, {
-                    "userId": 3,
-                    "Name": "Isadore",
-                    "Umur": "07 Oct, 2022",
-                    "Total": "Rp 10.000.000",
-                    "Status": "Selesai",
-                    "PaymentMethod": "Visa"
-                }, {
-                    "userId": 4,
-                    "Name": "Janaya",
-                    "Umur": "07 Oct, 2022",
-                    "Total": "Rp 10.000.000",
-                    "Status": "Selesai",
-                    "PaymentMethod": "Visa"
-                }, {
-                    "userId": 5,
-                    "Name": "Freddi",
-                    "Umur": "07 Oct, 2022",
-                    "Total": "Rp 10.000.000",
-                    "Status": "Selesai",
-                    "PaymentMethod": "Visa"
-                }, {
-                    "userId": 6,
-                    "Name": "Oliy",
-                    "Umur": "07 Oct, 2022",
-                    "Total": "Rp 10.000.000",
-                    "Status": "Selesai",
-                    "PaymentMethod": "Visa"
-                }, {
-                    "userId": 7,
-                    "Name": "Tabb",
-                    "Umur": "07 Oct, 2022",
-                    "Total": "Rp 10.000.000",
-                    "Status": "Selesai",
-                    "PaymentMethod": "Visa"
-                }, {
-                    "userId": 8,
-                    "Name": "Joela",
-                    "Umur": "07 Oct, 2022",
-                    "Total": "Rp 10.000.000",
-                    "Status": "Selesai",
-                    "PaymentMethod": "Visa"
-                }, {
-                    "userId": 9,
-                    "Name": "Alistair",
-                    "Umur": "07 Oct, 2022",
-                    "Total": "Rp 10.000.000",
-                    "Status": "Selesai",
-                    "PaymentMethod": "Visa"
-                }, {
-                    "userId": 10,
-                    "Name": "Nealon",
-                    "Umur": "07 Oct, 2022",
-                    "Total": "Rp 10.000.000",
-                    "Status": "Selesai",
-                    "PaymentMethod": "Visa"
-                }, {
-                    "userId": 11,
-                    "Name": "Annissa",
-                    "Umur": "07 Oct, 2022",
-                    "Total": "Rp 10.000.000",
-                    "Status": "Selesai",
-                    "PaymentMethod": "Visa"
-                }, {
-                    "userId": 12,
-                    "Name": "Nissie",
-                    "Umur": "07 Oct, 2022",
-                    "Total": "Rp 10.000.000",
-                    "Status": "Selesai",
-                    "PaymentMethod": "Visa"
-                }, {
-                    "userId": 13,
-                    "Name": "Madalena",
-                    "Umur": "07 Oct, 2022",
-                    "Total": "Rp 10.000.000",
-                    "Status": "Selesai",
-                    "PaymentMethod": "Visa"
-                }, {
-                    "userId": 14,
-                    "Name": "Rozina",
-                    "Umur": "07 Oct, 2022",
-                    "Total": "Rp 10.000.000",
-                    "Status": "Selesai",
-                    "PaymentMethod": "Visa"
-                }, {
-                    "userId": 15,
-                    "Name": "Lorelle",
-                    "Umur": "07 Oct, 2022",
-                    "Total": "Rp 10.000.000",
-                    "Status": "Selesai",
-                    "PaymentMethod": "Visa"
+                    "id": $value->id,
+                    "billing_name": $value->billing_name,
+                    "date": $value->date,
+                    "total": $value->total,
+                    "payment_status": $value->payment_status,
+                    "payment_method": $value->payment_method
                 }],
                 selectedRows: [],
 

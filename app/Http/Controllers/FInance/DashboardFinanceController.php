@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Finance;
 
 use App\Http\Controllers\Controller;
 use App\Models\FinanceActivity;
+use App\Models\Financial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,7 +19,9 @@ class DashboardFinanceController extends Controller
     {
         $finance = FinanceActivity::paginate(1);
         // dd($finance);
-        return view('finance.dashboard', compact('finance'));
+        $riwayat = Financial::paginate(10);
+        // dd($riwayat);
+        return view('finance.dashboard', compact('finance','riwayat'));
     }
 
     /**
