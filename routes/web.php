@@ -79,11 +79,17 @@ Route::middleware('auth')->group(function () {
                 Route::delete('/role/edit/{role:id}/delete', 'destroy')->name('.destroy');
             });
         });
-
+        
         Route::prefix('finance')->name('finance')->middleware('permission:access-financecp')->group(function () {
-            Route::controller(DashboardFinanceController::class)->name('.finance')->group(function(){
-            Route::get('/', 'index')->name('.index');
+            Route::controller(DashboardFinanceController::class)->group(function(){
+                Route::get('/', 'index');
             });
+            Route::get('/invoice', function(){
+                    return view('finance.invoice');
+            })->name('.invoice');
+            Route::get('/edit-harga', function(){
+                    return view('finance.edit-harga');
+            })->name('.edit-harga');
         });
 
         Route::prefix('mitra')->name('mitra')->middleware('permission:access-mitracp')->group(function () {

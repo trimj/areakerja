@@ -1,13 +1,10 @@
 <!-- Sidebar -->
 <aside class="flex-shrink-0 hidden w-64 bg-white md:block">
     <div class="flex flex-col h-full bg-tertiary">
-        <!-- Sidebar links -->
         <img class="mx-auto w-30% pt-14 pb-10" src="{{asset('assets/public/images/logo.png')}}" alt="">
         <nav aria-label="Main" class="flex-1 px-2 py-4 space-y-2 overflow-y-hidden hover:overflow-y-auto">
-            <!-- Dashboards links -->
-            <div x-data="{ isActive: true, open: true}">
-                <!-- active & hover classes 'bg-primary-100' -->
-                <a href="./index.html"
+            <div x-data="{ isActive: {{Route::is('finance') ? 'true' : 'false'}}, open: {{Route::is('finance') ? 'true' : 'false'}}}">
+                <a href="{{route('finance')}}"
                     class="flex items-center p-2 text-tertiary-text transition-colors rounded-md hover:text-white hover:bg-tertiary-active"
                     :class="{'bg-tertiary-active': isActive || open}" role="button" aria-haspopup="true"
                     :aria-expanded="(open || isActive) ? 'true' : 'false'">
@@ -19,15 +16,11 @@
                         </svg>
                     </span>
                     <span class="ml-2 text-sm"> Dashboards </span>
-
                 </a>
-
             </div>
 
-            <!-- Components links -->
-            <div x-data="{ isActive: false, open: false}">
-                <!-- active classes 'bg-primary-100' -->
-                <a href="./invoicelist.html"
+            <div x-data="{ isActive: {{Route::is('finance.invoice') ? 'true' : 'false'}}, open: {{Route::is('finance.invoice') ? 'true' : 'false'}}}">
+                <a href="{{route('finance.invoice')}}"
                     class="flex items-center p-2 text-tertiary-text transition-colors rounded-md hover:text-white hover:bg-tertiary-active"
                     :class="{'bg-tertiary-active': isActive || open}" role="button" aria-haspopup="true"
                     :aria-expanded="(open || isActive) ? 'true' : 'false'">
@@ -36,7 +29,18 @@
                     </span>
                     <span class="ml-3 text-sm"> Invoice </span>
                 </a>
+            </div>
 
+            <div x-data="{ isActive: {{Route::is('finance.edit-harga') ? 'true' : 'false'}}, open: {{Route::is('finance.edit-harga') ? 'true' : 'false'}}}">
+                <a href="{{route('finance.edit-harga')}}"
+                    class="flex items-center p-2 text-tertiary-text transition-colors rounded-md hover:text-white hover:bg-tertiary-active"
+                    :class="{'bg-tertiary-active': isActive || open}" role="button" aria-haspopup="true"
+                    :aria-expanded="(open || isActive) ? 'true' : 'false'">
+                    <span aria-hidden="true">
+                        <i class="fa-solid fa-eraser"></i>
+                    </span>
+                    <span class="ml-3 text-sm"> Edit Harga </span>
+                </a>
             </div>
         </nav>
 
