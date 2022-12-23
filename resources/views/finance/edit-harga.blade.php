@@ -1,5 +1,25 @@
 @extends('templates.finance.page')
 
+@section('headerCSS')
+    <style>
+        input[type="number"] {
+            width: auto;
+            border-radius: 0.375rem;
+            padding-top: 0.4rem;
+            padding-bottom: 0.4rem;
+            padding-left: 0.7rem;
+            padding-right: 0.7rem;
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+            --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+            --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+            box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+            --tw-ring-opacity: 1;
+            --tw-ring-color: rgb(229 231 235 / var(--tw-ring-opacity));
+        }
+    </style>
+@endsection
+
 @section('content')
     <div class="flex flex-row">
         <div class="flex-grow">
