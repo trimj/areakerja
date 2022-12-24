@@ -102,6 +102,16 @@ Route::middleware('auth')->group(function () {
     //        Route::get('finance-activity',[FinanceActivityController::class,'index'])->name('.financeactivity');
     //    });
 
+        Route::controller(DashboardFinanceController::class)->name('riwayat')->group(function () {
+            Route::get('/riwayat', 'index')->name('.index');
+            Route::get('/riwayat/create', 'create')->name('.create');
+            Route::post('/riwayat/create', 'store')->name('.store');
+            Route::get('/riwayat/edit/{role:id}', 'edit')->name('.edit');
+            Route::put('/riwayat/edit/{role:id}', 'update')->name('.update');
+            Route::post('/riwayat/edit/{role:id}/sync', 'syncPermissions')->name('.permission.sync');
+            Route::delete('/riwayat/edit/{role:id}/delete', 'destroy')->name('.delete');
+        });
+
         Route::prefix('mitra')->name('mitra')->middleware('permission:access-mitracp')->group(function () {
             Route::any('/', function () {
                 return redirect()->route('mitra.dashboard');

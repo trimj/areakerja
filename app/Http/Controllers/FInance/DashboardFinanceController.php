@@ -53,7 +53,10 @@ class DashboardFinanceController extends Controller
      */
     public function show($id)
     {
-        //
+        $riwayat = Financial::find($id);
+        return view('finance.dashboard', compact(
+            ['riwayat']
+        ));
     }
 
     /**
@@ -76,7 +79,16 @@ class DashboardFinanceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $riwayat = Financial::find($id);
+        $riwayat->id = $request->id;
+        $riwayat->billing_name = $request->billing_name;
+        $riwayat->date = $request->date;
+        $riwayat->total = $request->total;
+        $riwayat->payment_status = $request->payment_status;
+        $riwayat->payment_method = $request->payment_method;
+        $riwayat->save();
+
+        return redirect('finance');
     }
 
     /**
@@ -87,8 +99,11 @@ class DashboardFinanceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $riwayat = Financial::find($id);
+        $riwayat->delete();
+        return redirect('finance');
     }
+
     public function ajaxPagination(Request $request)
     {
         $items = FinanceActivity::paginate(1);

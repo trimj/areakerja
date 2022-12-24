@@ -297,11 +297,11 @@
                 <div class="flex flex-row">
                     <p class="text-xl">Riwayat Transaksi Terakhir</p>
                 </div>
-                <div class="flex flex-row mr-16 gap-8">
+                {{-- <div class="flex flex-row mr-16 gap-8">
                     <span data-modal-toggle="tambahriwayattransaksi" class="cursor-pointer">
                         <i class="fa-solid fa-pen-to-square"></i></span>
                     <span><i class="fa-sharp fa-solid fa-trash"></i></span>
-                </div>
+                </div> --}}
             </div>
 
             <div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative h-80">
@@ -343,9 +343,12 @@
                                 <td class="text-center">{{ $value->payment_status }}</td>
                                 <td class="text-center">{{ $value->payment_method }}</td>
                                 <td class="">
-                                        <button
-                                            class="py-1 text-sm item-center text-white bg-main rounded-full w-28">View
-                                            Details</button>
+                                    <button class="py-1 text-sm item-center text-white bg-main hover:bg-orange-500 rounded-full w-28 mt-2" data-modal-toggle="tambahriwayattransaksi">Edit</button>
+                                    <form action="{{route('riwayat.delete',$value->id)}}" method="POST">
+                                        @csrf 
+                                        <input type="hidden" name="_method" value="delete">
+                                        <button class="py-1 text-sm item-center text-white bg-main hover:bg-orange-500 rounded-full w-28 mt-2" type="submit">Delete </button>
+                                    </form>
                                 </td>
                             </tr>
                             @endforeach
@@ -479,8 +482,9 @@
         </div>
     </div>
 
+    @foreach ($riwayat as $key => $item)
     <div id="tambahriwayattransaksi" tabindex="-1" aria-hidden="true"
-        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full justify-center items-center">
+        class="{{'bd-example-modal-lg'.$key}} hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full justify-center items-center">
         <div class="relative p-4 w-full max-w-3xl h-full md:h-auto">
             <!-- Modal content -->
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -497,72 +501,67 @@
                 </button>
                 <div class="py-6 px-6 lg:px-8">
                     <h3 class="mb-10 text-xl font-medium text-gray-900 dark:text-white">Riwayat Transaksi Terakhir</h3>
-                    <form class="space-y-6" action="#">
+                    <form class="space-y-6" method="POST" action="{{url('riwayat/edit/'.$item->id)}}">
+                        @csrf
+                        <input type="hidden" name="_method" value="PUT">
                         <div class="relative">
                             <label for="text"
                                 class="absolute -top-3.5 left-5 bg-white px-2 block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Order
                                 Id</label>
-                            <input type="text" name="order" id="order"
+                            <input type="text" name="id" id="id"
                                 class="bg-white border border-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                                placeholder="SK2544" required="">
+                                placeholder="" value="{{$item->id}}" required="">
                         </div>
                         <div class="relative">
                             <label for="text"
                                 class="absolute -top-3.5 left-5 bg-white px-2 block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Billing
                                 Name</label>
-                            <input type="text" name="billingname" id="billingname"
+                            <input type="text" name="billing_name" id="billing_name"
                                 class="bg-white border border-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                                placeholder="Jacob Hunter" required="">
+                                value="{{$item->billing_name}}" required="">
                         </div>
                         <div class="relative">
                             <label for="text"
                                 class="absolute -top-3.5 left-5 bg-white px-2 block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Date</label>
                             <input type="date" name="date" id="date"
                                 class="bg-white border border-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                                placeholder="04 Oktober 2022" required="">
+                                value="{{$item->date}}" required="">
                         </div>
                         <div class="relative">
                             <label for="text"
-                                class="absolute -top-3.5 left-5 bg-white px-2 block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Items</label>
-                            <input type="text" name="items" id="items"
+                                class="absolute -top-3.5 left-5 bg-white px-2 block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Total</label>
+                            <input type="text" name="total" id="total"
                                 class="bg-white border border-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                                placeholder="Bergabung Mitra" required="">
+                                value="{{$item->total}}" required="">
                         </div>
                         <div>
-                            <select name="paymentstatus" id="paymentstatus"
+                            <select name="payment_status" id="payment_status"
                                 class="bg-white border border-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                                placeholder="04 Oktober 2022" required="">
-                                <option value="Oke">Pilih Paymen Status</option>
-                                <option value="Oke">Oke</option>
-                                <option value="Oke">Polije</option>
-                                <option value="Oke">Sip</option>
+                                required="">
+                                <option selected>{{$item->payment_status}}</option>
+                                <option value="menunggu">Menunggu</option>
+                                <option value="Proses">Proses</option>
+                                <option value="Selesai">Selesai</option>
                             </select>
                         </div>
                         <div class="relative">
                             <label for="text"
                                 class="absolute -top-3.5 left-5 bg-white px-2 block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Payment
                                 Method</label>
-                            <input type="text" name="paymentmethod" id="paymentmethod"
+                            <input type="text" name="payment_method" id="payment_method"
                                 class="bg-white border border-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                                placeholder="Visa" required="">
+                                value="{{$item->payment_method}}" required="">
                         </div>
                         <div style="margin-bottom: -10px;">
                             <button type="submit"
                                 class="w-200 text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Submit</button>
-                        </div>
-                        <div style="margin-bottom: -10px;">
-                            <button type="submit"
-                                class="w-200 text-white bg-rose-500 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus:ring-rose-800">Delete</button>
-                        </div>
-                        <div>
-                            <button type="submit"
-                                class="w-200 text-white bg-orange-500 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-orange-500 dark:hover:bg-orange-700 dark:focus:ring-orange-800">Cancel</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    @endforeach
 
     <!-- Main modal -->
     <div id="pendapatanbulanan" tabindex="-1" aria-hidden="true"
