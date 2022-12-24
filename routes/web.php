@@ -24,6 +24,7 @@ use App\Http\Controllers\Public\ArticleController as PublicArticleController;
 use App\Http\Controllers\Public\JobVacancyController as PublicLowonganController;
 use App\http\Controllers\Public\ContactController as PublicContactController;
 use App\Http\Controllers\Finance\DashboardFinanceController;
+use App\Http\Controllers\Finance\FinanceActivityController;
 
 //use App\Http\Controllers\Public\MitraProfileController as PublicMitraProfileController;
 
@@ -90,7 +91,16 @@ Route::middleware('auth')->group(function () {
             Route::get('/edit-harga', function(){
                     return view('finance.edit-harga');
             })->name('.edit-harga');
+            Route::get('cetak/laporan',[FinanceActivityController::class,'cetak_pdf'])->name('.cetakfinanceactivity');
+            Route::get('finance-activity',[FinanceActivityController::class,'index'])->name('.financeactivity');
         });
+    //    Route::prefix('finance')->name('finance')->middleware('permission:access-financecp')->group(function () {
+    //        Route::controller(DashboardFinanceController::class)->name('.finance')->group(function(){
+    //         Route::get('/', 'index')->name('.index');
+    //        });
+    //        Route::get('cetak/laporan',[FinanceActivityController::class,'cetak_pdf'])->name('.cetakfinanceactivity');
+    //        Route::get('finance-activity',[FinanceActivityController::class,'index'])->name('.financeactivity');
+    //    });
 
         Route::prefix('mitra')->name('mitra')->middleware('permission:access-mitracp')->group(function () {
             Route::any('/', function () {

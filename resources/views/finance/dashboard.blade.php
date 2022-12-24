@@ -465,9 +465,13 @@
                         </div>
                     </div>
                     @endforeach
-                    <button class="rounded-lg border px-4 py-2 font-bold mx-auto block mt-12">Load More</button>
-                    <button
-                        class="bg-orange-500 block mt-7 font-bold text-xs text-white px-4 py-2 rounded-lg">CETAK</button>
+                    <a href="{{route('finance.financeactivity')}}">
+                        <button class="rounded-lg border px-4 py-2 font-bold mx-auto block mt-12">Load More</button>
+                    </a>
+                    <a href="{{route('finance.cetakfinanceactivity')}}">
+                        <button
+                            class="bg-orange-500 block mt-7 font-bold text-xs text-white px-4 py-2 rounded-lg">CETAK</button>
+                    </a>
                     <button class="bg-rose-500 block mt-3 font-bold text-xs text-white px-4 py-2 rounded-lg"
                         data-modal-toggle="activity-modal">CANCEL</button>
                 </div>

@@ -17,7 +17,7 @@ class DashboardFinanceController extends Controller
      */
     public function index()
     {
-        $finance = FinanceActivity::paginate(1);
+        $finance = FinanceActivity::paginate(3);
         // dd($finance);
         $riwayat = Financial::paginate(10);
         // dd($riwayat);
