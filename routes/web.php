@@ -24,6 +24,8 @@ use App\Http\Controllers\Public\HomeController as PublicHomeController;
 use App\Http\Controllers\Public\ArticleController as PublicArticleController;
 use App\Http\Controllers\Public\JobVacancyController as PublicLowonganController;
 use App\http\Controllers\Public\ContactController as PublicContactController;
+use App\Http\Controllers\Finance\DashboardFinanceController;
+use App\Http\Controllers\Finance\FinanceActivityController;
 
 //use App\Http\Controllers\Public\MitraProfileController as PublicMitraProfileController;
 
@@ -79,10 +81,37 @@ Route::middleware('auth')->group(function () {
                 Route::delete('/role/edit/{role:id}/delete', 'destroy')->name('.destroy');
             });
         });
+        
+        Route::prefix('finance')->name('finance')->middleware('permission:access-financecp')->group(function () {
+            Route::controller(DashboardFinanceController::class)->group(function(){
+                Route::get('/', 'index');
+            });
+            Route::get('/invoice', function(){
+                    return view('finance.invoice');
+            })->name('.invoice');
+            Route::get('/edit-harga', function(){
+                    return view('finance.edit-harga');
+            })->name('.edit-harga');
+            Route::get('cetak/laporan',[FinanceActivityController::class,'cetak_pdf'])->name('.cetakfinanceactivity');
+            Route::get('finance-activity',[FinanceActivityController::class,'index'])->name('.financeactivity');
+        });
+    //    Route::prefix('finance')->name('finance')->middleware('permission:access-financecp')->group(function () {
+    //        Route::controller(DashboardFinanceController::class)->name('.finance')->group(function(){
+    //         Route::get('/', 'index')->name('.index');
+    //        });
+    //        Route::get('cetak/laporan',[FinanceActivityController::class,'cetak_pdf'])->name('.cetakfinanceactivity');
+    //        Route::get('finance-activity',[FinanceActivityController::class,'index'])->name('.financeactivity');
+    //    });
 
-//        Route::prefix('finance')->name('finance')->middleware('permission:access-financecp')->group(function () {
-//            //
-//        });
+        Route::controller(DashboardFinanceController::class)->name('riwayat')->group(function () {
+            Route::get('/riwayat', 'index')->name('.index');
+            Route::get('/riwayat/create', 'create')->name('.create');
+            Route::post('/riwayat/create', 'store')->name('.store');
+            Route::get('/riwayat/edit/{role:id}', 'edit')->name('.edit');
+            Route::put('/riwayat/edit/{role:id}', 'update')->name('.update');
+            Route::post('/riwayat/edit/{role:id}/sync', 'syncPermissions')->name('.permission.sync');
+            Route::delete('/riwayat/edit/{role:id}/delete', 'destroy')->name('.delete');
+        });
 
         Route::prefix('mitra')->name('mitra')->middleware('permission:access-mitracp')->group(function () {
             Route::any('/', function () {
