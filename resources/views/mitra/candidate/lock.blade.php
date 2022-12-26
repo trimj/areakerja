@@ -2,7 +2,7 @@
 
 @section('content')
     <section>
-        <censored-style censorship-tag="censored" censorship-type="marker" censorship-color="#FF9637" replace-text="*" replace-repeat="true" dissapear-on-hover="false">
+        <censored-style censorship-tag="censored" censorship-type="blur" censorship-color="#FF9637" replace-text="*" replace-repeat="true" dissapear-on-hover="false">
             <div class="table-group">
                 <table class="table-fixed">
                     <thead>

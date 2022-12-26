@@ -106,7 +106,9 @@ Route::middleware('auth')->group(function () {
                     Route::get('/candidates', 'index')->name('.index');
                     Route::get('/candidate/{candidate:id}', 'showCandidate')->name('.show');
                     Route::post('/candidate/{candidate:id}', 'unlockCandidate')->name('.unlock');
-                    Route::put('/candidate/{jobCandidate:id}', 'submitCandidate')->name('.submit');
+                    Route::put('/candidate/{jobCandidate:id}/submit', 'submitCandidate')->name('.submit');
+                    Route::put('/candidate/{jobCandidate:id}/accept', 'acceptCandidate')->name('.accept');
+                    Route::put('/candidate/{jobCandidate:id}/remove', 'removeCandidate')->name('.remove');
                 });
             });
         });
