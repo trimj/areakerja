@@ -19,12 +19,12 @@ class EditHargaController extends Controller
 
     public function index()
     {
-        if (Cookie::get('edit-harga') == null) {
-            // Mail::to('super-admin')->send()
-            return view('finance.verifikasi');
-        } else {
+        // if (Cookie::get('edit-harga') == null) {
+        //     Mail::to('super-admin@mail.com')->send();
+        //     return view('finance.verifikasi');
+        // } else {
             return view('finance.edit-harga');
-        }
+        // }
     }
 
     /**
