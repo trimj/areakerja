@@ -84,14 +84,35 @@ class JobCondidateController extends Controller
 
         $jobCandidate->update([
             's_mitra' => date('Y-m-d h:i:s', time()),
+//            'a_mitra' => null,
+//            'r_mitra' => null,
         ]);
 
         Alert::toast('Successful', 'success');
         return redirect()->route('mitra.lowongan.candidate.show', [$job->id, $candidate->id]);
     }
 
+    public function acceptCandidate(JobVacancy $job, JobCandidate $jobCandidate)
+    {
+        $jobCandidate->update([
+//            's_mitra' => date('Y-m-d h:i:s', time()),
+            'a_mitra' => date('Y-m-d h:i:s', time()),
+            'r_mitra' => null,
+        ]);
+
+        Alert::toast('Successful', 'success');
+        return redirect()->route('mitra.lowongan.candidate.show', [$job->id, $jobCandidate->id]);
+    }
+
     public function removeCandidate(JobVacancy $job, JobCandidate $jobCandidate)
     {
-        //
+        $jobCandidate->update([
+//            's_mitra' => date('Y-m-d h:i:s', time()),
+            'a_mitra' => null,
+            'r_mitra' => date('Y-m-d h:i:s', time()),
+        ]);
+
+        Alert::toast('Successful', 'success');
+        return redirect()->route('mitra.lowongan.candidate.show', [$job->id, $jobCandidate->id]);
     }
 }

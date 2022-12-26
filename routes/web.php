@@ -125,9 +125,19 @@ Route::middleware('auth')->group(function () {
                 Route::get('/create', 'create')->name('.create');
                 Route::post('/create', 'store')->name('.store');
 //                Route::get('/show/{lowongan:id}', 'show')->name('.show');
-                Route::get('/edit/{jobVacancy:id}', 'edit')->name('.edit');
-                Route::put('/edit/{jobVacancy:id}', 'update')->name('.update');
-                Route::delete('/delete/{jobVacancy:id}', 'destroy')->name('.destroy');
+                Route::get('/{jobVacancy:id}/edit', 'edit')->name('.edit');
+                Route::put('/{jobVacancy:id}/edit', 'update')->name('.update');
+                Route::delete('/{jobVacancy:id}/delete', 'destroy')->name('.destroy');
+
+                // Manage Job Candidate
+                Route::controller(MitraJobCandidateController::class)->prefix('{job:id}')->name('.candidate')->group(function () {
+                    Route::get('/candidates', 'index')->name('.index');
+                    Route::get('/candidate/{candidate:id}', 'showCandidate')->name('.show');
+                    Route::post('/candidate/{candidate:id}', 'unlockCandidate')->name('.unlock');
+                    Route::put('/candidate/{jobCandidate:id}/submit', 'submitCandidate')->name('.submit');
+                    Route::put('/candidate/{jobCandidate:id}/accept', 'acceptCandidate')->name('.accept');
+                    Route::put('/candidate/{jobCandidate:id}/remove', 'removeCandidate')->name('.remove');
+                });
             });
         });
 
