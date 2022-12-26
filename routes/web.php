@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\RolePermissionController as AdminRoleController;
 // Mitra
 use App\Http\Controllers\Mitra\PageController as MitraPageController;
 use App\Http\Controllers\Mitra\JobVacancyController as MitraLowonganController;
+use App\Http\Controllers\Mitra\JobCondidateController as MitraJobCandidateController;
 
 // Member
 use App\Http\Controllers\User\CandidateController as UserCandidateController;
