@@ -24,41 +24,40 @@
             <p>Invoice / List</p>
         </div>
     </div>
-    @if (Cookie::get('edit-harga') == null)
-        <div class="container mx-auto mt-24">
-            <div class="max-w-sm mx-auto md:max-w-lg">
-                <div class="w-full">
-                    <div class="bg-white py-3 rounded text-center">
-                        <h1 class="text-2xl font-bold">UPPS</h1>
-                        <div class="flex flex-col">
-                            Untuk Edit Harga harus konfirmasi dengan Super Admin <br>
-                            Hubungin Super Admin untuk Kode Verifikasi
-                        </div>
-
-                        <div id="otp" class="flex flex-row justify-center text-center px-2 mt-5">
-                            <input class="m-2 border h-10 w-10 text-center form-control rounded" type="text"
-                                id="first" maxlength="1" />
-                            <input class="m-2 border h-10 w-10 text-center form-control rounded" type="text"
-                                id="second" maxlength="1" />
-                            <input class="m-2 border h-10 w-10 text-center form-control rounded" type="text"
-                                id="third" maxlength="1" />
-                            <input class="m-2 border h-10 w-10 text-center form-control rounded" type="text"
-                                id="fourth" maxlength="1" />
-                            <input class="m-2 border h-10 w-10 text-center form-control rounded" type="text"
-                                id="fifth" maxlength="1" />
-                            <input class="m-2 border h-10 w-10 text-center form-control rounded" type="text"
-                                id="sixth" maxlength="1" />
-                        </div>
-
-                        <div class="flex ml-4">
-                            <a class="flex text-main hover:text-main-active cursor-pointer">Kirim Ulang Kode</a>
-                        </div>
-
-                        <button class="font-bold bg-main px-48 mt-8 py-2 text-white">Submit</button>
+    <div class="container mx-auto mt-24">
+        <div class="max-w-sm mx-auto md:max-w-lg">
+            <div class="w-full">
+                <div class="bg-white py-3 rounded text-center">
+                    <h1 class="text-2xl font-bold">UPPS</h1>
+                    <div class="flex flex-col">
+                        Untuk Edit Harga harus konfirmasi dengan Super Admin <br>
+                        Hubungin Super Admin untuk Kode Verifikasi
                     </div>
+
+                    <div id="otp" class="flex flex-row justify-center text-center px-2 mt-5">
+                        <input class="m-2 border h-10 w-10 text-center form-control rounded" type="text" id="first"
+                            maxlength="1" />
+                        <input class="m-2 border h-10 w-10 text-center form-control rounded" type="text" id="second"
+                            maxlength="1" />
+                        <input class="m-2 border h-10 w-10 text-center form-control rounded" type="text" id="third"
+                            maxlength="1" />
+                        <input class="m-2 border h-10 w-10 text-center form-control rounded" type="text" id="fourth"
+                            maxlength="1" />
+                        <input class="m-2 border h-10 w-10 text-center form-control rounded" type="text" id="fifth"
+                            maxlength="1" />
+                        <input class="m-2 border h-10 w-10 text-center form-control rounded" type="text" id="sixth"
+                            maxlength="1" />
+                    </div>
+
+                    <div class="flex ml-4">
+                        <a class="flex text-main hover:text-main-active cursor-pointer">Kirim Ulang Kode</a>
+                    </div>
+
+                    <button class="font-bold bg-main px-48 mt-8 py-2 text-white">Submit</button>
                 </div>
             </div>
         </div>
+    </div>
 @endsection
 
 @section('footerJS')

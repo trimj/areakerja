@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Finance;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Mail;
 
 class EditHargaController extends Controller
 {
@@ -18,7 +20,8 @@ class EditHargaController extends Controller
     public function index()
     {
         if (Cookie::get('edit-harga') == null) {
-            Mail::to('super-admin')->send(new OrderShipped($order));
+            // Mail::to('super-admin')->send()
+            return view('finance.verifikasi');
         } else {
             return view('finance.edit-harga');
         }
