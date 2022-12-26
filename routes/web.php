@@ -25,6 +25,7 @@ use App\Http\Controllers\Public\ArticleController as PublicArticleController;
 use App\Http\Controllers\Public\JobVacancyController as PublicLowonganController;
 use App\http\Controllers\Public\ContactController as PublicContactController;
 use App\Http\Controllers\Finance\DashboardFinanceController;
+use App\Http\Controllers\Finance\EditHargaController;
 use App\Http\Controllers\Finance\FinanceActivityController;
 
 //use App\Http\Controllers\Public\MitraProfileController as PublicMitraProfileController;
@@ -89,9 +90,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/invoice', function(){
                     return view('finance.invoice');
             })->name('.invoice');
-            Route::get('/edit-harga', function(){
-                    return view('finance.edit-harga');
-            })->name('.edit-harga');
+            Route::controller(EditHargaController::class)->group(function(){
+                Route::get('/edit-harga', 'index')->name('.edit-harga');
+            });
             Route::get('cetak/laporan',[FinanceActivityController::class,'cetak_pdf'])->name('.cetakfinanceactivity');
             Route::get('finance-activity',[FinanceActivityController::class,'index'])->name('.financeactivity');
         });

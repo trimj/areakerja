@@ -21,7 +21,7 @@
 
             <div x-data="{ isActive: {{Route::is('finance.invoice') ? 'true' : 'false'}}, open: {{Route::is('finance.invoice') ? 'true' : 'false'}}}">
                 <a href="{{route('finance.invoice')}}"
-                    class="flex items-center p-2 text-tertiary-text transition-colors rounded-md hover:text-white hover:bg-tertiary-active"
+                    class="flex items-center p-2 pl-3 text-tertiary-text transition-colors rounded-md hover:text-white hover:bg-tertiary-active"
                     :class="{'bg-tertiary-active': isActive || open}" role="button" aria-haspopup="true"
                     :aria-expanded="(open || isActive) ? 'true' : 'false'">
                     <span aria-hidden="true">
