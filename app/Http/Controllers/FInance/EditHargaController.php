@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Finance;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
 use App\Models\Price;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Mail;
@@ -25,7 +25,11 @@ class EditHargaController extends Controller
         //     Mail::to('super-admin@mail.com')->send();
         //     return view('finance.verifikasi');
         // } else {
-            return view('finance.edit-harga');
+            $harga = Price::all();
+            return view('finance.edit-harga', compact('harga'));
+            $product = Product::all();
+            $no = 1;
+            return view('finance.edit-harga', compact('product','no'));
         // }
     }
 
