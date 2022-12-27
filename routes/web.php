@@ -92,6 +92,7 @@ Route::middleware('auth')->group(function () {
             })->name('.invoice');
             Route::controller(EditHargaController::class)->group(function(){
                 Route::get('/edit-harga', 'index')->name('.edit-harga');
+                Route::put('/edit-harga/{id}', 'update')->name('.update');
             });
             Route::get('cetak/laporan',[FinanceActivityController::class,'cetak_pdf'])->name('.cetakfinanceactivity');
             Route::get('finance-activity',[FinanceActivityController::class,'index'])->name('.financeactivity');

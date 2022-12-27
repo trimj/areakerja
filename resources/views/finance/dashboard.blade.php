@@ -297,11 +297,11 @@
                 <div class="flex flex-row">
                     <p class="text-xl">Riwayat Transaksi Terakhir</p>
                 </div>
-                {{-- <div class="flex flex-row mr-16 gap-8">
+                <div class="flex flex-row mr-16 gap-8">
                     <span data-modal-toggle="tambahriwayattransaksi" class="cursor-pointer">
-                        <i class="fa-solid fa-pen-to-square"></i></span>
-                    <span><i class="fa-sharp fa-solid fa-trash"></i></span>
-                </div> --}}
+                        <i class="fa-solid fa-circle-plus"></i></span>
+                    {{-- <span><i class="fa-sharp fa-solid fa-trash"></i></span> --}}
+                </div>
             </div>
 
             <div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative h-80">

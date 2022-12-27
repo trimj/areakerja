@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Finance;
 
 use App\Http\Controllers\Controller;
+use App\Models\Price;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Mail;
@@ -23,7 +24,8 @@ class EditHargaController extends Controller
         //     Mail::to('super-admin@mail.com')->send();
         //     return view('finance.verifikasi');
         // } else {
-            return view('finance.edit-harga');
+            $harga = Price::all();
+            return view('finance.edit-harga', compact('harga'));
         // }
     }
 
@@ -80,7 +82,13 @@ class EditHargaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $harga = Price::find($id);
+        // dd($harga);
+        $harga->id = $request->id;
+        $harga->price = $request->price;
+        $harga->save();
+
+        return redirect(route('finance.edit-harga'));
     }
 
     /**
