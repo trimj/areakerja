@@ -96,6 +96,8 @@ Route::middleware('auth')->group(function () {
             });
             Route::get('cetak/laporan',[FinanceActivityController::class,'cetak_pdf'])->name('.cetakfinanceactivity');
             Route::get('finance-activity',[FinanceActivityController::class,'index'])->name('.financeactivity');
+            Route::post('finance/simpanharga',[EditHargaController::class,'simpanharga'])->name('.simpanharga');
+
         });
     //    Route::prefix('finance')->name('finance')->middleware('permission:access-financecp')->group(function () {
     //        Route::controller(DashboardFinanceController::class)->name('.finance')->group(function(){

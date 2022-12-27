@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Finance;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use App\Models\Price;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
@@ -24,8 +25,7 @@ class EditHargaController extends Controller
         //     Mail::to('super-admin@mail.com')->send();
         //     return view('finance.verifikasi');
         // } else {
-            $harga = Price::all();
-            return view('finance.edit-harga', compact('harga'));
+            return view('finance.edit-harga');
         // }
     }
 
@@ -100,5 +100,23 @@ class EditHargaController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    
+    public function simpanharga(Request $request){
+        // dd($request->request->all()['id']);
+        foreach ($request->request->all()['id'] as $key => $value) {
+            // dd($value);
+            $simpan[$key] = Product::find($value);
+            if (isset($request->request->all()['tombol'][$key])) {
+                
+                $simpan[$key]->update(['price'=>$request->request->all()['price'][$key],'promo'=>$request->request->all()['promo'][$key],'promo_status'=>$request->request->all()['tombol'][$key],'total'=>$request->request->all()['total'][$key]]);
+            }else {
+                $status = 0;
+                $simpan[$key]->update(['price'=>$request->request->all()['price'][$key],'promo'=>$request->request->all()['promo'][$key],'promo_status'=>$status,'total'=>$request->request->all()['total'][$key]]);
+                
+            }
+        }
+        return redirect(route('finance.edit-harga'));
     }
 }
