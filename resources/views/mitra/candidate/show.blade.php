@@ -2,6 +2,15 @@
 
 @section('content')
     <section>
+        <div class="mb-3">
+            @if(!empty($jobCandidate->s_mitra) && empty($jobCandidate->a_candidate) && empty($jobCandidate->r_candidate))
+                <div class="alert alert-warning text-center">Requested by Mitra<br><span class="text-xs">{{ date_format($jobCandidate->s_mitra, 'd F Y, H:i') }}</span></div>
+            @elseif(!empty($jobCandidate->s_mitra) && !empty($jobCandidate->a_candidate) && empty($jobCandidate->r_candidate))
+                <div class="alert alert-success text-center">Accepted by Candidate<br><span class="text-xs">{{ date_format($jobCandidate->s_mitra, 'd F Y, H:i') }}</span></div>
+            @elseif(!empty($jobCandidate->s_mitra) && empty($jobCandidate->a_candidate) && !empty($jobCandidate->r_candidate))
+                <div class="alert alert-error text-center">Rejected by Candidate<br><span class="text-xs">{{ date_format($jobCandidate->s_mitra, 'd F Y, H:i') }}</span></div>
+            @endif
+        </div>
         <div class="table-group">
             <table class="table-fixed">
                 <thead>
@@ -97,29 +106,36 @@
     <section>
         <div class="text-right">
             @if(!empty($jobCandidate) && $jobCandidate->unlocked == true && empty($jobCandidate->r_mitra))
-                @if(empty($jobCandidate->s_mitra))
+                @if(empty($jobCandidate->s_mitra) && empty($jobCandidate->s_candidate))
                     @can('submit-job-candidate')
-                        <form action="#" method="post">
+                        <form action="{{ route('mitra.lowongan.candidate.submit', ['jobVacancy' => $jobCandidate->job_id, 'candidate' => $candidate->id]) }}" method="post" onsubmit="return confirm('Are you sure?');">
                             @csrf
+                            @method('put')
                             <button type="submit" class="btn btn-success">Submit Candidate</button>
                         </form>
                     @endcan
                 @endif
-                @if(empty($jobCandidate->s_mitra))
+                @if(!empty($jobCandidate->s_candidate) && empty($jobCandidate->a_mitra) && empty($jobCandidate->r_mitra))
                     @can('accept-job-candidate')
-                        <form action="#" method="post">
+                        <form action="#" method="post" onsubmit="return confirm('Are you sure?');">
                             @csrf
                             <button type="submit" class="btn btn-primary">Add Candidate</button>
                         </form>
                     @endcan
+                    @can('reject-job-candidate')
+                        <form action="#" method="post" onsubmit="return confirm('Are you sure?');">
+                            @csrf
+                            <button type="submit" class="btn btn-error">Reject Candidate</button>
+                        </form>
+                    @endcan
+                @else
+                    @can('remove-job-candidate')
+                        <form action="#" method="post" onsubmit="return confirm('Are you sure?');">
+                            @csrf
+                            <button type="submit" class="btn btn-error">Reject Candidate</button>
+                        </form>
+                    @endcan
                 @endif
-            @else
-                @can('remove-job-candidate')
-                    <form action="#" method="post">
-                        @csrf
-                        <button type="submit" class="btn btn-error">Reject Candidate</button>
-                    </form>
-                @endcan
             @endif
         </div>
     </section>
