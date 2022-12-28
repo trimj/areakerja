@@ -26,10 +26,9 @@ class EditHargaController extends Controller
         //     return view('finance.verifikasi');
         // } else {
             $harga = Price::all();
-            return view('finance.edit-harga', compact('harga'));
             $product = Product::all();
             $no = 1;
-            return view('finance.edit-harga', compact('product','no'));
+            return view('finance.edit-harga', compact('harga','product','no'));
         // }
     }
 
