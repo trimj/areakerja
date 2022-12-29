@@ -15,12 +15,6 @@ use Illuminate\Support\Facades\Mail;
 
 class EditHargaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
     public function index()
     {
         if (Cookie::get('edit-harga') == null) {
@@ -56,22 +50,6 @@ class EditHargaController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $inputCode = implode("", $request->request->all()['code']);
@@ -83,35 +61,6 @@ class EditHargaController extends Controller
         return redirect(route('finance.edit-harga.index'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $harga = Price::find($id);
@@ -122,19 +71,7 @@ class EditHargaController extends Controller
 
         return redirect(route('finance.edit-harga.index'));
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-    
+  
     public function simpanharga(Request $request){
         // dd($request->request->all()['id']);
         foreach ($request->request->all()['id'] as $key => $value) {
