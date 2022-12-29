@@ -3,22 +3,18 @@
 @section('content')
     <section>
         <div class="mb-5 text-center">
-            @if(!empty($jobCandidate) && $jobCandidate->unlock_id == $candidate->unlocked->id)
-                @if(!empty($jobCandidate->s_mitra) && empty($jobCandidate->a_candidate) && empty($jobCandidate->r_candidate))
-                    <span class="badge badge-warning">Requested by Mitra</span>
-                @elseif(!empty($jobCandidate->s_mitra) && !empty($jobCandidate->a_candidate) && empty($jobCandidate->r_candidate))
-                    <span class="badge badge-success">Accepted by Candidate</span>
-                @elseif(!empty($jobCandidate->s_mitra) && empty($jobCandidate->a_candidate) && !empty($jobCandidate->r_candidate))
-                    <span class="badge badge-error">Rejected by Candidate</span>
-                @elseif(!empty($jobCandidate->s_candidate) && empty($jobCandidate->a_mitra) && empty($jobCandidate->r_mitra))
-                    <span class="badge badge-warning">Requested by Candidate</span>
-                @elseif(!empty($jobCandidate->s_candidate) && !empty($jobCandidate->a_mitra) && empty($jobCandidate->r_mitra))
-                    <span class="badge badge-success">Accepted by Mitra</span>
-                @elseif(!empty($jobCandidate->s_candidate) && empty($jobCandidate->a_mitra) && !empty($jobCandidate->r_mitra))
-                    <span class="badge badge-error">Rejected by Mitra</span>
-                @endif
-            @else
-                <span class="badge badge-info">Unlocked</span>
+            @if(!empty($jobCandidate->s_mitra) && empty($jobCandidate->a_candidate) && empty($jobCandidate->r_candidate))
+                <span class="badge badge-warning">Requested by Mitra</span>
+            @elseif(!empty($jobCandidate->s_mitra) && !empty($jobCandidate->a_candidate) && empty($jobCandidate->r_candidate))
+                <span class="badge badge-success">Accepted by Candidate</span>
+            @elseif(!empty($jobCandidate->s_mitra) && empty($jobCandidate->a_candidate) && !empty($jobCandidate->r_candidate))
+                <span class="badge badge-error">Rejected by Candidate</span>
+            @elseif(!empty($jobCandidate->s_candidate) && empty($jobCandidate->a_mitra) && empty($jobCandidate->r_mitra))
+                <span class="badge badge-warning">Requested by Candidate</span>
+            @elseif(!empty($jobCandidate->s_candidate) && !empty($jobCandidate->a_mitra) && empty($jobCandidate->r_mitra))
+                <span class="badge badge-success">Accepted by Mitra</span>
+            @elseif(!empty($jobCandidate->s_candidate) && empty($jobCandidate->a_mitra) && !empty($jobCandidate->r_mitra))
+                <span class="badge badge-error">Rejected by Mitra</span>
             @endif
         </div>
         <div class="table-group">
@@ -33,12 +29,12 @@
                 <tr>
                     <td class="font-semibold">Photo</td>
                     <td>
-                        <img class="rounded-md w-32 h-32" src="{{ asset('assets/public/photo' . '/' . $candidate->user->photo) }}" alt="photo" onerror="this.src='{{ asset('assets/public/photo/default_photo.png') }}';">
+                        <img class="rounded-md w-32 h-32" src="{{ asset('assets/public/photo' . '/' . $jobCandidate->candidate->user->photo) }}" alt="photo" onerror="this.src='{{ asset('assets/public/photo/default_photo.png') }}';">
                     </td>
                 </tr>
                 <tr>
                     <td class="font-semibold">Name</td>
-                    <td>{{ $candidate->user->name }}</td>
+                    <td>{{ $jobCandidate->candidate->user->name }}</td>
                 </tr>
                 <tr>
                     <td class="font-semibold">Tanggal Lahir</td>
@@ -46,17 +42,17 @@
                 </tr>
                 <tr>
                     <td class="font-semibold">Alamat</td>
-                    <td><span>{{ $candidate->address['jalan'] }}</span>, <span id="kelurahan">{{ $candidate->address['kelurahan'] }}</span>, <span id="kecamatan">{{ $candidate->address['kecamatan'] }}</span>, <span id="kota">{{ $candidate->address['kota'] }}</span>, <span id="provinsi">{{ $candidate->address['provinsi'] }}</span></td>
+                    <td><span>{{ $jobCandidate->candidate->address['jalan'] }}</span>, <span id="kelurahan">{{ $jobCandidate->candidate->address['kelurahan'] }}</span>, <span id="kecamatan">{{ $jobCandidate->candidate->address['kecamatan'] }}</span>, <span id="kota">{{ $jobCandidate->candidate->address['kota'] }}</span>, <span id="provinsi">{{ $jobCandidate->candidate->address['provinsi'] }}</span></td>
                 </tr>
                 <tr>
                     <td class="font-semibold">Kompetensi Utama</td>
-                    <td>{{ $candidate->main_skill->name }}</td>
+                    <td>{{ $jobCandidate->candidate->main_skill->name }}</td>
                 </tr>
                 <tr>
                     <td class="font-semibold">Kompetensi Lain</td>
                     <td>
-                        @if(!empty($candidate->skill))
-                            @foreach($candidate->skill as $skill)
+                        @if(!empty($jobCandidate->candidate->skill))
+                            @foreach($jobCandidate->candidate->skill as $skill)
                                 <div>{{ $skill }}</div>
                             @endforeach
                         @else
@@ -67,8 +63,8 @@
                 <tr>
                     <td class="font-semibold">Riwayat Pembelajaran</td>
                     <td>
-                        @if(!empty($candidate->education))
-                            @foreach($candidate->education as $education)
+                        @if(!empty($jobCandidate->candidate->education))
+                            @foreach($jobCandidate->candidate->education as $education)
                                 <div>
                                     <div class="font-semibold">{{ $education['name'] }}</div>
                                     <div>{{ $education['location'] }} ({{ $education['from'] }} ~ {{ $education['to'] }})</div>
@@ -82,8 +78,8 @@
                 <tr>
                     <td class="font-semibold">Sertifikat</td>
                     <td>
-                        @if(!empty($candidate->certificate))
-                            @foreach($candidate->certificate as $certificate)
+                        @if(!empty($jobCandidate->candidate->certificate))
+                            @foreach($jobCandidate->candidate->certificate as $certificate)
                                 <div>
                                     <div class="font-semibold">{{ $certificate['title'] }}</div>
                                     <div>{{ $certificate['get'] }}</div>
@@ -97,8 +93,8 @@
                 <tr>
                     <td class="font-semibold">Pengalaman</td>
                     <td>
-                        @if(!empty($candidate->experience))
-                            @foreach($candidate->experience as $experience)
+                        @if(!empty($jobCandidate->candidate->experience))
+                            @foreach($jobCandidate->candidate->experience as $experience)
                                 <div>
                                     <div class="font-semibold">{{ $experience['title'] }}</div>
                                     <div>{{ $experience['location'] }} ({{ $experience['from'] }} ~ {{ $experience['to'] }})</div>
@@ -114,22 +110,23 @@
         </div>
     </section>
     <section class="-mt-[3.5rem]">
-        <div class="text-center">
-            @if(!empty($candidate->unlocked->unlocked_at))
-                @if(!empty($jobVacancies->first()) && empty($jobCandidate->s_mitra) && empty($jobCandidate->s_candidate))
-                    @can('submit-job-candidate')
-                        <form action="{{ route('mitra.lowongan.candidate.submit', ['candidate' => $candidate->id]) }}" method="post" onsubmit="return confirm('Are you sure?');">
+        <div class="flex justify-center space-x-3">
+            @if(!empty($jobCandidate->unlocked->unlocked_at) && !empty($jobCandidate->s_candidate))
+                @if(empty($jobCandidate->a_mitra))
+                    @can('accept-job-candidate')
+                        <form action="{{ route('mitra.lowongan.pelamar.accept', ['jobCandidate' => $jobCandidate->id]) }}" method="post" onsubmit="return confirm('Are you sure?');">
                             @csrf
                             @method('put')
-                            <div class="textbox-group w-[50%] text-left mx-auto">
-                                <label for="lowongan">Lowongan Kerja</label>
-                                <select name="lowongan" id="lowongan">
-                                    @foreach($jobVacancies as $job)
-                                        <option value="{{ $job->id }}">{{ $job->title }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Request Candidate</button>
+                            <button type="submit" class="btn btn-success">Accept Candidate</button>
+                        </form>
+                    @endcan
+                @endif
+                @if(empty($jobCandidate->r_mitra))
+                    @can('reject-job-candidate')
+                        <form action="{{ route('mitra.lowongan.pelamar.reject', ['jobCandidate' => $jobCandidate->id]) }}" method="post" onsubmit="return confirm('Are you sure?');">
+                            @csrf
+                            @method('put')
+                            <button type="submit" class="btn btn-error">Reject Candidate</button>
                         </form>
                     @endcan
                 @endif

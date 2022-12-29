@@ -36,4 +36,14 @@ class Partner extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
+
+    public function jobs()
+    {
+        return $this->hasMany(JobVacancy::class, 'partner_id', 'id')->orderBy('created_at', 'desc');
+    }
+
+    public function unlockedCandidates()
+    {
+        return $this->hasMany(CandidateUnlock::class, 'mitra_id', 'id');
+    }
 }

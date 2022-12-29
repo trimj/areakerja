@@ -42,11 +42,6 @@ class Candidate extends Model
         'rejected_at' => 'datetime',
     ];
 
-    public function user()
-    {
-        return $this->hasOne(User::class, 'id', 'user_id');
-    }
-
     public function main_skill()
     {
         return $this->hasOne(SkillList::class, 'id', 'skill_id');
@@ -54,6 +49,16 @@ class Candidate extends Model
 
     public function jobCandidate()
     {
-        return $this->hasOne(jobCandidate::class, 'candidate_id', 'id');
+        return $this->hasOne(jobCandidate::class, 'candidate_id', 'id')->where('mitra_id', auth()->user()->partner->id);
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function unlocked()
+    {
+        return $this->hasOne(CandidateUnlock::class, 'candidate_id', 'id')->where('mitra_id', auth()->user()->partner->id);
     }
 }

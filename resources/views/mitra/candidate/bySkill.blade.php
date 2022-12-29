@@ -2,6 +2,10 @@
 
 @section('content')
     <section>
+        <div class="mb-3">
+            <div class="text-xl font-semibold">{{ $job->title }}</div>
+            <div class="text-sm text-gray-400">Skill: <span class="font-semibold">{{ $job->main_skill->name }}</span></div>
+        </div>
         <div class="table-group">
             <table class="table-auto">
                 <thead>
@@ -14,13 +18,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                @forelse($candidates as $candidate)
+                @forelse($job->candidatesBySkill as $candidate)
                     <tr>
                         <td>{{ $candidate->user->name }}</td>
                         <td>{{ $candidate->main_skill->name }}</td>
                         <td class="text-center">{{ $candidate->user->getRoleNames()->first() }}</td>
                         <td class="text-center">
-                            @if(!empty($candidate->jobCandidate) && $candidate->jobCandidate->unlock_id == $candidate->unlocked->id)
+                            @if(!empty($candidate->jobCandidate) && $candidate->jobCandidate->unlocked)
                                 @if(!empty($candidate->jobCandidate->s_mitra) && empty($candidate->jobCandidate->a_candidate) && empty($candidate->jobCandidate->r_candidate))
                                     <span class="badge badge-warning">Requested by Mitra</span>
                                 @elseif(!empty($candidate->jobCandidate->s_mitra) && !empty($candidate->jobCandidate->a_candidate) && empty($candidate->jobCandidate->r_candidate))
@@ -30,19 +34,19 @@
                                 @elseif(!empty($candidate->jobCandidate->s_candidate) && empty($candidate->jobCandidate->a_mitra) && empty($candidate->jobCandidate->r_mitra))
                                     <span class="badge badge-warning">Requested by Candidate</span>
                                 @elseif(!empty($candidate->jobCandidate->s_candidate) && !empty($candidate->jobCandidate->a_mitra) && empty($candidate->jobCandidate->r_mitra))
-                                    <span class="badge badge-success">Accepted by Mitra</span>
+                                    <span class="badge badge-success">Accepted by Candidate</span>
                                 @elseif(!empty($candidate->jobCandidate->s_candidate) && empty($candidate->jobCandidate->a_mitra) && !empty($candidate->jobCandidate->r_mitra))
-                                    <span class="badge badge-error">Rejected by Mitra</span>
+                                    <span class="badge badge-error">Rejected by Candidate</span>
+                                @else
+                                    <span class="badge badge-info">Unlocked</span>
                                 @endif
-                            @elseif(empty($candidate->jobCandidate) && !empty($candidate->unlocked->id))
-                                <span class="badge badge-info">Unlocked</span>
                             @else
                                 <span class="badge badge-secondary">Locked</span>
                             @endif
                         </td>
                         <td class="text-center">
                             @can('view-job-candidate')
-                                <a href="{{ route('mitra.lowongan.candidate.show', ['candidate' => $candidate->id]) }}" class="btn btn-small btn-secondary"><i class="fas fa-eye"></i></a>
+                                <a href="{{ route('mitra.lowongan.candidate.show', ['jobVacancy' => $job->id, 'candidate' => $candidate->id]) }}" class="btn btn-small btn-secondary"><i class="fas fa-eye"></i></a>
                             @endcan
                         </td>
                     </tr>
