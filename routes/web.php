@@ -35,7 +35,9 @@ use App\Http\Controllers\Public\ArticleController as PublicArticleController;
 use App\Http\Controllers\Public\JobVacancyController as PublicLowonganController;
 use App\http\Controllers\Public\ContactController as PublicContactController;
 use App\Http\Controllers\Finance\DashboardFinanceController;
+use App\Http\Controllers\Finance\EditHargaController;
 use App\Http\Controllers\Finance\FinanceActivityController;
+use FontLib\Table\Type\name;
 
 //use App\Http\Controllers\Public\MitraProfileController as PublicMitraProfileController;
 
@@ -91,27 +93,31 @@ Route::middleware('auth')->group(function () {
                 Route::delete('/role/edit/{role:id}/delete', 'destroy')->name('.destroy');
             });
         });
-
+        
         Route::prefix('finance')->name('finance')->middleware('permission:access-financecp')->group(function () {
-            Route::controller(DashboardFinanceController::class)->group(function () {
+            Route::controller(DashboardFinanceController::class)->group(function(){
                 Route::get('/', 'index');
             });
-            Route::get('/invoice', function () {
-                return view('finance.invoice');
+            Route::get('/invoice', function(){
+                    return view('finance.invoice');
             })->name('.invoice');
-            Route::get('/edit-harga', function () {
-                return view('finance.edit-harga');
-            })->name('.edit-harga');
-            Route::get('cetak/laporan', [FinanceActivityController::class, 'cetak_pdf'])->name('.cetakfinanceactivity');
-            Route::get('finance-activity', [FinanceActivityController::class, 'index'])->name('.financeactivity');
+            Route::controller(EditHargaController::class)->name('.edit-harga')->group(function(){
+                Route::get('/edit-harga', 'index')->name('.index');
+                Route::post('/edit-harga', 'store')->name('.store');
+                Route::put('/edit-harga/{id}', 'update')->name('.update');
+            });
+            Route::get('cetak/laporan',[FinanceActivityController::class,'cetak_pdf'])->name('.cetakfinanceactivity');
+            Route::get('finance-activity',[FinanceActivityController::class,'index'])->name('.financeactivity');
+            Route::post('finance/simpanharga',[EditHargaController::class,'simpanharga'])->name('.simpanharga');
+
         });
-        //    Route::prefix('finance')->name('finance')->middleware('permission:access-financecp')->group(function () {
-        //        Route::controller(DashboardFinanceController::class)->name('.finance')->group(function(){
-        //         Route::get('/', 'index')->name('.index');
-        //        });
-        //        Route::get('cetak/laporan',[FinanceActivityController::class,'cetak_pdf'])->name('.cetakfinanceactivity');
-        //        Route::get('finance-activity',[FinanceActivityController::class,'index'])->name('.financeactivity');
-        //    });
+    //    Route::prefix('finance')->name('finance')->middleware('permission:access-financecp')->group(function () {
+    //        Route::controller(DashboardFinanceController::class)->name('.finance')->group(function(){
+    //         Route::get('/', 'index')->name('.index');
+    //        });
+    //        Route::get('cetak/laporan',[FinanceActivityController::class,'cetak_pdf'])->name('.cetakfinanceactivity');
+    //        Route::get('finance-activity',[FinanceActivityController::class,'index'])->name('.financeactivity');
+    //    });
 
         Route::controller(DashboardFinanceController::class)->name('riwayat')->group(function () {
             Route::get('/riwayat', 'index')->name('.index');
