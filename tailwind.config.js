@@ -9,6 +9,14 @@ module.exports = {
         "./resources/**/*.js",
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
     ],
+    safelist: [
+        'list-disc',
+        'list-decimal',
+        'list-numeric',
+        'list-none',
+        'list-inside',
+        'list-outside',
+    ],
     theme: {
         extend: {
             colors: {
@@ -61,7 +69,6 @@ module.exports = {
                 '24.4rem' : '24.4rem',
             },
         },
-        
     },
     plugins: [],
 }

@@ -10,10 +10,10 @@ class JobCandidate extends Model
 //    use HasFactory;
 
     public $fillable = [
+        'unlock_id',
         'job_id',
         'candidate_id',
-        'unlocked',
-        'unlocked_at',
+        'mitra_id',
         's_mitra',
         'a_mitra',
         'r_mitra',
@@ -23,8 +23,10 @@ class JobCandidate extends Model
     ];
 
     public $casts = [
-        'unlocked' => 'boolean',
-        'unlocked_at' => 'datetime',
+        'unlock_id' => 'integer',
+        'job_id' => 'integer',
+        'candidate_id' => 'integer',
+        'mitra_id' => 'integer',
         's_mitra' => 'datetime',
         'a_mitra' => 'datetime',
         'r_mitra' => 'datetime',
@@ -41,5 +43,15 @@ class JobCandidate extends Model
     public function vacancy()
     {
         return $this->hasOne(JobVacancy::class, 'id', 'job_id');
+    }
+
+    public function mitra()
+    {
+        return $this->hasOne(Partner::class, 'id', 'mitra_id');
+    }
+
+    public function unlocked()
+    {
+        return $this->hasOne(CandidateUnlock::class, 'id', 'unlock_id');
     }
 }

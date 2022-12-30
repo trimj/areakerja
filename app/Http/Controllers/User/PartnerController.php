@@ -15,21 +15,6 @@ class PartnerController extends Controller
 {
     protected $page_title = 'Daftar Mitra';
 
-    private function steps(int $step, int $allSteps = 2)
-    {
-        $arr = [];
-        for ($i = 1; $i <= $allSteps; $i++) {
-            if ($i == $step) {
-                $arr[$i] = 'active';
-            } else if ($i < $step) {
-                $arr[$i] = 'done';
-            } else {
-                $arr[$i] = null;
-            }
-        }
-        return $arr;
-    }
-
     public function __construct()
     {
 //        $this->middleware('can:access-admincp');
@@ -59,6 +44,21 @@ class PartnerController extends Controller
             'page_title' => $this->page_title,
             'partner' => $partner,
         ]);
+    }
+
+    private function steps(int $step, int $allSteps = 2)
+    {
+        $arr = [];
+        for ($i = 1; $i <= $allSteps; $i++) {
+            if ($i == $step) {
+                $arr[$i] = 'active';
+            } else if ($i < $step) {
+                $arr[$i] = 'done';
+            } else {
+                $arr[$i] = null;
+            }
+        }
+        return $arr;
     }
 
     public function informationStore(Request $request)
@@ -94,7 +94,7 @@ class PartnerController extends Controller
         if (empty($partner->submitted_at)) {
             Partner::where('user_id', auth()->user()->id)->update([
                 'email' => $request->email,
-                'phone' => str_replace(' ', '', $request->phone),
+                'phone' => !empty($request->phone) ? str_replace(' ', '', $request->phone) : null,
                 'description' => $request->description,
                 'website' => $request->website,
                 'address' => !empty($request->address) ? array_filter($request->address) : null,

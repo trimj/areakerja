@@ -3,116 +3,101 @@
 namespace App\Http\Controllers\Mitra;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
-// Added
 use App\Models\Candidate;
-use App\Models\JobVacancy;
+use App\Models\CandidateUnlock;
 use App\Models\JobCandidate;
+use App\Models\JobVacancy;
+use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class JobCondidateController extends Controller
 {
-    private $page_title = 'Job Candidate';
+    private $page_title = 'Kandidat';
 
     public function __construct()
     {
         $this->middleware('permission:manage-job-candidate')->only('index');
-        $this->middleware('permission:submit-job-candidate')->only('addCandidate');
-        $this->middleware('permission:remove-job-candidate')->only('removeCandidate');
-//        $this->middleware('permission:reject-job-candidate')->only('rejectCandidate');
-        $this->middleware('permission:view-job-candidate')->only('showCandidate');
+        $this->middleware('permission:view-job-candidate')->only('show');
         $this->middleware('permission:unlock-job-candidate')->only('unlockCandidate');
+        $this->middleware('permission:submit-job-candidate')->only('submitCandidate');
     }
 
-    public function index(JobVacancy $job)
+    public function index()
     {
         return view('mitra.candidate.index', [
-            'page_title' => 'Candidates ' . $this->page_title,
-            'job' => $job,
+            'page_title' => 'Kandidat ' . $this->page_title,
+            'candidates' => Candidate::get(),
         ]);
     }
 
-    public function unlockCandidate(JobVacancy $job, Candidate $candidate)
+    public function show(Candidate $candidate)
     {
-        if (!empty($this->jobCandidate($job->id, $candidate->id))) {
+        if (!empty($candidate->unlocked->unlocked_at)) {
+            return view('mitra.candidate.show', [
+                'page_title' => $this->page_title,
+                'candidate' => $candidate,
+                'jobCandidate' => $candidate->jobCandidate,
+                'jobVacancies' => !empty(auth()->user()->partner->id) ? JobVacancy::where('partner_id', auth()->user()->partner->id)->get() : [],
+            ]);
+        } else {
+            return view('mitra.candidate.lock', [
+                'page_title' => $this->page_title,
+                'candidate' => $candidate,
+            ]);
+        }
+    }
+
+    public function unlockCandidate(Candidate $candidate)
+    {
+        if (!empty($candidate->unlocked->unlocked_at)) {
             Alert::toast('Already unlocked', 'error');
-            return redirect()->route('mitra.lowongan.candidate.show', [$job->id, $candidate->id]);
+            return redirect()->route('mitra.lowongan.candidate.show', [$candidate->id]);
         }
 
-        JobCandidate::create([
-            'job_id' => $job->id,
+        if (empty(auth()->user()->partner->id)) {
+            Alert::toast('You are not Partner!', 'error');
+            return redirect()->route('mitra.lowongan.candidate.show', [$candidate->id]);
+        } else {
+            $mitra = auth()->user()->partner;
+        }
+
+        CandidateUnlock::create([
             'candidate_id' => $candidate->id,
-            'unlocked' => true,
+            'mitra_id' => $mitra->id,
             'unlocked_at' => date('Y-m-d h:i:s', time()),
         ]);
 
         Alert::toast('Successful', 'success');
-        return redirect()->route('mitra.lowongan.candidate.show', [$job->id, $candidate->id]);
+        return redirect()->route('mitra.lowongan.candidate.show', ['candidate' => $candidate->id]);
     }
 
-    private function jobCandidate($jobId, $candidateId)
+    public function submitCandidate(candidate $candidate, Request $request)
     {
-        return JobCandidate::where('job_id', $jobId)->where('candidate_id', $candidateId)->first();
-    }
+        if (empty($candidate->jobCandidate) && !!empty($candidate->unlocked->unlocked_at)) {
+            Alert::toast('Unlock candidate first!', 'error');
+            return redirect()->route('mitra.lowongan.candidate.show', [$candidate->id]);
+        }
 
-    public function showCandidate(JobVacancy $job, Candidate $candidate)
-    {
-        $jobCandidate = $this->jobCandidate($job->id, $candidate->id);
-
-        $array = [
-            'page_title' => $this->page_title,
-            'job' => $job,
-            'candidate' => $candidate,
-            'jobCandidate' => $jobCandidate,
-        ];
-
-        if (!empty($jobCandidate) && $jobCandidate->unlocked == true) {
-            return view('mitra.candidate.show', $array);
+        if (empty(auth()->user()->partner->id)) {
+            Alert::toast('You are not Partner!', 'error');
+            return redirect()->route('mitra.lowongan.candidate.show', [$candidate->id]);
         } else {
-            return view('mitra.candidate.lock', $array);
-        }
-    }
-
-    public function submitCandidate(JobVacancy $job, Candidate $candidate)
-    {
-        $jobCandidate = $this->jobCandidate($job->id, $candidate->id);
-        if ($jobCandidate->unlocked == false) {
-            Alert::toast('Already unlocked', 'error');
-            return redirect()->route('mitra.lowongan.candidate.show', [$job->id, $candidate->id]);
+            $mitra = auth()->user()->partner;
         }
 
-        $jobCandidate->update([
+        $request->validate([
+            'lowongan' => ['required', 'numeric', 'exists:job_vacancies,id'],
+        ]);
+
+        JobCandidate::create([
+            'unlock_id' => $candidate->unlocked->id,
+            'job_id' => intval($request->lowongan),
+            'candidate_id' => $candidate->id,
+            'mitra_id' => $candidate->unlocked->mitra_id,
             's_mitra' => date('Y-m-d h:i:s', time()),
-//            'a_mitra' => null,
-//            'r_mitra' => null,
         ]);
 
         Alert::toast('Successful', 'success');
-        return redirect()->route('mitra.lowongan.candidate.show', [$job->id, $candidate->id]);
-    }
-
-    public function acceptCandidate(JobVacancy $job, JobCandidate $jobCandidate)
-    {
-        $jobCandidate->update([
-//            's_mitra' => date('Y-m-d h:i:s', time()),
-            'a_mitra' => date('Y-m-d h:i:s', time()),
-            'r_mitra' => null,
-        ]);
-
-        Alert::toast('Successful', 'success');
-        return redirect()->route('mitra.lowongan.candidate.show', [$job->id, $jobCandidate->id]);
-    }
-
-    public function removeCandidate(JobVacancy $job, JobCandidate $jobCandidate)
-    {
-        $jobCandidate->update([
-//            's_mitra' => date('Y-m-d h:i:s', time()),
-            'a_mitra' => null,
-            'r_mitra' => date('Y-m-d h:i:s', time()),
-        ]);
-
-        Alert::toast('Successful', 'success');
-        return redirect()->route('mitra.lowongan.candidate.show', [$job->id, $jobCandidate->id]);
+        return redirect()->route('mitra.lowongan.candidate.show', [$candidate->id]);
     }
 }

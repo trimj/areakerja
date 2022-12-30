@@ -209,8 +209,6 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         // HTML Purifier (Optional)
 //        Mews\Purifier\PurifierServiceProvider::class,
-        // BBCode
-        Genert\BBCode\BBCodeServiceProvider::class,
     ],
 
     /*
@@ -232,8 +230,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         // HTML Purifier (Optional)
 //        'Purifier' => Mews\Purifier\Facades\Purifier::class,
-        // BBCode
-        'BBCode' => \Genert\BBCode\Facades\BBCode::class,
+        // PDF Export
         'PDF' => Barryvdh\DomPDF\Facade::class,
     ])->toArray(),
 

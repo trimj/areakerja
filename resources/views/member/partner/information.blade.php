@@ -58,7 +58,7 @@
                 </div>
                 <div class="textbox-group">
                     <label for="provinsi">Provinsi</label>
-                    <select name="address[provinsi]" id="provinsi" onchange="Kota();" onclick="Provinsi();">
+                    <select name="address[provinsi]" id="provinsi" onchange="Kota();">
                         <option>Pilih Provinsi</option>
                     </select>
                     @error('address.provinsi')

@@ -32,4 +32,14 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function candidate()
+    {
+        return $this->hasOne(Candidate::class, 'user_id', 'id');
+    }
+
+    public function partner()
+    {
+        return $this->hasOne(Partner::class, 'user_id', 'id');
+    }
 }
