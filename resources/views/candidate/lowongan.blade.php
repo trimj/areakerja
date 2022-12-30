@@ -20,7 +20,7 @@
                             <a href="{{ route('public.lowongan.show', $job->vacancy->id) }}" target="_blank">{{ $job->vacancy->title }}</a>
                         </td>
                         <td class="text-center">
-                            <a href="#" target="_blank">{{ $job->vacancy->mitra->user->name }}</a>
+                            <a href="{{ route('public.mitra.show', $job->vacancy->mitra->id) }}" target="_blank">{{ $job->vacancy->mitra->user->name }}</a>
                         </td>
                         <td class="text-center">{{ date_format($job->s_mitra ?? $job->s_candidate, 'd F Y') }}</td>
                         <td class="text-center">
