@@ -1,18 +1,6 @@
 @extends('templates.finance.page')
 
 @section('headerCSS')
-    <style>
-        input[type="number"] {
-            width: auto;
-            border-radius: 0.375rem;
-            padding-top: 0.4rem;
-            padding-bottom: 0.4rem;
-            padding-left: 0.7rem;
-            padding-right: 0.7rem;
-            outline: 2px solid transparent;
-            outline-offset: 2px;
-        }
-    </style>
 @endsection
 
 @section('content')
@@ -34,26 +22,31 @@
                         Hubungin Super Admin untuk Kode Verifikasi
                     </div>
 
-                    <div id="otp" class="flex flex-row justify-center text-center px-2 mt-5">
-                        <input class="m-2 border h-10 w-10 text-center form-control rounded" type="text" id="first"
-                            maxlength="1" />
-                        <input class="m-2 border h-10 w-10 text-center form-control rounded" type="text" id="second"
-                            maxlength="1" />
-                        <input class="m-2 border h-10 w-10 text-center form-control rounded" type="text" id="third"
-                            maxlength="1" />
-                        <input class="m-2 border h-10 w-10 text-center form-control rounded" type="text" id="fourth"
-                            maxlength="1" />
-                        <input class="m-2 border h-10 w-10 text-center form-control rounded" type="text" id="fifth"
-                            maxlength="1" />
-                        <input class="m-2 border h-10 w-10 text-center form-control rounded" type="text" id="sixth"
-                            maxlength="1" />
-                    </div>
+                    <form action="{{route('finance.edit-harga.store')}}" method="POST">
+                        @csrf
+                        <div id="otp" class="flex flex-row justify-center text-center px-2 mt-5">
+                            <input class="m-2 border h-10 w-10 text-center form-control rounded" name="code[]" type="text" id="first"
+                                maxlength="1" />
+                            <input class="m-2 border h-10 w-10 text-center form-control rounded" name="code[]" type="text" id="second"
+                                maxlength="1" />
+                            <input class="m-2 border h-10 w-10 text-center form-control rounded" name="code[]" type="text" id="third"
+                                maxlength="1" />
+                            <input class="m-2 border h-10 w-10 text-center form-control rounded" name="code[]" type="text" id="fourth"
+                                maxlength="1" />
+                            <input class="m-2 border h-10 w-10 text-center form-control rounded" name="code[]" type="text" id="fifth"
+                                maxlength="1" />
+                            <input class="m-2 border h-10 w-10 text-center form-control rounded" name="code[]" type="text" id="sixth"
+                                maxlength="1" />
+                        </div>
+    
+                        <div class="flex ml-4 flex-col text-left">
+                            <a href="{{route('finance.edit-harga.index')}}" class="flex text-main hover:text-main-active cursor-pointer">Kirim Ulang Kode</a>
+                            {{!$sent ? 'Harap tunggu setidaknya 5 menit untuk mengirim ulang kode verifikasi' : ''}}
+                        </div>
+    
+                        <button type="submit" class="font-bold bg-main px-48 mt-8 py-2 text-white">Submit</button>
+                    </form>
 
-                    <div class="flex ml-4">
-                        <a class="flex text-main hover:text-main-active cursor-pointer">Kirim Ulang Kode</a>
-                    </div>
-
-                    <button class="font-bold bg-main px-48 mt-8 py-2 text-white">Submit</button>
                 </div>
             </div>
         </div>

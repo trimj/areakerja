@@ -27,6 +27,7 @@ use App\http\Controllers\Public\ContactController as PublicContactController;
 use App\Http\Controllers\Finance\DashboardFinanceController;
 use App\Http\Controllers\Finance\EditHargaController;
 use App\Http\Controllers\Finance\FinanceActivityController;
+use FontLib\Table\Type\name;
 
 //use App\Http\Controllers\Public\MitraProfileController as PublicMitraProfileController;
 
@@ -90,8 +91,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/invoice', function(){
                     return view('finance.invoice');
             })->name('.invoice');
-            Route::controller(EditHargaController::class)->group(function(){
-                Route::get('/edit-harga', 'index')->name('.edit-harga');
+            Route::controller(EditHargaController::class)->name('.edit-harga')->group(function(){
+                Route::get('/edit-harga', 'index')->name('.index');
+                Route::post('/edit-harga', 'store')->name('.store');
                 Route::put('/edit-harga/{id}', 'update')->name('.update');
             });
             Route::get('cetak/laporan',[FinanceActivityController::class,'cetak_pdf'])->name('.cetakfinanceactivity');
