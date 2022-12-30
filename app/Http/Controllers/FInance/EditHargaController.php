@@ -83,7 +83,7 @@ class EditHargaController extends Controller
     }
   
     public function simpanharga(Request $request){
-        dd($request->request->all());
+        // dd($request->request->all());
         foreach ($request->request->all()['id'] as $key => $value) {
             // dd($value);
             $simpan[$key] = Product::find($value);
