@@ -69,7 +69,6 @@ module.exports = {
                 '24.4rem': '24.4rem',
             },
         },
-
     },
     plugins: [],
 }

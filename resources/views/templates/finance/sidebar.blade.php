@@ -21,7 +21,7 @@
 
             <div x-data="{ isActive: {{Route::is('finance.invoice') ? 'true' : 'false'}}, open: {{Route::is('finance.invoice') ? 'true' : 'false'}}}">
                 <a href="{{route('finance.invoice')}}"
-                    class="flex items-center p-2 text-tertiary-text transition-colors rounded-md hover:text-white hover:bg-tertiary-active"
+                    class="flex items-center p-2 pl-3 text-tertiary-text transition-colors rounded-md hover:text-white hover:bg-tertiary-active"
                     :class="{'bg-tertiary-active': isActive || open}" role="button" aria-haspopup="true"
                     :aria-expanded="(open || isActive) ? 'true' : 'false'">
                     <span aria-hidden="true">
@@ -31,8 +31,8 @@
                 </a>
             </div>
 
-            <div x-data="{ isActive: {{Route::is('finance.edit-harga') ? 'true' : 'false'}}, open: {{Route::is('finance.edit-harga') ? 'true' : 'false'}}}">
-                <a href="{{route('finance.edit-harga')}}"
+            <div x-data="{ isActive: {{Route::is('finance.edit-harga.index') ? 'true' : 'false'}}, open: {{Route::is('finance.edit-harga.index') ? 'true' : 'false'}}}">
+                <a href="{{route('finance.edit-harga.index')}}"
                     class="flex items-center p-2 text-tertiary-text transition-colors rounded-md hover:text-white hover:bg-tertiary-active"
                     :class="{'bg-tertiary-active': isActive || open}" role="button" aria-haspopup="true"
                     :aria-expanded="(open || isActive) ? 'true' : 'false'">
