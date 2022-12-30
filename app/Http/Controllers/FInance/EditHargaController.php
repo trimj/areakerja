@@ -46,8 +46,8 @@ class EditHargaController extends Controller
             $harga = Price::all();
             $product = Product::all();
             $no = 1;
-            return view('finance.edit-harga', compact('product','no'));
-        // }
+            return view('finance.edit-harga', compact('product','no','harga'));
+         }
     }
 
     /**
