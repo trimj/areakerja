@@ -22,7 +22,7 @@
                         <a href="#" class="block btn-navbar">Kandidat Panel</a>
                     @endcan
                     @can('access-mitracp')
-                        <a href="{{ route('mitra.cp') }}" class="block btn-navbar">Mitra Panel</a>
+                        <a href="#" class="block btn-navbar">Mitra Panel</a>
                     @endcan
                     @can('access-admincp')
                         <a href="{{ route('admin.cp') }}" class="block btn-navbar">Admin Panel</a>

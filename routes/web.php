@@ -14,6 +14,10 @@ use App\Http\Controllers\Mitra\PageController as MitraPageController;
 use App\Http\Controllers\Mitra\JobVacancyController as MitraLowonganController;
 use App\Http\Controllers\Mitra\JobCondidateController as MitraJobCandidateController;
 
+// Candidate
+use App\Http\Controllers\Candidate\PageController as CandidatePageController;
+use App\Http\Controllers\Candidate\JobVacancyController as CandidateJobVacancyController;
+
 // Member
 use App\Http\Controllers\User\CandidateController as UserCandidateController;
 use App\Http\Controllers\User\PartnerController as UserPartnerController;
@@ -81,27 +85,27 @@ Route::middleware('auth')->group(function () {
                 Route::delete('/role/edit/{role:id}/delete', 'destroy')->name('.destroy');
             });
         });
-        
+
         Route::prefix('finance')->name('finance')->middleware('permission:access-financecp')->group(function () {
-            Route::controller(DashboardFinanceController::class)->group(function(){
+            Route::controller(DashboardFinanceController::class)->group(function () {
                 Route::get('/', 'index');
             });
-            Route::get('/invoice', function(){
-                    return view('finance.invoice');
+            Route::get('/invoice', function () {
+                return view('finance.invoice');
             })->name('.invoice');
-            Route::get('/edit-harga', function(){
-                    return view('finance.edit-harga');
+            Route::get('/edit-harga', function () {
+                return view('finance.edit-harga');
             })->name('.edit-harga');
-            Route::get('cetak/laporan',[FinanceActivityController::class,'cetak_pdf'])->name('.cetakfinanceactivity');
-            Route::get('finance-activity',[FinanceActivityController::class,'index'])->name('.financeactivity');
+            Route::get('cetak/laporan', [FinanceActivityController::class, 'cetak_pdf'])->name('.cetakfinanceactivity');
+            Route::get('finance-activity', [FinanceActivityController::class, 'index'])->name('.financeactivity');
         });
-    //    Route::prefix('finance')->name('finance')->middleware('permission:access-financecp')->group(function () {
-    //        Route::controller(DashboardFinanceController::class)->name('.finance')->group(function(){
-    //         Route::get('/', 'index')->name('.index');
-    //        });
-    //        Route::get('cetak/laporan',[FinanceActivityController::class,'cetak_pdf'])->name('.cetakfinanceactivity');
-    //        Route::get('finance-activity',[FinanceActivityController::class,'index'])->name('.financeactivity');
-    //    });
+        //    Route::prefix('finance')->name('finance')->middleware('permission:access-financecp')->group(function () {
+        //        Route::controller(DashboardFinanceController::class)->name('.finance')->group(function(){
+        //         Route::get('/', 'index')->name('.index');
+        //        });
+        //        Route::get('cetak/laporan',[FinanceActivityController::class,'cetak_pdf'])->name('.cetakfinanceactivity');
+        //        Route::get('finance-activity',[FinanceActivityController::class,'index'])->name('.financeactivity');
+        //    });
 
         Route::controller(DashboardFinanceController::class)->name('riwayat')->group(function () {
             Route::get('/riwayat', 'index')->name('.index');
@@ -131,14 +135,29 @@ Route::middleware('auth')->group(function () {
                 Route::delete('/{jobVacancy:id}/delete', 'destroy')->name('.destroy');
 
                 // Manage Job Candidate
-                Route::controller(MitraJobCandidateController::class)->prefix('{job:id}')->name('.candidate')->group(function () {
+                Route::controller(MitraJobCandidateController::class)->prefix('{jobVacancy:id}')->name('.candidate')->group(function () {
                     Route::get('/candidates', 'index')->name('.index');
-                    Route::get('/candidate/{candidate:id}', 'showCandidate')->name('.show');
-                    Route::post('/candidate/{candidate:id}', 'unlockCandidate')->name('.unlock');
-                    Route::put('/candidate/{jobCandidate:id}/submit', 'submitCandidate')->name('.submit');
-                    Route::put('/candidate/{jobCandidate:id}/accept', 'acceptCandidate')->name('.accept');
-                    Route::put('/candidate/{jobCandidate:id}/remove', 'removeCandidate')->name('.remove');
+                    Route::get('/candidate/{candidate}', 'showCandidate')->name('.show');
+                    Route::post('/candidate/{candidate}', 'unlockCandidate')->name('.unlock');
+                    Route::put('/candidate/{candidate}/submit', 'submitCandidate')->name('.submit');
+                    Route::put('/candidate/{jobCandidate}/accept', 'acceptCandidate')->name('.accept');
+                    Route::put('/candidate/{jobCandidate}/remove', 'removeCandidate')->name('.remove');
                 });
+            });
+        });
+
+        // Candidate Routes
+        Route::prefix('kandidat')->name('kandidat')->group(function () {
+            Route::any('/', function () {
+                return redirect()->route('kandidat.dashboard');
+            })->name('.cp');
+            Route::controller(CandidatePageController::class)->group(function () {
+                Route::get('/dashboard', 'dashboard')->name('.dashboard');
+            });
+            Route::controller(CandidateJobVacancyController::class)->prefix('/lowongan')->name('.lowongan')->group(function () {
+                Route::get('/', 'index')->name('.index');
+                Route::put('/job-candidate/{jobCandidate:id}/request/mitra/accept', 'acceptJobFromMitra')->name('.acceptJobFromMitra');
+                Route::put('/job-candidate/{jobCandidate:id}/request/mitra/reject', 'rejectJobFromMitra')->name('.rejectJobFromMitra');
             });
         });
 

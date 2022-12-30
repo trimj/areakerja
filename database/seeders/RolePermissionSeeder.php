@@ -53,8 +53,9 @@ class RolePermissionSeeder extends Seeder
         // Manage Job Candidate (Mitra)
         Permission::create(['name' => 'manage-job-candidate']);
         Permission::create(['name' => 'submit-job-candidate']);
-        Permission::create(['name' => 'remove-job-candidate']);
+        Permission::create(['name' => 'accept-job-candidate']);
         Permission::create(['name' => 'reject-job-candidate']);
+        Permission::create(['name' => 'remove-job-candidate']);
         Permission::create(['name' => 'view-job-candidate']);
         Permission::create(['name' => 'unlock-job-candidate']);
 
@@ -95,7 +96,10 @@ class RolePermissionSeeder extends Seeder
         Permission::create(['name' => 'export-report']);
 
         // Kandidat
-        Permission::create(['name' => 'register-job']);
+        Permission::create(['name' => 'manage-my-job']);
+        Permission::create(['name' => 'accept-job-from-mitra']);
+        Permission::create(['name' => 'reject-job-from-mitra']);
+        Permission::create(['name' => 'register-job-for-me']);
 
         // Member
         Permission::create(['name' => 'daftar-kandidat']);
@@ -120,7 +124,10 @@ class RolePermissionSeeder extends Seeder
         $candidateRole->givePermissionTo([
             'access-usercp',
             'access-kandidatcp',
-            'register-job',
+            'manage-my-job',
+            'accept-job-from-mitra',
+            'reject-job-from-mitra',
+            'register-job-for-me',
         ]);
 
         $partnerRole->givePermissionTo([
@@ -132,8 +139,9 @@ class RolePermissionSeeder extends Seeder
             'delete-job-vacancy',
             'manage-job-candidate',
             'submit-job-candidate',
-            'remove-job-candidate',
+            'accept-job-candidate',
             'reject-job-candidate',
+            'remove-job-candidate',
             'view-job-candidate',
             'unlock-job-candidate',
         ]);

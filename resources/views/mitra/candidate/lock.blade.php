@@ -116,7 +116,7 @@
         <div class="text-right">
             @if(empty($jobCandidate) || $jobCandidate->unlocked == false)
                 @can('unlock-job-candidate')
-                    <form action="{{ route('mitra.lowongan.candidate.unlock', ['job' => $job->id, 'candidate' => $candidate->id]) }}" method="post">
+                    <form action="{{ route('mitra.lowongan.candidate.unlock', ['jobVacancy' => $job->id, 'candidate' => $candidate->id]) }}" method="post" onsubmit="return confirm('Are you sure?');">
                         @csrf
                         <button type="submit" class="btn btn-primary">Unlock Candidate</button>
                     </form>

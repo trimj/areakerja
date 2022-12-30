@@ -43,8 +43,13 @@ class JobVacancy extends Model
         return $this->hasOne(SkillList::class, 'id', 'mainSkill');
     }
 
-    public function candidates()
+    public function candidatesBySkill()
     {
         return $this->hasMany(Candidate::class, 'skill_id', 'mainSkill');
     }
+
+//    public function candidates()
+//    {
+//        return $this->hasMany(Candidate::class, 'skill_id', 'mainSkill');
+//    }
 }

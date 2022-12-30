@@ -36,14 +36,14 @@
             <div :class="{ 'flex': open, 'hidden': !open }" class="auth-section">
                 @auth
                     @can('daftar-kandidat')
-                    <a href="{{ route('member.daftar.kandidat.index') }}" class="btn btn-tertiary text-sm font-semibold flex items-center"><i class="fas fa-user-tie fa-fw"></i>
-                        <div class="block md:hidden xl:block ml-2 md:ml-0 xl:ml-2">Daftar Kandidat</div>
-                    </a>
+                        <a href="{{ route('member.daftar.kandidat.index') }}" class="btn btn-tertiary text-sm font-semibold flex items-center"><i class="fas fa-user-tie fa-fw"></i>
+                            <div class="block md:hidden xl:block ml-2 md:ml-0 xl:ml-2">Daftar Kandidat</div>
+                        </a>
                     @endcan
                     @can('daftar-mitra')
-                    <a href="{{ route('member.daftar.mitra.index') }}" class="btn btn-tertiary text-sm font-semibold flex items-center"><i class="fas fa-handshake fa-fw"></i>
-                        <div class="block md:hidden xl:block ml-2 md:ml-0 xl:ml-2">Daftar Mitra</div>
-                    </a>
+                        <a href="{{ route('member.daftar.mitra.index') }}" class="btn btn-tertiary text-sm font-semibold flex items-center"><i class="fas fa-handshake fa-fw"></i>
+                            <div class="block md:hidden xl:block ml-2 md:ml-0 xl:ml-2">Daftar Mitra</div>
+                        </a>
                     @endcan
                     <div class="relative" x-data="{ open: false }" @keydown.escape.stop="open = false" @click.away="open = false">
                         <button type="button" class="btn btn-primary flex space-x-2 items-center w-full text-sm font-semibold" @click="open = !open" x-bind:aria-expanded="open" aria-expanded="true">
@@ -62,7 +62,7 @@
                                     <a href="{{ route('member.cp') }}" class="btn-dropdown">User Panel</a>
                                 @endcan
                                 @can('access-kandidatcp')
-                                    <a href="#" class="btn-dropdown">Kandidat Panel</a>
+                                    <a href="{{ route('kandidat.cp') }}" class="btn-dropdown">Kandidat Panel</a>
                                 @endcan
                                 @can('access-mitracp')
                                     <a href="{{ route('mitra.cp') }}" class="btn-dropdown">Mitra Panel</a>

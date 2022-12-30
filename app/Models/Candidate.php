@@ -51,4 +51,9 @@ class Candidate extends Model
     {
         return $this->hasOne(SkillList::class, 'id', 'skill_id');
     }
+
+    public function jobCandidate()
+    {
+        return $this->hasOne(jobCandidate::class, 'candidate_id', 'id');
+    }
 }
