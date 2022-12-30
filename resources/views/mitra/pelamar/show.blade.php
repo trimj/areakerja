@@ -186,13 +186,13 @@
     </script>
     <script>
         window.addEventListener("load", (event) => {
-            birthdate('{{ $candidate->birthday ?? null }}');
-            getAge('{{ $candidate->birthday ?? null }}');
+            birthdate('{{ $jobCandidate->candidate->birthday ?? null }}');
+            getAge('{{ $jobCandidate->candidate->birthday ?? null }}');
 
-            Provinsi({{ $candidate->address['provinsi'] ?? null }});
-            Kota({{ $candidate->address['kota'] ?? null }});
-            Kecamatan({{ $candidate->address['kecamatan'] ?? null }});
-            Kelurahan({{ $candidate->address['kelurahan'] ?? null }});
+            Provinsi({{ $jobCandidate->candidate->address['provinsi'] ?? null }});
+            Kota({{ $jobCandidate->candidate->address['kota'] ?? null }});
+            Kecamatan({{ $jobCandidate->candidate->address['kecamatan'] ?? null }});
+            Kelurahan({{ $jobCandidate->candidate->address['kelurahan'] ?? null }});
         });
     </script>
 @endsection

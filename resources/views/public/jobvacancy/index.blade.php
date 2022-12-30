@@ -16,7 +16,7 @@
                 <div class="card-group">
                     <div class="body">
                         <div class="title">
-                            <a href="{{ route('public.lowongan.show', [$job->id, $job->slug]) }}">{{ $job->title }}</a>
+                            <a href="{{ route('public.lowongan.showWithSlug', [$job->id, $job->slug]) }}">{{ $job->title }}</a>
                         </div>
                         <div class="desc mt-5">
                             <div class="jobdesc">
@@ -42,7 +42,7 @@
                             <div class="author">
                                 <img src="{{ asset('assets/public/photo') . '/' . $job->mitra->user->photo }}" alt="{{ $job->mitra->user->name }}" loading="lazy" onerror="this.src='{{ asset('assets/public/photo/default_photo.png') }}'">
                                 <div>
-                                    <div class="name"><a href="#">{{ $job->mitra->user->name }}</a></div>
+                                    <div class="name"><a href="{{ route('public.mitra.showWithSlug', [$job->mitra->id, Str::slug($job->mitra->user->name)]) }}">{{ $job->mitra->user->name }}</a></div>
                                     <div class="created">{{ date_format(date_create($job->deadline), 'd F Y H:i') }}</div>
                                 </div>
                             </div>

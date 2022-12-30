@@ -47,9 +47,9 @@ class Candidate extends Model
         return $this->hasOne(SkillList::class, 'id', 'skill_id');
     }
 
-    public function jobCandidate()
+    public function unlocked()
     {
-        return $this->hasOne(jobCandidate::class, 'candidate_id', 'id')->where('mitra_id', auth()->user()->partner->id);
+        return $this->hasOne(CandidateUnlock::class, 'candidate_id', 'id')->where('mitra_id', auth()->user()->partner->id);
     }
 
     public function user()
@@ -57,13 +57,12 @@ class Candidate extends Model
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
-    public function unlocked()
-    {
-        return $this->hasOne(CandidateUnlock::class, 'candidate_id', 'id')->where('mitra_id', auth()->user()->partner->id);
-    }
-
     public function jobCandidate()
     {
-        return $this->hasOne(jobCandidate::class, 'candidate_id', 'id');
+        if (!empty(auth()->user()->partner->id)) {
+            return $this->hasOne(jobCandidate::class, 'candidate_id', 'id')->where('mitra_id', auth()->user()->partner->id);
+        } else {
+            return $this->hasOne(jobCandidate::class, 'candidate_id', 'id');
+        }
     }
 }

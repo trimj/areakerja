@@ -175,8 +175,12 @@
         @apply flex flex-col h-full bg-white ring-2 ring-gray-100 rounded-lg shadow transition duration-300 ease-in-out hover:shadow-lg hover:ring-areakerja/40;
     }
 
-    .card-group .thumbnail {
+    .card-group img.thumbnail {
         @apply rounded-t-lg max-h-52;
+    }
+
+    .card-group img.photo {
+        @apply rounded-t-lg max-h-52 h-auto w-auto object-cover hover:object-contain;
     }
 
     .card-group .body {
@@ -220,7 +224,11 @@
     }
 
     .card-group .another {
-        @apply flex items-center justify-center space-x-2 space-y-0;
+        @apply flex text-sm justify-center items-center space-x-2 space-y-0;
+    }
+
+    .card-group .another div {
+        @apply flex justify-center items-center;
     }
 
     .new-badge {

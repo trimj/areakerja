@@ -45,8 +45,10 @@
                     <div class="font-bold text-xl">&nbsp;</div>
                     <div class="flex justify-between">
                         <div class="basis-2/3 text-left space-y-2">
-                            <div class="font-bold text-xl">{{ $jobVacancy->mitra->user->name }}</div>
-                            <div class="">{{ $jobVacancy->mitra->description }}</div>
+                            <div class="font-bold text-xl">
+                                <a href="{{ route('public.mitra.showWithSlug', [$jobVacancy->mitra->id, Str::slug($jobVacancy->mitra->user->name)]) }}">{{ $jobVacancy->mitra->user->name }}</a>
+                            </div>
+                            <div class="text-justify">{{ $jobVacancy->mitra->description }}</div>
                         </div>
                         <div class="text-right">
                             <img class="w-36 h-36 border border-gray-300 shadow rounded-md" src="{{ asset('assets/public/photo') . '/' . $jobVacancy->mitra->user->photo }}" alt="{{ $jobVacancy->mitra->user->name }}" loading="lazy" onerror="this.src='{{ asset('assets/public/photo/default_photo.png') }}'">
@@ -93,7 +95,7 @@
                         <div class="flex justify-between">
                             <div class="capitalize">Website:</div>
                             <div class="basis-2/3 break-words text-right">
-                                <a href="{{ 'https://'.parse_url($jobVacancy->mitra->website, PHP_URL_HOST) }}" target="_blank">{{ !empty($jobVacancy->mitra->website) ? parse_url($jobVacancy->mitra->website, PHP_URL_HOST) : '-' }}</a>
+                                <a href="{{ !empty($mitra->website) ? 'https://'.parse_url($mitra->website, PHP_URL_HOST) : '#' }}" target="_blank">{{ !empty($jobVacancy->mitra->website) ? parse_url($jobVacancy->mitra->website, PHP_URL_HOST) : '-' }}</a>
                             </div>
                         </div>
                     </div>

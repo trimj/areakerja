@@ -67,14 +67,18 @@ class JobVacancyController extends Controller
         return redirect()->route('public.lowongan.showWithSlug', [$job->id, $job->slug]);
     }
 
-    public function showWithSlug($id, JobVacancy $job)
+    public function showWithSlug(JobVacancy $job, $slug)
     {
+        if ($slug != $job->slug) {
+            return redirect()->route('public.lowongan.show', [$job->id]);
+        }
+
         if (!empty(auth()->user()->candidate)) {
             $jobCandidate = JobCandidate::where('job_id', $job->id)->where('candidate_id', auth()->user()->candidate->id)->first();
         } else {
             $jobCandidate = null;
         }
-        
+
         return view('public.jobvacancy.show', [
             'page_title' => $this->page_title,
             'jobVacancy' => $job,
