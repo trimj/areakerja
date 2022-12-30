@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use App\Models\Article;
 use Image;
 use Alert;
+use Rwxrwx\BBCode\Facades\BBCode;
 
 
 class ArticleController extends Controller
@@ -31,13 +32,6 @@ class ArticleController extends Controller
         return view('admin.article.index', [
             'page_title' => $this->page_title,
             'articles' => Article::orderBy('created_at', 'desc')->get(),
-        ]);
-    }
-
-    public function create()
-    {
-        return view('admin.article.create', [
-            'page_title' => $this->page_title,
         ]);
     }
 
@@ -88,12 +82,35 @@ class ArticleController extends Controller
                 'user_id' => auth()->user()->id,
                 'title' => $request->artTitle,
                 'slug' => Str::slug($request->artTitle, '-'),
-                'content' => str_replace(["\r\n", "\r", "\n"], "\n", $request->artContent),
+//                'content' => str_replace(["\r\n", "\r", "\n"], "\n", $request->artContent),
+                'content' => strip_tags($request->artContent),
                 'image' => $largeImgName,
             ]);
         });
 
+        Alert::toast('Successful', 'success');
         return redirect()->route('admin.article.index');
+    }
+
+    public function destroy(Article $article)
+    {
+        DB::transaction(function () use ($article) {
+            if (!empty($article->image)) {
+                File::delete(public_path('assets/public/article/' . $article->image));
+                File::delete(public_path('assets/public/article/thumb/' . $article->image));
+            }
+
+            $article->delete();
+        });
+
+        return redirect()->route('admin.article.index');
+    }
+
+    public function create()
+    {
+        return view('admin.article.create', [
+            'page_title' => $this->page_title,
+        ]);
     }
 
     public function edit(Article $article)
@@ -155,23 +172,10 @@ class ArticleController extends Controller
             Article::where('id', $article->id)->update([
                 'title' => $request->artTitle,
                 'slug' => Str::slug($request->artTitle, '-'),
-                'content' => str_replace(["\r\n", "\r", "\n"], "\n", $request->artContent),
+//                'content' => str_replace(["\r\n", "\r", "\n"], "\n", $request->artContent),
+                'content' => strip_tags($request->artContent),
                 'image' => $largeImgName,
             ]);
-        });
-
-        return redirect()->route('admin.article.index');
-    }
-
-    public function destroy(Article $article)
-    {
-        DB::transaction(function () use ($article) {
-            if (!empty($article->image)) {
-                File::delete(public_path('assets/public/article/' . $article->image));
-                File::delete(public_path('assets/public/article/thumb/' . $article->image));
-            }
-
-            $article->delete();
         });
 
         return redirect()->route('admin.article.index');

@@ -1,6 +1,6 @@
 @if($paginator->hasPages())
     <div class="flex items-center justify-center text-sm font-medium space-x-5">
-        <div class="space-x-1">
+        <div class="flex items-center justify-center space-x-2">
             @if($paginator->currentPage() > $paginator->onFirstPage()+2)
                 <a class="btn btn-tertiary hidden sm:block" href="{{ $paginator->url($paginator->onFirstPage()) }}" title="First Page"><i class="fas fa-angle-double-left"></i></a>
             @endif
@@ -30,7 +30,7 @@
                 @endif
             @endfor
         </div>
-        <div class="space-x-1">
+        <div class="flex items-center justify-center space-x-2">
             @if($paginator->currentPage() < $paginator->lastPage())
                 <a class="btn btn-tertiary" href="{{ $paginator->nextPageUrl() }}" title="Next Page"><i class="fas fa-angle-right"></i></a>
             @endif

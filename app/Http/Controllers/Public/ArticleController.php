@@ -13,16 +13,38 @@ class ArticleController extends Controller
 {
     public function index(Request $request)
     {
-        $articles = Article::orderBy('created_at', 'desc');
+        $articles = new Article();
 
         if ($request->has('q') && !empty($request->q)) {
-            $query = Str::lower($request->q);
-            $articles = $articles->where('title', 'LIKE', '%' . $query . '%');
+            $q = Str::lower($request->q);
+            $articles = $articles->where('title', 'LIKE', '%' . $q . '%');
+        }
+
+        if ($request->has('order')) {
+            if ($request->order == 'asc') {
+                $orderby = 'asc';
+            } elseif ($request->order == 'desc') {
+                $orderby = 'desc';
+            } else {
+                $orderby = 'desc';
+            }
+        } else {
+            $orderby = 'desc';
+        }
+
+        if ($request->has('sort')) {
+            if ($request->sort == 'judul') {
+                $sortby = 'title';
+            } else {
+                $sortby = 'created_at';
+            }
+        } else {
+            $sortby = 'created_at';
         }
 
         return view('public.article.index', [
             'page_title' => 'Tips Kerja',
-            'articles' => $articles->paginate(15),
+            'articles' => $articles->orderBy($sortby, $orderby)->paginate(16),
         ]);
     }
 

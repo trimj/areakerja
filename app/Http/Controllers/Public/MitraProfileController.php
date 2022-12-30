@@ -14,27 +14,42 @@ class MitraProfileController extends Controller
 
     public function index(Request $request)
     {
-        $partners = Partner::join('users', 'users.id', '=', 'partners.user_id')->select('users.name', 'users.photo', 'partners.*');
+        $partners = new Partner();
 
-        if ($request->has('sort')) {
-            if ($request->sort == 'name_asc') {
-                $partners = $partners->orderBy('name', 'asc');
-            } elseif ($request->sort == 'name_desc') {
-                $partners = $partners->orderBy('name', 'desc');
-            } elseif ($request->sort == 'register_asc') {
-                $partners = $partners->orderBy('created_at', 'asc');
-            } elseif ($request->sort == 'register_desc') {
-                $partners = $partners->orderBy('created_at', 'desc');
+        if ($request->has('q') && !empty($request->q)) {
+            $q = Str::lower($request->q);
+            $partners = $partners->where('name', 'LIKE', '%' . $q . '%');
+        }
+
+        if ($request->has('order')) {
+            if ($request->order == 'asc') {
+                $orderby = 'asc';
+            } elseif ($request->order == 'desc') {
+                $orderby = 'desc';
             } else {
-                $partners = $partners->orderBy('name', 'asc');
+                $orderby = 'desc';
             }
         } else {
-            $partners = $partners->orderBy('name', 'asc');
+            $orderby = 'desc';
+        }
+
+        if ($request->has('sort')) {
+            if ($request->sort == 'nama') {
+                $sortby = 'name';
+            } elseif ($request->sort == 'join') {
+                $sortby = 'created_at';
+            } else {
+                $sortby = 'created_at';
+            }
+        } else {
+            $sortby = 'created_at';
         }
 
         return view('public.mitra.index', [
             'page_title' => $this->page_title,
-            'partners' => $partners->get(),
+            'partners' => $partners->join('users', 'users.id', '=', 'partners.user_id')
+                ->select('users.name', 'users.photo', 'partners.*')
+                ->orderBy($sortby, $orderby)->paginate(16),
         ]);
     }
 
@@ -49,7 +64,7 @@ class MitraProfileController extends Controller
         if ($slug != Str::slug($mitra->user->name)) {
             return redirect()->route('public.mitra.show', [$mitra->id]);
         }
-        
+
         return view('public.mitra.show', [
             'page_title' => $mitra->user->name . ' - ' . $this->page_title,
             'mitra' => $mitra,
