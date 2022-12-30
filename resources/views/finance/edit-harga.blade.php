@@ -109,6 +109,7 @@
                 <td class="text-center">
                     <label class="inline-flex relative items-center cursor-pointer align-middle mr-5">
                         <input type="checkbox" value="1" class="sr-only peer" name="tombol[]" id="tombol{{$no}}" onclick="sum({{$no}})" <?php if($data['promo_status']==1) echo 'checked'?>>
+                        <input type="hidden" value="0" name="tombol[]" id="tombolhidden{{$no}}" onchange="sum({{$no}})" disabled>
                         <div
                             class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-main2 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-main">
                         </div>
@@ -135,19 +136,23 @@
      var txtprice = document.getElementById('price'+no).value;
      var txtpromo = document.getElementById('promo'+no).value;
      var toggle = document.getElementById('tombol'+no);
+     var button = document.getElementById('tombolhidden'+no);
      if (toggle.checked == true) {
+        button.disabled = true;
         var result = parseInt(txtprice)-parseInt(txtpromo);
         if (!isNaN(result)) {
          document.getElementById('total'+no).value = result;
          document.getElementById('totall'+no).value = result;
+        //  document.getElementById('tombol'+no).value = 1;
         }        
      }else{
+        // document.getElementById('tombol'+no).disabled = true;
         var result = parseInt(txtprice)+0;
-        var tombol = 0;
-        document.getElementById('total'+no).value = tombol;
+        button.disabled = false;
         if (!isNaN(result)) {
-         document.getElementById('total'+no).value = result;
-         document.getElementById('totall'+no).value = result;
+            document.getElementById('total'+no).value = result;
+            document.getElementById('totall'+no).value = result;
+            // document.getElementById('tombol'+no).value = 0;
         }  
      }
   }

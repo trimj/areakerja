@@ -26,10 +26,9 @@ class EditHargaController extends Controller
         //     return view('finance.verifikasi');
         // } else {
             $harga = Price::all();
-            return view('finance.edit-harga', compact('harga'));
             $product = Product::all();
             $no = 1;
-            return view('finance.edit-harga', compact('product','no'));
+            return view('finance.edit-harga', compact('harga','product','no'));
         // }
     }
 
@@ -108,7 +107,7 @@ class EditHargaController extends Controller
 
     
     public function simpanharga(Request $request){
-        // dd($request->request->all()['id']);
+        dd($request->request->all());
         foreach ($request->request->all()['id'] as $key => $value) {
             // dd($value);
             $simpan[$key] = Product::find($value);
@@ -116,8 +115,7 @@ class EditHargaController extends Controller
                 
                 $simpan[$key]->update(['price'=>$request->request->all()['price'][$key],'promo'=>$request->request->all()['promo'][$key],'promo_status'=>$request->request->all()['tombol'][$key],'total'=>$request->request->all()['total'][$key]]);
             }else {
-                $status = 0;
-                $simpan[$key]->update(['price'=>$request->request->all()['price'][$key],'promo'=>$request->request->all()['promo'][$key],'promo_status'=>$status,'total'=>$request->request->all()['total'][$key]]);
+                $simpan[$key]->update(['price'=>$request->request->all()['price'][$key],'promo'=>$request->request->all()['promo'][$key],'promo_status'=>$request->request->all()['tombol'][$key],'total'=>$request->request->all()['total'][$key]]);
                 
             }
         }
