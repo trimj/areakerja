@@ -23,5 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(MitraSeeder::class);
         $this->call(JobVacancySeeder::class);
         $this->call(PriceSeeder::class);
+        $this->call(ProductSeeder::class);
     }
 }
