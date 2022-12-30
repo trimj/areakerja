@@ -35,7 +35,6 @@ class JobVacancyController extends Controller
     {
         if (!empty($jobCandidate->s_mitra) && empty($jobCandidate->a_candidate) && empty($jobCandidate->r_candidate)) {
             $jobCandidate->update([
-//            's_candidate' => date('Y-m-d h:i:s', time()),
                 'a_candidate' => date('Y-m-d h:i:s', time()),
                 'r_candidate' => null,
             ]);
@@ -52,7 +51,6 @@ class JobVacancyController extends Controller
     {
         if (!empty($jobCandidate->s_mitra) && empty($jobCandidate->a_candidate) && empty($jobCandidate->r_candidate)) {
             $jobCandidate->update([
-//            's_candidate' => date('Y-m-d h:i:s', time()),
                 'a_candidate' => null,
                 'r_candidate' => date('Y-m-d h:i:s', time()),
             ]);

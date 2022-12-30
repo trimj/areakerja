@@ -20,6 +20,10 @@ use App\Http\Controllers\Mitra\JobPelamarController as MitraJobPelamarController
 use App\Http\Controllers\Candidate\PageController as CandidatePageController;
 use App\Http\Controllers\Candidate\JobVacancyController as CandidateJobVacancyController;
 
+// Candidate
+use App\Http\Controllers\Candidate\PageController as CandidatePageController;
+use App\Http\Controllers\Candidate\JobVacancyController as CandidateJobVacancyController;
+
 // Member
 use App\Http\Controllers\User\CandidateController as UserCandidateController;
 use App\Http\Controllers\User\PartnerController as UserPartnerController;
@@ -177,6 +181,21 @@ Route::middleware('auth')->group(function () {
                 });
             });
             Route::post('/{job:id}/lamar/kerja', [CandidateJobVacancyController::class, 'registerJobForMe'])->name('.lowongan.registerJobForMe');
+        });
+
+        // Candidate Routes
+        Route::prefix('kandidat')->name('kandidat')->group(function () {
+            Route::any('/', function () {
+                return redirect()->route('kandidat.dashboard');
+            })->name('.cp');
+            Route::controller(CandidatePageController::class)->group(function () {
+                Route::get('/dashboard', 'dashboard')->name('.dashboard');
+            });
+            Route::controller(CandidateJobVacancyController::class)->prefix('/lowongan')->name('.lowongan')->group(function () {
+                Route::get('/', 'index')->name('.index');
+                Route::put('/job-candidate/{jobCandidate:id}/request/mitra/accept', 'acceptJobFromMitra')->name('.acceptJobFromMitra');
+                Route::put('/job-candidate/{jobCandidate:id}/request/mitra/reject', 'rejectJobFromMitra')->name('.rejectJobFromMitra');
+            });
         });
 
         // User Routes

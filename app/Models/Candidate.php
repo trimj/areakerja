@@ -61,4 +61,9 @@ class Candidate extends Model
     {
         return $this->hasOne(CandidateUnlock::class, 'candidate_id', 'id')->where('mitra_id', auth()->user()->partner->id);
     }
+
+    public function jobCandidate()
+    {
+        return $this->hasOne(jobCandidate::class, 'candidate_id', 'id');
+    }
 }
