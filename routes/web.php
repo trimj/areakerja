@@ -20,6 +20,10 @@ use App\Http\Controllers\Mitra\JobPelamarController as MitraJobPelamarController
 use App\Http\Controllers\Candidate\PageController as CandidatePageController;
 use App\Http\Controllers\Candidate\JobVacancyController as CandidateJobVacancyController;
 
+// Candidate
+use App\Http\Controllers\Candidate\PageController as CandidatePageController;
+use App\Http\Controllers\Candidate\JobVacancyController as CandidateJobVacancyController;
+
 // Member
 use App\Http\Controllers\User\CandidateController as UserCandidateController;
 use App\Http\Controllers\User\PartnerController as UserPartnerController;
@@ -97,13 +101,15 @@ Route::middleware('auth')->group(function () {
             Route::get('/invoice', function(){
                     return view('finance.invoice');
             })->name('.invoice');
+            Route::controller(EditHargaController::class)->name('.edit-harga')->group(function(){
                 Route::get('/edit-harga', 'index')->name('.index');
                 Route::post('/edit-harga', 'store')->name('.store');
                 Route::put('/edit-harga/{id}', 'update')->name('.update');
             });
-            Route::get('cetak/laporan', [FinanceActivityController::class, 'cetak_pdf'])->name('.cetakfinanceactivity');
-            Route::get('finance-activity', [FinanceActivityController::class, 'index'])->name('.financeactivity');
-            Route::post('finance/simpanharga', [EditHargaController::class, 'simpanharga'])->name('.simpanharga');
+            Route::get('cetak/laporan',[FinanceActivityController::class,'cetak_pdf'])->name('.cetakfinanceactivity');
+            Route::get('finance-activity',[FinanceActivityController::class,'index'])->name('.financeactivity');
+            Route::post('finance/simpanharga',[EditHargaController::class,'simpanharga'])->name('.simpanharga');
+
         });
     //    Route::prefix('finance')->name('finance')->middleware('permission:access-financecp')->group(function () {
     //        Route::controller(DashboardFinanceController::class)->name('.finance')->group(function(){
@@ -140,6 +146,11 @@ Route::middleware('auth')->group(function () {
                 Route::put('/{jobVacancy:id}/edit', 'update')->name('.update');
                 Route::delete('/{jobVacancy:id}/delete', 'destroy')->name('.destroy');
 
+                // Manage Job Candidate by Skill
+                Route::controller(MitraJobCandidateBySKillController::class)->name('.candidate')->group(function () {
+                    Route::get('/{jobVacancy:id}/candidates/skill', 'candidateBySkill')->name('.bySkill');
+                });
+
                 // Manage Job Candidates
                 Route::controller(MitraJobCandidateController::class)->name('.candidate')->group(function () {
                     Route::prefix('/kandidat')->group(function () {
@@ -158,7 +169,6 @@ Route::middleware('auth')->group(function () {
                     });
                 });
             });
-            Route::post('/{job:id}/lamar/kerja', [CandidateJobVacancyController::class, 'registerJobForMe'])->name('.lowongan.registerJobForMe');
         });
 
         // Candidate Routes
