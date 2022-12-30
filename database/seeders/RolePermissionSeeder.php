@@ -207,6 +207,7 @@ class RolePermissionSeeder extends Seeder
         User::find(8)->syncRoles('Kandidat');
         User::find(9)->syncRoles('Kandidat');
         User::find(10)->syncRoles('Kandidat');
+        User::find(11)->syncRoles('Mitra');
 
         app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
     }

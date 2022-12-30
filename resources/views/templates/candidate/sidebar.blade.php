@@ -1,7 +1,7 @@
 <div class="sidebar">
     <div @click.away="open = false" class="flex flex-col w-full lg:w-64 bg-areakerja" x-data="{ open: false }">
         <div class="px-8 py-4 flex flex-row items-center justify-between">
-            <a href="{{ route('mitra.cp') }}" class="lg:mx-auto">
+            <a href="{{ route('kandidat.cp') }}" class="lg:mx-auto">
                 <img src="{{ asset('assets/admin/logo.svg') }}" alt="Logo" class="w-14 lg:w-32 lg:py-5">
             </a>
             <button class="btn-mobile-menu" @click="open = !open">
@@ -13,7 +13,7 @@
             <div :class="{'block': open, 'hidden': !open}" class="menu">
                 <a class="btn-sidebar @if (Route::is('kandidat.cp', 'kandidat.dashboard')) active @endif" href="{{ route('kandidat.cp') }}"><i class="fas fa-home fa-fw mr-2"></i>Dashboard</a>
                 @can('manage-my-job')
-                    <a class="btn-sidebar @if (Route::is('kandidat.lowongan.*')) active @endif" href="{{ route('kandidat.lowongan.index') }}"><i class="fas fa-user-check fa-fw mr-2"></i>Lowongan</a>
+                    <a class="btn-sidebar @if (Route::is('kandidat.lowongan.*')) active @endif" href="{{ route('kandidat.lowongan.index') }}"><i class="fas fa-briefcase fa-fw mr-2"></i>Lowongan</a>
                 @endcan
                 <div class="md:mt-auto mt-2 border-t-2 border-polar4/20 lg:border-0 lg:border-transparent">
                     <div class="flex items-center justify-between cursor-pointer px-5 py-3 hover:bg-polar4/20" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
