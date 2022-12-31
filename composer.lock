@@ -799,65 +799,6 @@
             "time": "2022-02-20T15:07:15+00:00"
         },
         {
-            "name": "genert/bbcode",
-            "version": "1.1.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Genert/bbcode.git",
-                "reference": "8c52c54fe08cc1a38566c7a02d39bc8b3c9453ff"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Genert/bbcode/zipball/8c52c54fe08cc1a38566c7a02d39bc8b3c9453ff",
-                "reference": "8c52c54fe08cc1a38566c7a02d39bc8b3c9453ff",
-                "shasum": ""
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^6.1"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Genert\\BBCode\\BBCodeServiceProvider"
-                    ],
-                    "aliases": {
-                        "Invoice": "Genert\\BBCode\\Facades\\BBCode"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Genert\\BBCode\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Genert Org",
-                    "email": "hi@genert.org",
-                    "homepage": "http://genert.org"
-                }
-            ],
-            "description": "BBCode parser from or to HTML.",
-            "keywords": [
-                "PSR-1",
-                "PSR-2",
-                "PSR-4",
-                "bbcode",
-                "laravel",
-                "parser"
-            ],
-            "support": {
-                "issues": "https://github.com/Genert/bbcode/issues",
-                "source": "https://github.com/Genert/bbcode/tree/master"
-            },
-            "time": "2018-10-20T15:53:05+00:00"
-        },
-        {
             "name": "graham-campbell/result-type",
             "version": "v1.1.0",
             "source": {
@@ -3782,6 +3723,55 @@
                 }
             ],
             "time": "2022-05-28T13:28:03+00:00"
+        },
+        {
+            "name": "rwx-rwx/laravel-bbcode-parser",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rwx-rwx/laravel-bbcode-parser.git",
+                "reference": "8e9b01439519f7a7deba5f9203030a3e03ca9bba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rwx-rwx/laravel-bbcode-parser/zipball/8e9b01439519f7a7deba5f9203030a3e03ca9bba",
+                "reference": "8e9b01439519f7a7deba5f9203030a3e03ca9bba",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "*"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Rwxrwx\\BBCode\\BBCodeServiceProvider"
+                    ],
+                    "aliases": {
+                        "BBCode": "Rwxrwx\\BBCode\\Facades\\BBCode"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Rwxrwx\\BBCode\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Parse your bbcode easy with this library.",
+            "keywords": [
+                "bbcode",
+                "laravel",
+                "parser"
+            ],
+            "support": {
+                "issues": "https://github.com/rwx-rwx/laravel-bbcode-parser/issues",
+                "source": "https://github.com/rwx-rwx/laravel-bbcode-parser/tree/v1.0.1"
+            },
+            "time": "2022-10-13T00:43:33+00:00"
         },
         {
             "name": "sabberworm/php-css-parser",

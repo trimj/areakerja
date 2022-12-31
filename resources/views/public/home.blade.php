@@ -63,12 +63,14 @@
                 <div class="card-group">
                     <div class="body">
                         <div class="title">
-                            <a href="{{ route('public.lowongan.show', $job->id) }}">{{ $job->title }}</a>
+                            <a href="{{ route('public.lowongan.showWithSlug', [$job->id, $job->slug]) }}">{{ $job->title }}</a>
                         </div>
                         <div class="desc mt-5">
                             <div class="jobdesc">
                                 <div class="font-semibold">Main Skill:</div>
-                                <div>{{ $job->main_skill->name }}</div>
+                                <div>
+                                    <a href="{{ route('public.lowongan.indexSkill', $job->main_skill->slug) }}">{{ $job->main_skill->name }}</a>
+                                </div>
                             </div>
                             <div class="jobdesc">
                                 <div class="font-semibold">Salary:</div>
@@ -76,14 +78,16 @@
                             </div>
                             <div class="jobdesc">
                                 <div class="font-semibold">Location:</div>
-                                <div id="{{ 'provinsi' . $job->id }}"></div>
+                                <div>
+                                    <a href="{{ route('public.lowongan.indexLocation', $job->address['provinsi']) }}" id="{{ 'provinsi' . $job->id }}"></a>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="footer">
                         <div class="information">
                             <div class="author">
-                                <img src="#" alt="avatar" loading="lazy" onerror="this.src='{{ asset('assets/public/photo/default_photo.png') }}'">
+                                <img src="{{ asset('assets/public/photo') . '/' . $job->mitra->user->photo }}" alt="{{ $job->mitra->user->name }}" loading="lazy" onerror="this.src='{{ asset('assets/public/photo/default_photo.png') }}'">
                                 <div>
                                     <div class="name">{{ $job->mitra->user->name }}</div>
                                     <div class="created">{{ date_format(date_create($job->deadline), 'd F Y H:i') }}</div>

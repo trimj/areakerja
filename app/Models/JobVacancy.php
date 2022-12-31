@@ -33,18 +33,23 @@ class JobVacancy extends Model
         'deadline' => 'datetime',
     ];
 
-    public function mitra()
-    {
-        return $this->hasOne(Partner::class, 'id', 'partner_id');
-    }
-
     public function main_skill()
     {
         return $this->hasOne(SkillList::class, 'id', 'mainSkill');
     }
 
-    public function candidates()
+    public function mitra()
+    {
+        return $this->hasOne(Partner::class, 'id', 'partner_id');
+    }
+
+    public function candidatesBySkill()
     {
         return $this->hasMany(Candidate::class, 'skill_id', 'mainSkill');
+    }
+
+    public function checkJobCandidate()
+    {
+        return $this->hasMany(JobCandidate::class, 'job_id', 'id');
     }
 }

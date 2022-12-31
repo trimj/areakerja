@@ -30,7 +30,7 @@ class EditHargaController extends Controller
                 ]);
             } else {
                 $sent_at = new Carbon($email->sent_at);
-                if ($sent_at->addMinutes(10)->timestamp <= Carbon::now()->timestamp) {
+                if ($sent_at->addMinutes(5)->timestamp <= Carbon::now()->timestamp) {
                     $email->sent_at = Carbon::now()->toDateTimeString();
                     $code = $email->code;
                     $email->save();
@@ -46,8 +46,8 @@ class EditHargaController extends Controller
             $harga = Price::all();
             $product = Product::all();
             $no = 1;
-            return view('finance.edit-harga', compact('harga','product','no'));
-        }
+            return view('finance.edit-harga', compact('harga', 'product','no'));
+         }
     }
 
     public function store(Request $request)
@@ -56,7 +56,7 @@ class EditHargaController extends Controller
         $dbCode = Email::where('code', '=', $inputCode)->where('user_id', '=', Auth::id())->first();
         Email::where('user_id', '=', Auth::id())->delete();
         if (isset($dbCode)) {
-            Cookie::queue('edit-harga', $inputCode, 1440);
+            Cookie::queue('edit-harga', $inputCode, 1080);
         }
         return redirect(route('finance.edit-harga.index'));
     }
@@ -73,16 +73,13 @@ class EditHargaController extends Controller
     }
   
     public function simpanharga(Request $request){
-        // dd($request->request->all()['id']);
         foreach ($request->request->all()['id'] as $key => $value) {
-            // dd($value);
             $simpan[$key] = Product::find($value);
             if (isset($request->request->all()['tombol'][$key])) {
                 
                 $simpan[$key]->update(['price'=>$request->request->all()['price'][$key],'promo'=>$request->request->all()['promo'][$key],'promo_status'=>$request->request->all()['tombol'][$key],'total'=>$request->request->all()['total'][$key]]);
             }else {
-                $status = 0;
-                $simpan[$key]->update(['price'=>$request->request->all()['price'][$key],'promo'=>$request->request->all()['promo'][$key],'promo_status'=>$status,'total'=>$request->request->all()['total'][$key]]);
+                $simpan[$key]->update(['price'=>$request->request->all()['price'][$key],'promo'=>$request->request->all()['promo'][$key],'promo_status'=>$request->request->all()['tombol'][$key],'total'=>$request->request->all()['total'][$key]]);
                 
             }
         }

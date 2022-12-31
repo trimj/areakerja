@@ -112,13 +112,13 @@
             </div>
         </censored-style>
     </section>
-    <section>
-        <div class="text-right">
-            @if(empty($jobCandidate) || $jobCandidate->unlocked == false)
+    <section class="-mt-[3.5rem]">
+        <div class="text-center">
+            @if(empty($candidate->unlocked->unlocked_at))
                 @can('unlock-job-candidate')
-                    <form action="{{ route('mitra.lowongan.candidate.unlock', ['job' => $job->id, 'candidate' => $candidate->id]) }}" method="post">
+                    <form action="{{ route('mitra.lowongan.candidate.unlock', [$candidate->id]) }}" method="post">
                         @csrf
-                        <button type="submit" class="btn btn-primary">Unlock Candidate</button>
+                        <button class="btn btn-primary" type="submit">Unlock Kandidat</button>
                     </form>
                 @endcan
             @endif

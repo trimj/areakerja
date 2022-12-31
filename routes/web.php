@@ -12,7 +12,17 @@ use App\Http\Controllers\Admin\RolePermissionController as AdminRoleController;
 // Mitra
 use App\Http\Controllers\Mitra\PageController as MitraPageController;
 use App\Http\Controllers\Mitra\JobVacancyController as MitraLowonganController;
+use App\Http\Controllers\Mitra\JobCondidateBySkillController as MitraJobCandidateBySKillController;
 use App\Http\Controllers\Mitra\JobCondidateController as MitraJobCandidateController;
+use App\Http\Controllers\Mitra\JobPelamarController as MitraJobPelamarController;
+
+// Candidate
+use App\Http\Controllers\Candidate\PageController as CandidatePageController;
+use App\Http\Controllers\Candidate\JobVacancyController as CandidateJobVacancyController;
+
+// Candidate
+use App\Http\Controllers\Candidate\PageController as CandidatePageController;
+use App\Http\Controllers\Candidate\JobVacancyController as CandidateJobVacancyController;
 
 // Member
 use App\Http\Controllers\User\CandidateController as UserCandidateController;
@@ -139,21 +149,66 @@ Route::middleware('auth')->group(function () {
                 Route::put('/{jobVacancy:id}/edit', 'update')->name('.update');
                 Route::delete('/{jobVacancy:id}/delete', 'destroy')->name('.destroy');
 
-                // Manage Job Candidate
-                Route::controller(MitraJobCandidateController::class)->prefix('{job:id}')->name('.candidate')->group(function () {
-                    Route::get('/candidates', 'index')->name('.index');
-                    Route::get('/candidate/{candidate:id}', 'showCandidate')->name('.show');
-                    Route::post('/candidate/{candidate:id}', 'unlockCandidate')->name('.unlock');
-                    Route::put('/candidate/{jobCandidate:id}/submit', 'submitCandidate')->name('.submit');
-                    Route::put('/candidate/{jobCandidate:id}/accept', 'acceptCandidate')->name('.accept');
-                    Route::put('/candidate/{jobCandidate:id}/remove', 'removeCandidate')->name('.remove');
+                // Manage Job Candidate by Skill
+                Route::controller(MitraJobCandidateBySKillController::class)->name('.candidate')->group(function () {
+                    Route::get('/{jobVacancy:id}/candidates/skill', 'candidateBySkill')->name('.bySkill');
                 });
+
+                // Manage Job Candidates
+                Route::controller(MitraJobCandidateController::class)->name('.candidate')->group(function () {
+                    Route::prefix('/kandidat')->group(function () {
+                        Route::get('/', 'index')->name('.index');
+                        Route::get('/{candidate:id}', 'show')->name('.show');
+                        Route::post('/{candidate:id}/unlock', 'unlockCandidate')->name('.unlock');
+                        Route::put('/{candidate:id}/submit', 'submitCandidate')->name('.submit');
+                    });
+                });
+                Route::controller(MitraJobPelamarController::class)->name('.pelamar')->group(function () {
+                    Route::prefix('/pelamar')->group(function () {
+                        Route::get('/', 'index')->name('.index');
+                        Route::get('/{jobCandidate:id}', 'show')->name('.show');
+                        Route::put('/{jobCandidate:id}/accept', 'acceptCandidate')->name('.accept');
+                        Route::put('/{jobCandidate:id}/reject', 'rejectCandidate')->name('.reject');
+                    });
+                });
+            });
+        });
+
+        // Candidate Routes
+        Route::name('kandidat')->group(function () {
+            Route::prefix('kandidat')->group(function () {
+                Route::any('/', function () {
+                    return redirect()->route('kandidat.dashboard');
+                })->name('.cp');
+                Route::controller(CandidatePageController::class)->group(function () {
+                    Route::get('/dashboard', 'dashboard')->name('.dashboard');
+                });
+                Route::controller(CandidateJobVacancyController::class)->prefix('/lowongan')->name('.lowongan')->group(function () {
+                    Route::get('/', 'index')->name('.index');
+                    Route::put('/job-candidate/{jobCandidate:id}/request/mitra/accept', 'acceptJobFromMitra')->name('.acceptJobFromMitra');
+                    Route::put('/job-candidate/{jobCandidate:id}/request/mitra/reject', 'rejectJobFromMitra')->name('.rejectJobFromMitra');
+                });
+            });
+            Route::post('/{job:id}/lamar/kerja', [CandidateJobVacancyController::class, 'registerJobForMe'])->name('.lowongan.registerJobForMe');
+        });
+
+        // Candidate Routes
+        Route::prefix('kandidat')->name('kandidat')->group(function () {
+            Route::any('/', function () {
+                return redirect()->route('kandidat.dashboard');
+            })->name('.cp');
+            Route::controller(CandidatePageController::class)->group(function () {
+                Route::get('/dashboard', 'dashboard')->name('.dashboard');
+            });
+            Route::controller(CandidateJobVacancyController::class)->prefix('/lowongan')->name('.lowongan')->group(function () {
+                Route::get('/', 'index')->name('.index');
+                Route::put('/job-candidate/{jobCandidate:id}/request/mitra/accept', 'acceptJobFromMitra')->name('.acceptJobFromMitra');
+                Route::put('/job-candidate/{jobCandidate:id}/request/mitra/reject', 'rejectJobFromMitra')->name('.rejectJobFromMitra');
             });
         });
 
         // User Routes
         Route::prefix('/member')->name('member')->group(function () {
-
             Route::any('/', function () {
                 return redirect()->route('member.dashboard');
             })->name('.cp');
@@ -201,14 +256,21 @@ Route::name('public')->group(function () {
     Route::get('/', [PublicHomeController::class, 'index'])->name('.home');
     Route::get('/contact', [PublicContactController::class, 'index'])->name('.contact');
 
-    Route::controller(PublicArticleController::class)->prefix('/article')->name('.article')->group(function () {
-        Route::get('/', 'index')->name('.index');
-        Route::get('/{article:id}', 'show')->name('.show');
+    Route::controller(PublicArticleController::class)->name('.article')->group(function () {
+        Route::get('/tips-kerja', 'index')->name('.index');
+        Route::prefix('/artikel')->group(function () {
+            Route::get('/{article:id}', 'show')->name('.show');
+        });
     });
 
-    Route::controller(PublicLowonganController::class)->prefix('/lowongan')->name('.lowongan')->group(function () {
-        Route::get('/', 'index')->name('.index');
-        Route::get('/{lowongan:id}', 'show')->name('.show');
+    Route::controller(PublicLowonganController::class)->name('.lowongan')->group(function () {
+        Route::get('/lowongan-kerja', 'index')->name('.index');
+        Route::prefix('/lowongan')->group(function () {
+            Route::get('/cari/skill/{skill}', 'indexSkill')->name('.indexSkill');
+            Route::get('/cari/lokasi/{location}', 'indexLocation')->name('.indexLocation');
+            Route::get('/{id}-{job:slug}', 'showWithSlug')->name('.showWithSlug');
+            Route::get('/{job:id}', 'show')->name('.show');
+        });
     });
 
 //    Route::controller(PublicMitraProfileController::class)->prefix('/mitra')->name('.mitra')->group(function () {
