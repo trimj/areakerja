@@ -30,7 +30,7 @@ class EditHargaController extends Controller
                 ]);
             } else {
                 $sent_at = new Carbon($email->sent_at);
-                if ($sent_at->addMinutes(10)->timestamp <= Carbon::now()->timestamp) {
+                if ($sent_at->addMinutes(5)->timestamp <= Carbon::now()->timestamp) {
                     $email->sent_at = Carbon::now()->toDateTimeString();
                     $code = $email->code;
                     $email->save();
@@ -46,18 +46,8 @@ class EditHargaController extends Controller
             $harga = Price::all();
             $product = Product::all();
             $no = 1;
-            return view('finance.edit-harga', compact('product','no','harga'));
+            return view('finance.edit-harga', compact('harga', 'product','no'));
          }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     public function store(Request $request)
@@ -66,7 +56,7 @@ class EditHargaController extends Controller
         $dbCode = Email::where('code', '=', $inputCode)->where('user_id', '=', Auth::id())->first();
         Email::where('user_id', '=', Auth::id())->delete();
         if (isset($dbCode)) {
-            Cookie::queue('edit-harga', $inputCode, 1440);
+            Cookie::queue('edit-harga', $inputCode, 1080);
         }
         return redirect(route('finance.edit-harga.index'));
     }
@@ -83,9 +73,7 @@ class EditHargaController extends Controller
     }
   
     public function simpanharga(Request $request){
-        // dd($request->request->all());
         foreach ($request->request->all()['id'] as $key => $value) {
-            // dd($value);
             $simpan[$key] = Product::find($value);
             if (isset($request->request->all()['tombol'][$key])) {
                 

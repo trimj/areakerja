@@ -14,7 +14,7 @@ class DashboardFinanceController extends Controller
     {
         $finance = FinanceActivity::paginate(3);
         // dd($finance);
-        $riwayat = Financial::paginate(10);
+        $riwayat = Financial::all();
         // dd($riwayat);
         return view('finance.dashboard', compact('finance','riwayat'));
     }
@@ -25,6 +25,23 @@ class DashboardFinanceController extends Controller
         return view('finance.dashboard', compact(
             ['riwayat']
         ));
+    }
+
+    public function edit($id)
+    {
+        $riwayat = Financial::find($id);
+        if ($riwayat) {
+            return response()->json([
+                'status'=>200,
+                'riwayat'=>$riwayat
+            ]);
+        }
+        else {
+            return response()->json([
+                'status'=>404,
+                'message'=>'Not Found'
+            ]);
+        }
     }
 
     public function update(Request $request, $id)
