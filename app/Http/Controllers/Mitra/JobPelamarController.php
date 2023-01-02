@@ -20,7 +20,7 @@ class JobPelamarController extends Controller
         $this->middleware('permission:reject-job-candidate')->only('rejectCandidate');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         if (empty(auth()->user()->partner->id)) {
             Alert::toast('You are not Partner!', 'error');
@@ -29,9 +29,38 @@ class JobPelamarController extends Controller
             $mitra = auth()->user()->partner;
         }
 
+        $candidates = JobCandidate::where('mitra_id', $mitra->id)->whereNull('s_mitra')->whereNotNull('s_candidate');
+
+        if ($request->has('order')) {
+            if ($request->order == 'asc') {
+                $orderby = 'asc';
+            } elseif ($request->order == 'desc') {
+                $orderby = 'desc';
+            } else {
+                $orderby = 'desc';
+            }
+        } else {
+            $orderby = 'desc';
+        }
+
+        if ($request->has('sort')) {
+            if ($request->sort == 'name') {
+                $sortby = 'candidate_id';
+            } elseif ($request->sort == 'job') {
+                $sortby = 'job_id';
+            } elseif ($request->sort == 'lamarDate') {
+                $sortby = 'created_at';
+            } else {
+                $sortby = 'created_at';
+            }
+        } else {
+            $sortby = 'created_at';
+        }
+
         return view('mitra.pelamar.index', [
             'page_title' => 'Pelamar ' . $this->page_title,
-            'candidates' => JobCandidate::where('mitra_id', $mitra->id)->whereNull('s_mitra')->whereNotNull('s_candidate')->get(),
+//            'candidates' => JobCandidate::where('mitra_id', $mitra->id)->whereNull('s_mitra')->whereNotNull('s_candidate')->get(),
+            'candidates' => $candidates->orderBy($sortby, $orderby)->paginate(20),
         ]);
     }
 

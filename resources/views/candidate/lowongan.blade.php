@@ -2,6 +2,31 @@
 
 @section('content')
     <section>
+        <div class="flex justify-between items-center mb-5">
+            <form action="{{ route('kandidat.lowongan.index') }}" method="get" class="flex space-y-0 space-x-2">
+                <div class="flex items-center justify-center space-x-2 space-y-0">
+                    <div class="textbox-group">
+                        <select name="sort" id="sort">
+                            <option value="job" @if(request()->sort == 'job') selected @endif>Job</option>
+                            <option value="mitra" @if(request()->sort == 'mitra') selected @endif>Mitra</option>
+                            <option value="lamarDate" @if(request()->sort == 'lamarDate') selected @endif>Date</option>
+                        </select>
+                    </div>
+                    <div class="textbox-group">
+                        <select name="order" id="order">
+                            <option value="asc" @if(request()->order == 'asc') selected @endif>Ascending</option>
+                            <option value="desc" @if(request()->order == 'desc') selected @endif>Descending</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" type="submit">Filter</button>
+                    </div>
+                </div>
+            </form>
+            <div>
+                <a class="btn btn-primary" href="{{ route('public.lowongan.index') }}">Cari Lowongan</a>
+            </div>
+        </div>
         <div class="table-group">
             <table class="table-auto">
                 <thead>
@@ -20,7 +45,7 @@
                             <a href="{{ route('public.lowongan.show', $job->vacancy->id) }}" target="_blank">{{ $job->vacancy->title }}</a>
                         </td>
                         <td class="text-center">
-                            <a href="#" target="_blank">{{ $job->vacancy->mitra->user->name }}</a>
+                            <a href="{{ route('public.mitra.show', $job->vacancy->mitra->id) }}" target="_blank">{{ $job->vacancy->mitra->user->name }}</a>
                         </td>
                         <td class="text-center">{{ date_format($job->s_mitra ?? $job->s_candidate, 'd F Y') }}</td>
                         <td class="text-center">

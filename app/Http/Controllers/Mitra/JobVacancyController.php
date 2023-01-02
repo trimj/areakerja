@@ -16,11 +16,6 @@ class JobVacancyController extends Controller
 {
     protected $page_title = 'Lowongan Kerja';
 
-    protected function partner()
-    {
-        return Partner::where('user_id', auth()->user()->id)->first();
-    }
-
     public function __construct()
     {
         $this->middleware('permission:manage-job-vacancy')->only('index');
@@ -31,19 +26,53 @@ class JobVacancyController extends Controller
 
     public function index(Request $request)
     {
+        $jobs = JobVacancy::where('partner_id', $this->partner()->id);
+
+        if ($request->has('q')) {
+            $q = Str::lower($request->q);
+            $jobs = $jobs->where('title', 'LIKE', '%' . $q . '%');
+        }
+
+        if ($request->has('order')) {
+            if ($request->order == 'asc') {
+                $orderby = 'asc';
+            } elseif ($request->order == 'desc') {
+                $orderby = 'desc';
+            } else {
+                $orderby = 'desc';
+            }
+        } else {
+            $orderby = 'desc';
+        }
+
+        if ($request->has('sort')) {
+            if ($request->sort == 'judul') {
+                $sortby = 'title';
+            } elseif ($request->sort == 'skill') {
+                $sortby = 'mainSkill';
+            } elseif ($request->sort == 'deadline') {
+                $sortby = 'deadline';
+            } elseif ($request->sort == 'minimumSalary') {
+                $sortby = 'minSalary';
+            } elseif ($request->sort == 'maximumSalary') {
+                $sortby = 'maxSalary';
+            } else {
+                $sortby = 'created_at';
+            }
+        } else {
+            $sortby = 'created_at';
+        }
+
         return view('mitra.jobvacancy.index', [
             'page_title' => 'Manage ' . $this->page_title,
-            'jobs' => JobVacancy::where('partner_id', $this->partner()->id)->orderBy('created_at', 'desc')->get(),
+//            'jobs' => JobVacancy::where('partner_id', $this->partner()->id)->orderBy('created_at', 'desc')->get(),
+            'jobs' => $jobs->orderBy($sortby, $orderby)->paginate(16),
         ]);
     }
 
-    public function create()
+    protected function partner()
     {
-        return view('mitra.jobvacancy.create', [
-            'page_title' => 'Create ' . $this->page_title,
-            'skills' => SkillList::all(),
-            'partner' => $this->partner(),
-        ]);
+        return Partner::where('user_id', auth()->user()->id)->first();
     }
 
     public function store(Request $request)
@@ -83,6 +112,15 @@ class JobVacancyController extends Controller
 
         Alert::toast('Successful', 'success');
         return redirect()->route('mitra.lowongan.index');
+    }
+
+    public function create()
+    {
+        return view('mitra.jobvacancy.create', [
+            'page_title' => 'Create ' . $this->page_title,
+            'skills' => SkillList::all(),
+            'partner' => $this->partner(),
+        ]);
     }
 
     public function edit(JobVacancy $jobVacancy)

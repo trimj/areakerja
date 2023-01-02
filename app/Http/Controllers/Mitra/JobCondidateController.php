@@ -8,6 +8,7 @@ use App\Models\CandidateUnlock;
 use App\Models\JobCandidate;
 use App\Models\JobVacancy;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class JobCondidateController extends Controller
@@ -22,11 +23,39 @@ class JobCondidateController extends Controller
         $this->middleware('permission:submit-job-candidate')->only('submitCandidate');
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $candidates = new Candidate();
+
+        if ($request->has('order')) {
+            if ($request->order == 'asc') {
+                $orderby = 'asc';
+            } elseif ($request->order == 'desc') {
+                $orderby = 'desc';
+            } else {
+                $orderby = 'desc';
+            }
+        } else {
+            $orderby = 'desc';
+        }
+
+        if ($request->has('sort')) {
+            if ($request->sort == 'name') {
+                $sortby = 'user_id';
+            } elseif ($request->sort == 'skill') {
+                $sortby = 'skill_id';
+            } elseif ($request->sort == 'borthDate') {
+                $sortby = 'birthday';
+            } else {
+                $sortby = 'created_at';
+            }
+        } else {
+            $sortby = 'created_at';
+        }
+
         return view('mitra.candidate.index', [
             'page_title' => 'Kandidat ' . $this->page_title,
-            'candidates' => Candidate::get(),
+            'candidates' => $candidates->orderBy($sortby, $orderby)->paginate(20),
         ]);
     }
 

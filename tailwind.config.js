@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 
-const colors = require('tailwindcss/colors')
+const colors = require('tailwindcss/colors');
 
 module.exports = {
     darkMode: 'class',
@@ -16,6 +16,15 @@ module.exports = {
         'list-none',
         'list-inside',
         'list-outside',
+        'text-1xl',
+        'text-2xl',
+        'text-3xl',
+        'text-4xl',
+        'text-5xl',
+        'text-6xl',
+        'text-7xl',
+        'text-8xl',
+        'text-9xl',
     ],
     theme: {
         extend: {
@@ -68,6 +77,9 @@ module.exports = {
                 '23%' : '23%',
                 '24.4rem' : '24.4rem',
             },
+            fontSize: {
+                '1xl': ['20px', '28px'],
+            }
         },
     },
     plugins: [],

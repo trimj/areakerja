@@ -20,24 +20,46 @@ class ArticleController extends Controller
 
     public function __construct()
     {
-        $this->middleware('can:access-admincp');
+        $this->middleware('can:manage-article')->only('index');
         $this->middleware('can:create-article')->only('create', 'store');
         $this->middleware('can:edit-article')->only('edit', 'update');
         $this->middleware('can:delete-article')->only('destroy');
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $articles = new Article();
+
+        if ($request->has('q') && !empty($request->q)) {
+            $q = Str::lower($request->q);
+            $articles = $articles->where('title', 'LIKE', '%' . $q . '%');
+        }
+
+        if ($request->has('order')) {
+            if ($request->order == 'asc') {
+                $orderby = 'asc';
+            } elseif ($request->order == 'desc') {
+                $orderby = 'desc';
+            } else {
+                $orderby = 'desc';
+            }
+        } else {
+            $orderby = 'desc';
+        }
+
+        if ($request->has('sort')) {
+            if ($request->sort == 'judul') {
+                $sortby = 'title';
+            } else {
+                $sortby = 'created_at';
+            }
+        } else {
+            $sortby = 'created_at';
+        }
+
         return view('admin.article.index', [
             'page_title' => $this->page_title,
-            'articles' => Article::orderBy('created_at', 'desc')->get(),
-        ]);
-    }
-
-    public function create()
-    {
-        return view('admin.article.create', [
-            'page_title' => $this->page_title,
+            'articles' => $articles->orderBy($sortby, $orderby)->paginate(16),
         ]);
     }
 
@@ -53,9 +75,8 @@ class ArticleController extends Controller
             if ($request->hasfile('artImage')) {
                 $img = Image::make($request->file('artImage'));
 
-                if ($img->width() > 1000) {
-                    $largeImg = $img->resize(1000, null, function ($constraint) {
-                        $constraint->aspectRatio();
+                if ($img->width() > 1000 || $img->height() > 565) {
+                    $largeImg = $img->resize(1000, 565, function ($constraint) {
                         $constraint->upsize();
                     });
                 } else {
@@ -65,9 +86,8 @@ class ArticleController extends Controller
                 $largeImgName = time() . '.' . $request->file('artImage')->extension();
                 $largeImg->save(public_path('assets/public/article/' . $largeImgName));
 
-                if ($img->width() > 300) {
-                    $smallImg = $img->resize(300, null, function ($constraint) {
-                        $constraint->aspectRatio();
+                if ($img->width() > 535 || $img->height() > 300) {
+                    $smallImg = $img->resize(535, 300, function ($constraint) {
                         $constraint->upsize();
                     });
                 } else {
@@ -88,12 +108,35 @@ class ArticleController extends Controller
                 'user_id' => auth()->user()->id,
                 'title' => $request->artTitle,
                 'slug' => Str::slug($request->artTitle, '-'),
-                'content' => str_replace(["\r\n", "\r", "\n"], "\n", $request->artContent),
+//                'content' => str_replace(["\r\n", "\r", "\n"], "\n", $request->artContent),
+                'content' => strip_tags($request->artContent),
                 'image' => $largeImgName,
             ]);
         });
 
+        Alert::toast('Successful', 'success');
         return redirect()->route('admin.article.index');
+    }
+
+    public function destroy(Article $article)
+    {
+        DB::transaction(function () use ($article) {
+            if (!empty($article->image)) {
+                File::delete(public_path('assets/public/article/' . $article->image));
+                File::delete(public_path('assets/public/article/thumb/' . $article->image));
+            }
+
+            $article->delete();
+        });
+
+        return redirect()->route('admin.article.index');
+    }
+
+    public function create()
+    {
+        return view('admin.article.create', [
+            'page_title' => $this->page_title,
+        ]);
     }
 
     public function edit(Article $article)
@@ -121,9 +164,8 @@ class ArticleController extends Controller
 
                 $img = Image::make($request->file('artImage'));
 
-                if ($img->width() > 1000) {
-                    $largeImg = $img->resize(1000, null, function ($constraint) {
-                        $constraint->aspectRatio();
+                if ($img->width() > 1000 || $img->height() > 565) {
+                    $largeImg = $img->resize(1000, 565, function ($constraint) {
                         $constraint->upsize();
                     });
                 } else {
@@ -133,9 +175,8 @@ class ArticleController extends Controller
                 $largeImgName = time() . '.' . $request->file('artImage')->extension();
                 $largeImg->save(public_path('assets/public/article/' . $largeImgName));
 
-                if ($img->width() > 300) {
-                    $smallImg = $img->resize(300, null, function ($constraint) {
-                        $constraint->aspectRatio();
+                if ($img->width() > 535 || $img->height() > 300) {
+                    $smallImg = $img->resize(535, 300, function ($constraint) {
                         $constraint->upsize();
                     });
                 } else {
@@ -155,23 +196,10 @@ class ArticleController extends Controller
             Article::where('id', $article->id)->update([
                 'title' => $request->artTitle,
                 'slug' => Str::slug($request->artTitle, '-'),
-                'content' => str_replace(["\r\n", "\r", "\n"], "\n", $request->artContent),
+//                'content' => str_replace(["\r\n", "\r", "\n"], "\n", $request->artContent),
+                'content' => strip_tags($request->artContent),
                 'image' => $largeImgName,
             ]);
-        });
-
-        return redirect()->route('admin.article.index');
-    }
-
-    public function destroy(Article $article)
-    {
-        DB::transaction(function () use ($article) {
-            if (!empty($article->image)) {
-                File::delete(public_path('assets/public/article/' . $article->image));
-                File::delete(public_path('assets/public/article/thumb/' . $article->image));
-            }
-
-            $article->delete();
         });
 
         return redirect()->route('admin.article.index');

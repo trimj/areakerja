@@ -12,13 +12,8 @@ use App\Http\Controllers\Admin\RolePermissionController as AdminRoleController;
 // Mitra
 use App\Http\Controllers\Mitra\PageController as MitraPageController;
 use App\Http\Controllers\Mitra\JobVacancyController as MitraLowonganController;
-use App\Http\Controllers\Mitra\JobCondidateBySkillController as MitraJobCandidateBySKillController;
 use App\Http\Controllers\Mitra\JobCondidateController as MitraJobCandidateController;
 use App\Http\Controllers\Mitra\JobPelamarController as MitraJobPelamarController;
-
-// Candidate
-use App\Http\Controllers\Candidate\PageController as CandidatePageController;
-use App\Http\Controllers\Candidate\JobVacancyController as CandidateJobVacancyController;
 
 // Candidate
 use App\Http\Controllers\Candidate\PageController as CandidatePageController;
@@ -34,12 +29,13 @@ use App\Http\Controllers\Public\HomeController as PublicHomeController;
 use App\Http\Controllers\Public\ArticleController as PublicArticleController;
 use App\Http\Controllers\Public\JobVacancyController as PublicLowonganController;
 use App\http\Controllers\Public\ContactController as PublicContactController;
+use App\Http\Controllers\Public\MitraProfileController as PublicMitraProfileController;
+
+// Finance
 use App\Http\Controllers\Finance\DashboardFinanceController;
 use App\Http\Controllers\Finance\EditHargaController;
 use App\Http\Controllers\Finance\FinanceActivityController;
 use FontLib\Table\Type\name;
-
-//use App\Http\Controllers\Public\MitraProfileController as PublicMitraProfileController;
 
 require_once __DIR__ . '/auth.php';
 
@@ -54,7 +50,7 @@ Route::middleware('auth')->group(function () {
             return redirect()->route('member.daftar.kandidat.index');
         })->name('daftar.kandidat');
 
-        Route::prefix('admin')->name('admin')->middleware('permission:access-admincp')->group(function () {
+        Route::prefix('admin-cp')->name('admin')->middleware('permission:access-admincp')->group(function () {
             Route::any('/', function () {
                 return redirect()->route('admin.dashboard');
             })->name('.cp');
@@ -94,13 +90,16 @@ Route::middleware('auth')->group(function () {
             });
         });
         
+        // Finance Pages
         Route::prefix('finance')->name('finance')->middleware('permission:access-financecp')->group(function () {
             Route::controller(DashboardFinanceController::class)->group(function(){
                 Route::get('/', 'index');
             });
+            
             Route::get('/invoice', function(){
                     return view('finance.invoice');
             })->name('.invoice');
+            
             Route::controller(EditHargaController::class)->name('.edit-harga')->group(function(){
                 Route::get('/edit-harga', 'index')->name('.index');
                 Route::post('/edit-harga', 'store')->name('.store');
@@ -108,18 +107,10 @@ Route::middleware('auth')->group(function () {
                 // Route::get('/edit-harga/{id}', 'show')->name('.show');
                 Route::put('/edit-harga/{id}', 'update')->name('.update');
             });
-            Route::get('cetak/laporan',[FinanceActivityController::class,'cetak_pdf'])->name('.cetakfinanceactivity');
-            Route::get('finance-activity',[FinanceActivityController::class,'index'])->name('.financeactivity');
-            Route::post('finance/simpanharga',[EditHargaController::class,'simpanharga'])->name('.simpanharga');
-
+            Route::get('cetak/laporan', [FinanceActivityController::class, 'cetak_pdf'])->name('.cetakfinanceactivity');
+            Route::get('finance-activity', [FinanceActivityController::class, 'index'])->name('.financeactivity');
+            Route::post('finance/simpanharga', [EditHargaController::class, 'simpanharga'])->name('.simpanharga');
         });
-    //    Route::prefix('finance')->name('finance')->middleware('permission:access-financecp')->group(function () {
-    //        Route::controller(DashboardFinanceController::class)->name('.finance')->group(function(){
-    //         Route::get('/', 'index')->name('.index');
-    //        });
-    //        Route::get('cetak/laporan',[FinanceActivityController::class,'cetak_pdf'])->name('.cetakfinanceactivity');
-    //        Route::get('finance-activity',[FinanceActivityController::class,'index'])->name('.financeactivity');
-    //    });
 
         Route::controller(DashboardFinanceController::class)->name('riwayat')->group(function () {
             Route::get('/riwayat', 'index')->name('.index');
@@ -132,7 +123,7 @@ Route::middleware('auth')->group(function () {
             Route::delete('/riwayat/delete/{role:id}/delete', 'destroy')->name('.delete');
         });
 
-        Route::prefix('mitra')->name('mitra')->middleware('permission:access-mitracp')->group(function () {
+        Route::prefix('mitra-cp')->name('mitra')->middleware('permission:access-mitracp')->group(function () {
             Route::any('/', function () {
                 return redirect()->route('mitra.dashboard');
             })->name('.cp');
@@ -176,7 +167,7 @@ Route::middleware('auth')->group(function () {
 
         // Candidate Routes
         Route::name('kandidat')->group(function () {
-            Route::prefix('kandidat')->group(function () {
+            Route::prefix('kandidat-cp')->group(function () {
                 Route::any('/', function () {
                     return redirect()->route('kandidat.dashboard');
                 })->name('.cp');
@@ -208,44 +199,46 @@ Route::middleware('auth')->group(function () {
         });
 
         // User Routes
-        Route::prefix('/member')->name('member')->group(function () {
-            Route::any('/', function () {
-                return redirect()->route('member.dashboard');
-            })->name('.cp');
-            Route::controller(UserCPController::class)->group(function () {
-                Route::get('/dashboard', 'dashboard')->name('.dashboard');
-                Route::get('/settings', 'settings')->name('.settings');
-                route::prefix('/settings')->name('.settings')->group(function () {
-                    Route::put('/update-photo', 'updatePhoto')->name('.updatePhoto');
+        Route::name('member')->group(function () {
+            Route::prefix('/member-cp')->group(function () {
+                Route::any('/', function () {
+                    return redirect()->route('member.dashboard');
+                })->name('.cp');
+                Route::controller(UserCPController::class)->group(function () {
+                    Route::get('/dashboard', 'dashboard')->name('.dashboard');
+                    Route::get('/settings', 'settings')->name('.settings');
+                    route::prefix('/settings')->name('.settings')->group(function () {
+                        Route::put('/update-photo', 'updatePhoto')->name('.updatePhoto');
+                    });
                 });
             });
+            Route::prefix('/member')->group(function () {
+                Route::prefix('/daftar')->name('.daftar')->group(function () {
+                    Route::controller(UserCandidateController::class)->prefix('/kandidat')->name('.kandidat')->group(function () {
+                        Route::get('/', 'index')->name('.index');
+                        Route::get('/information', 'informationIndex')->name('.information.index');
+                        Route::put('/information', 'informationStore')->name('.information.store');
+                        Route::get('/skill', 'skillIndex')->name('.skill.index');
+                        Route::put('/skill', 'skillStore')->name('.skill.store');
+                        Route::get('/education', 'educationIndex')->name('.education.index');
+                        Route::put('/education', 'educationStore')->name('.education.store');
+                        Route::get('/certificate', 'certificateIndex')->name('.certificate.index');
+                        Route::put('/certificate', 'certificateStore')->name('.certificate.store');
+                        Route::get('/experience', 'experienceIndex')->name('.experience.index');
+                        Route::put('/experience', 'experienceStore')->name('.experience.store');
+                        Route::get('/agreement', 'agreementIndex')->name('.agreement.index');
+                        Route::put('/agreement', 'agreementStore')->name('.agreement.store');
+                    });
 
-            Route::prefix('/daftar')->name('.daftar')->group(function () {
-                Route::controller(UserCandidateController::class)->prefix('/kandidat')->name('.kandidat')->group(function () {
-                    Route::get('/', 'index')->name('.index');
-                    Route::get('/information', 'informationIndex')->name('.information.index');
-                    Route::put('/information', 'informationStore')->name('.information.store');
-                    Route::get('/skill', 'skillIndex')->name('.skill.index');
-                    Route::put('/skill', 'skillStore')->name('.skill.store');
-                    Route::get('/education', 'educationIndex')->name('.education.index');
-                    Route::put('/education', 'educationStore')->name('.education.store');
-                    Route::get('/certificate', 'certificateIndex')->name('.certificate.index');
-                    Route::put('/certificate', 'certificateStore')->name('.certificate.store');
-                    Route::get('/experience', 'experienceIndex')->name('.experience.index');
-                    Route::put('/experience', 'experienceStore')->name('.experience.store');
-                    Route::get('/agreement', 'agreementIndex')->name('.agreement.index');
-                    Route::put('/agreement', 'agreementStore')->name('.agreement.store');
-                });
-
-                Route::controller(UserPartnerController::class)->prefix('/mitra')->name('.mitra')->group(function () {
-                    Route::get('/', 'index')->name('.index');
-                    Route::get('/information', 'informationIndex')->name('.information.index');
-                    Route::put('/information', 'informationStore')->name('.information.store');
-                    Route::get('/agreement', 'agreementIndex')->name('.agreement.index');
-                    Route::put('/agreement', 'agreementStore')->name('.agreement.store');
+                    Route::controller(UserPartnerController::class)->prefix('/mitra')->name('.mitra')->group(function () {
+                        Route::get('/', 'index')->name('.index');
+                        Route::get('/information', 'informationIndex')->name('.information.index');
+                        Route::put('/information', 'informationStore')->name('.information.store');
+                        Route::get('/agreement', 'agreementIndex')->name('.agreement.index');
+                        Route::put('/agreement', 'agreementStore')->name('.agreement.store');
+                    });
                 });
             });
-
         });
 
     });
@@ -264,26 +257,24 @@ Route::name('public')->group(function () {
     });
 
     Route::controller(PublicLowonganController::class)->name('.lowongan')->group(function () {
-        Route::get('/lowongan-kerja', 'index')->name('.index');
+        Route::get('/lowongan', 'index')->name('.index');
         Route::prefix('/lowongan')->group(function () {
             Route::get('/cari/skill/{skill}', 'indexSkill')->name('.indexSkill');
             Route::get('/cari/lokasi/{location}', 'indexLocation')->name('.indexLocation');
-            Route::get('/{id}-{job:slug}', 'showWithSlug')->name('.showWithSlug');
+            Route::get('/{job:id}-{slug}', 'showWithSlug')->name('.showWithSlug');
             Route::get('/{job:id}', 'show')->name('.show');
         });
     });
 
-//    Route::controller(PublicMitraProfileController::class)->prefix('/mitra')->name('.mitra')->group(function () {
-//        Route::get('/', 'index')->name('.index');
-//        Route::get('/{mitra:id}', 'show')->name('.show');
-//    });
-
+    Route::controller(PublicMitraProfileController::class)->name('.mitra')->group(function () {
+        Route::prefix('/mitra')->group(function () {
+            Route::get('/', 'index')->name('.index');
+            Route::get('/{mitra:id}-{slug}', 'showWithSlug')->name('.showWithSlug');
+            Route::get('/{mitra:id}', 'show')->name('.show');
+        });
+    });
 });
 
 Route::get('/about', function () {
-    return abort(404);
-});
-
-Route::get('/kontak', function () {
     return abort(404);
 });

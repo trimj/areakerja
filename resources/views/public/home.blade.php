@@ -89,7 +89,9 @@
                             <div class="author">
                                 <img src="{{ asset('assets/public/photo') . '/' . $job->mitra->user->photo }}" alt="{{ $job->mitra->user->name }}" loading="lazy" onerror="this.src='{{ asset('assets/public/photo/default_photo.png') }}'">
                                 <div>
-                                    <div class="name">{{ $job->mitra->user->name }}</div>
+                                    <div class="name">
+                                        <a href="{{ route('public.mitra.showWithSlug', [$job->mitra->id, Str::slug($job->mitra->user->name)]) }}">{{ $job->mitra->user->name }}</a>
+                                    </div>
                                     <div class="created">{{ date_format(date_create($job->deadline), 'd F Y H:i') }}</div>
                                 </div>
                             </div>

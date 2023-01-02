@@ -16,16 +16,47 @@ class JobVacancyController extends Controller
 
     public function index(Request $request)
     {
-        $jobs = JobVacancy::orderBy('created_at', 'desc');
+        $jobs = new JobVacancy();
 
         if ($request->has('q')) {
             $q = Str::lower($request->q);
             $jobs = $jobs->where('title', 'LIKE', '%' . $q . '%');
         }
 
+        if ($request->has('mitra')) {
+            $mitra = intval($request->mitra);
+            if (!empty($mitra)) {
+                $jobs = $jobs->where('partner_id', $mitra);
+            }
+        }
+
+        if ($request->has('order')) {
+            if ($request->order == 'asc') {
+                $orderby = 'asc';
+            } elseif ($request->order == 'desc') {
+                $orderby = 'desc';
+            } else {
+                $orderby = 'desc';
+            }
+        } else {
+            $orderby = 'desc';
+        }
+
+        if ($request->has('sort')) {
+            if ($request->sort == 'judul') {
+                $sortby = 'title';
+            } elseif ($request->sort == 'deadline') {
+                $sortby = 'deadline';
+            } else {
+                $sortby = 'created_at';
+            }
+        } else {
+            $sortby = 'created_at';
+        }
+
         return view('public.jobvacancy.index', [
             'page_title' => $this->page_title,
-            'jobs' => $jobs->get(),
+            'jobs' => $jobs->orderBy($sortby, $orderby)->paginate(16),
         ]);
     }
 
@@ -34,7 +65,7 @@ class JobVacancyController extends Controller
         $skill = SkillList::where('slug', $skill)->first();
 
         if (isset($skill)) {
-            $jobs = $skill->job_skill;
+            $jobs = $skill->job_skill()->paginate(16);
         } else {
             $jobs = [];
         }
@@ -50,7 +81,7 @@ class JobVacancyController extends Controller
         if (isset($location)) {
             $partner = Partner::where('address', 'LIKE', '%' . $location . '%')->get();
             foreach ($partner as $partner_job) {
-                $jobs = $partner_job->jobs;
+                $jobs = $partner_job->jobs()->paginate(16);
             }
         } else {
             $jobs = [];
@@ -67,14 +98,18 @@ class JobVacancyController extends Controller
         return redirect()->route('public.lowongan.showWithSlug', [$job->id, $job->slug]);
     }
 
-    public function showWithSlug($id, JobVacancy $job)
+    public function showWithSlug(JobVacancy $job, $slug)
     {
+        if ($slug != $job->slug) {
+            return redirect()->route('public.lowongan.show', [$job->id]);
+        }
+
         if (!empty(auth()->user()->candidate)) {
             $jobCandidate = JobCandidate::where('job_id', $job->id)->where('candidate_id', auth()->user()->candidate->id)->first();
         } else {
             $jobCandidate = null;
         }
-        
+
         return view('public.jobvacancy.show', [
             'page_title' => $this->page_title,
             'jobVacancy' => $job,
