@@ -12,7 +12,6 @@ use Illuminate\Support\Str;
 use App\Models\Article;
 use Image;
 use Alert;
-use Rwxrwx\BBCode\Facades\BBCode;
 
 
 class ArticleController extends Controller
@@ -21,17 +20,46 @@ class ArticleController extends Controller
 
     public function __construct()
     {
-        $this->middleware('can:access-admincp');
+        $this->middleware('can:manage-article')->only('index');
         $this->middleware('can:create-article')->only('create', 'store');
         $this->middleware('can:edit-article')->only('edit', 'update');
         $this->middleware('can:delete-article')->only('destroy');
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $articles = new Article();
+
+        if ($request->has('q') && !empty($request->q)) {
+            $q = Str::lower($request->q);
+            $articles = $articles->where('title', 'LIKE', '%' . $q . '%');
+        }
+
+        if ($request->has('order')) {
+            if ($request->order == 'asc') {
+                $orderby = 'asc';
+            } elseif ($request->order == 'desc') {
+                $orderby = 'desc';
+            } else {
+                $orderby = 'desc';
+            }
+        } else {
+            $orderby = 'desc';
+        }
+
+        if ($request->has('sort')) {
+            if ($request->sort == 'judul') {
+                $sortby = 'title';
+            } else {
+                $sortby = 'created_at';
+            }
+        } else {
+            $sortby = 'created_at';
+        }
+
         return view('admin.article.index', [
             'page_title' => $this->page_title,
-            'articles' => Article::orderBy('created_at', 'desc')->get(),
+            'articles' => $articles->orderBy($sortby, $orderby)->paginate(16),
         ]);
     }
 

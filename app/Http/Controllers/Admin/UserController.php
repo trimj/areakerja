@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 // Added
 use Alert;
 use DB;
+use Illuminate\Support\Str;
 use Image;
 use App\Models\User;
 use Illuminate\Support\Facades\File;
@@ -20,16 +21,49 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->middleware('can:access-admincp');
+        $this->middleware('can:manage-user')->only('index');
         $this->middleware('can:edit-user')->only('edit', 'updatePhoto', 'updateInformation');
         $this->middleware('can:edit-user-role')->only('updateRole');
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $users = new User();
+
+        if ($request->has('q') && !empty($request->q)) {
+            $q = Str::lower($request->q);
+            $users = $users->where('name', 'LIKE', '%' . $q . '%')->orWhere('email', 'LIKE', '%' . $q . '%');
+        }
+
+        if ($request->has('order')) {
+            if ($request->order == 'asc') {
+                $orderby = 'asc';
+            } elseif ($request->order == 'desc') {
+                $orderby = 'desc';
+            } else {
+                $orderby = 'asc';
+            }
+        } else {
+            $orderby = 'asc';
+        }
+
+        if ($request->has('sort')) {
+            if ($request->sort == 'id') {
+                $sortby = 'id';
+            } elseif ($request->sort == 'name') {
+                $sortby = 'name';
+            } elseif ($request->sort == 'email') {
+                $sortby = 'email';
+            } else {
+                $sortby = 'id';
+            }
+        } else {
+            $sortby = 'id';
+        }
+
         return view('admin.user.index', [
             'page_title' => $this->page_title,
-            'users' => User::all(),
+            'users' => $users->orderBy($sortby, $orderby)->paginate(16),
         ]);
     }
 

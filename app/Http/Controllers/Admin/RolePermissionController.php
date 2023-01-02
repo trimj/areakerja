@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
 // Added
 use Alert;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -13,7 +15,8 @@ class RolePermissionController extends Controller
 {
     protected $page_title = 'Roles';
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('permission:manage-role')->only('index');
         $this->middleware('permission:create-role')->only('create', 'store');
         $this->middleware('permission:edit-role')->only('edit', 'update');
@@ -22,18 +25,44 @@ class RolePermissionController extends Controller
         $this->middleware('permission:revoke-role-permission')->only('revokePermission');
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $roles = new Role();
+
+        if ($request->has('q') && !empty($request->q)) {
+            $q = Str::lower($request->q);
+            $roles = $roles->where('name', 'LIKE', '%' . $q . '%');
+        }
+
+        if ($request->has('order')) {
+            if ($request->order == 'asc') {
+                $orderby = 'asc';
+            } elseif ($request->order == 'desc') {
+                $orderby = 'desc';
+            } else {
+                $orderby = 'asc';
+            }
+        } else {
+            $orderby = 'asc';
+        }
+
+        if ($request->has('sort')) {
+            if ($request->sort == 'id') {
+                $sortby = 'id';
+            } elseif ($request->sort == 'name') {
+                $sortby = 'name';
+            } elseif ($request->sort == 'protect') {
+                $sortby = 'guard_name';
+            } else {
+                $sortby = 'id';
+            }
+        } else {
+            $sortby = 'id';
+        }
+
         return view('admin.role.index', [
             'page_title' => 'Manage ' . $this->page_title,
-            'roles' => Role::all(),
-        ]);
-    }
-
-    public function create()
-    {
-        return view('admin.role.create', [
-            'page_title' => 'Create ' . $this->page_title,
+            'roles' => $roles->orderBy($sortby, $orderby)->paginate(20),
         ]);
     }
 
@@ -53,6 +82,13 @@ class RolePermissionController extends Controller
 
         Alert::toast('Successful', 'success');
         return redirect()->route('admin.role.index');
+    }
+
+    public function create()
+    {
+        return view('admin.role.create', [
+            'page_title' => 'Create ' . $this->page_title,
+        ]);
     }
 
     public function edit(Role $role)
