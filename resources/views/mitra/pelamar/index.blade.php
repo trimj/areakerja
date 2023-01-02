@@ -8,6 +8,7 @@
                     <div class="textbox-group">
                         <select name="sort" id="sort">
                             <option value="name" @if(request()->sort == 'name') selected @endif>Name</option>
+                            <option value="job" @if(request()->sort == 'job') selected @endif>Job</option>
                             <option value="lamarDate" @if(request()->sort == 'lamarDate') selected @endif>Date</option>
                         </select>
                     </div>

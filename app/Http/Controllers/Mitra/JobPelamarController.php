@@ -46,6 +46,8 @@ class JobPelamarController extends Controller
         if ($request->has('sort')) {
             if ($request->sort == 'name') {
                 $sortby = 'candidate_id';
+            } elseif ($request->sort == 'job') {
+                $sortby = 'job_id';
             } elseif ($request->sort == 'lamarDate') {
                 $sortby = 'created_at';
             } else {
@@ -58,7 +60,7 @@ class JobPelamarController extends Controller
         return view('mitra.pelamar.index', [
             'page_title' => 'Pelamar ' . $this->page_title,
 //            'candidates' => JobCandidate::where('mitra_id', $mitra->id)->whereNull('s_mitra')->whereNotNull('s_candidate')->get(),
-            'candidates' => $candidates->paginate(20),
+            'candidates' => $candidates->orderBy($sortby, $orderby)->paginate(20),
         ]);
     }
 
