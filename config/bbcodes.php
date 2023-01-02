@@ -27,7 +27,7 @@ return [
 
     'size' => [
         'pattern' => '/\[size\=([0-9]+)\](.*?)\[\/size\]/s',
-        'replace' => '<span style="font-size: $1%;">$2</span>',
+        'replace' => '<span class="text-$1xl">$2</span>',
         'content' => '$2',
     ],
 

@@ -260,7 +260,7 @@ Route::name('public')->group(function () {
     });
 
     Route::controller(PublicLowonganController::class)->name('.lowongan')->group(function () {
-        Route::get('/lowongan-kerja', 'index')->name('.index');
+        Route::get('/lowongan', 'index')->name('.index');
         Route::prefix('/lowongan')->group(function () {
             Route::get('/cari/skill/{skill}', 'indexSkill')->name('.indexSkill');
             Route::get('/cari/lokasi/{location}', 'indexLocation')->name('.indexLocation');
@@ -279,9 +279,5 @@ Route::name('public')->group(function () {
 });
 
 Route::get('/about', function () {
-    return abort(404);
-});
-
-Route::get('/kontak', function () {
     return abort(404);
 });

@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 
-const colors = require('tailwindcss/colors')
+const colors = require('tailwindcss/colors');
 
 module.exports = {
     darkMode: 'class',
@@ -16,17 +16,26 @@ module.exports = {
         'list-none',
         'list-inside',
         'list-outside',
+        'text-1xl',
+        'text-2xl',
+        'text-3xl',
+        'text-4xl',
+        'text-5xl',
+        'text-6xl',
+        'text-7xl',
+        'text-8xl',
+        'text-9xl',
     ],
     theme: {
         extend: {
             colors: {
                 'main': '#FF9637',
-                'secondary' : '#FFF0E2',
-                'tertiary' : '#2A3042',
-                'tertiary-text' : '#A6B0CF',
-                'tertiary-active' : '#363d54',
-                'bronze' : '#945D41',
-                'silver' : '#797B89',
+                'secondary': '#FFF0E2',
+                'tertiary': '#2A3042',
+                'tertiary-text': '#A6B0CF',
+                'tertiary-active': '#363d54',
+                'bronze': '#945D41',
+                'silver': '#797B89',
                 'main-active': '#fc7f0d',
                 'white': '#FFFFFF',
                 'border': '#E8E9ED',
@@ -60,14 +69,17 @@ module.exports = {
             spacing: {
                 // 'min15' : '-10px',
                 // '18' : '4.5rem',
-                '95%' : '95%',
-                '20px' : '20px',
-                '614px' : '614px',
-                '479px' : '479px',
-                '30%' : '30%',
-                '23%' : '23%',
-                '24.4rem' : '24.4rem',
+                '95%': '95%',
+                '20px': '20px',
+                '614px': '614px',
+                '479px': '479px',
+                '30%': '30%',
+                '23%': '23%',
+                '24.4rem': '24.4rem',
             },
+            fontSize: {
+                '1xl': ['20px', '28px'],
+            }
         },
     },
     plugins: [],

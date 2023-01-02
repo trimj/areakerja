@@ -16,10 +16,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="space-y-2">
+                <div class="space-y-5">
                     <div class="font-bold text-xl">Lowongan Kerja</div>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-                        @forelse($mitra->jobs as $job)
+                        @forelse($mitra->jobs->take(4) as $job)
                             <div class="card-group">
                                 <div class="body">
                                     <div class="title">
@@ -56,6 +56,11 @@
                         @endforelse
                     </div>
                 </div>
+                @if(count($mitra->jobs) > 4)
+                    <div class="text-center mt-20">
+                        <a class="btn btn-primary" href="{{ route('public.lowongan.index').'?mitra='.$mitra->id }}">More Lowongan</a>
+                    </div>
+                @endif
             </div>
             <div class="flex-shrink-0 basis-1/3 p-3 space-y-10">
                 <div>

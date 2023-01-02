@@ -2,6 +2,33 @@
 
 @section('content')
     <section>
+        <div class="flex justify-between items-center mb-5">
+            <form action="{{ route('mitra.lowongan.pelamar.index') }}" method="get" class="flex space-y-0 space-x-2">
+                <div class="flex items-center justify-center space-x-2 space-y-0">
+                    <div class="textbox-group">
+                        <select name="sort" id="sort">
+                            <option value="name" @if(request()->sort == 'name') selected @endif>Name</option>
+                            <option value="job" @if(request()->sort == 'job') selected @endif>Job</option>
+                            <option value="lamarDate" @if(request()->sort == 'lamarDate') selected @endif>Date</option>
+                        </select>
+                    </div>
+                    <div class="textbox-group">
+                        <select name="order" id="order">
+                            <option value="asc" @if(request()->order == 'asc') selected @endif>Ascending</option>
+                            <option value="desc" @if(request()->order == 'desc') selected @endif>Descending</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" type="submit">Filter</button>
+                    </div>
+                </div>
+            </form>
+            @can('create-job-vacancy')
+                <div>
+                    <a class="btn btn-primary" href="{{ route('mitra.lowongan.create') }}">Add New</a>
+                </div>
+            @endcan
+        </div>
         <div class="table-group">
             <table class="table-auto">
                 <thead>
@@ -50,5 +77,8 @@
                 </tbody>
             </table>
         </div>
+    </section>
+    <section>
+        <div class="text-center">{{ $candidates->links() }}</div>
     </section>
 @endsection

@@ -14,6 +14,7 @@
                 <a class="btn-navbar @if (Route::is('public.home')) active @endif" href="{{ route('public.home') }}">Beranda</a>
                 <a class="btn-navbar @if (Route::is('public.article.*')) active @endif" href="{{ route('public.article.index') }}">Tips Kerja</a>
                 <a class="btn-navbar @if (Route::is('public.lowongan.*')) active @endif" href="{{ route('public.lowongan.index') }}">Lowongan</a>
+                <a class="btn-navbar @if (Route::is('public.mitra.*')) active @endif" href="{{ route('public.mitra.index') }}">Mitra</a>
                 <div @click.away="open = false" class="relative z-20" x-data="{ open: false }">
                     <button @click="open = !open" class="btn-navbar btn-dropdown">
                         <div>More</div>

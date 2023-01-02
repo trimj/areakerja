@@ -12,7 +12,7 @@
         <div class="flex justify-center my-10">
             <img class="rounded-lg shadow max-w-xl" src="{{ asset('assets/public/article/' . $article->image) }}" alt="{{ $article->slug }}">
         </div>
-        <div>{!! BBCode::addLinebreakParser()->convertToHtml($article->content) !!}</div>
+        <div>@bb($article->content)</div>
         <div class="flex flex-col justify-center items-center space-y-2 mt-10">
             <div class="font-semibold text-xl tracking-widest uppercase">Share</div>
             <div class="flex items-center justify-center space-x-5 text-3xl">
