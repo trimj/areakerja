@@ -9,7 +9,9 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
             @forelse ($articles as $article)
                 <div class="card-group">
-                    <img class="thumbnail" src="{{ asset('assets/public/article/thumb/'.$article->image) }}" alt="image" loading="lazy" onerror="this.src='{{ asset('assets/public/images/logo.png') }}'">
+                    <div class="thumbnail">
+                        <img src="{{ asset('assets/public/article/thumb/'.$article->image) }}" alt="image" loading="lazy" onerror="this.src='{{ asset('assets/public/images/logo.png') }}'">
+                    </div>
                     <div class="body">
                         <div class="title">
                             <a href="{{ route('public.article.show', $article->id) }}">{{ $article->title }}</a>

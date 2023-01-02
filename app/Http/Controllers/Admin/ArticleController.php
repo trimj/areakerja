@@ -47,9 +47,8 @@ class ArticleController extends Controller
             if ($request->hasfile('artImage')) {
                 $img = Image::make($request->file('artImage'));
 
-                if ($img->width() > 1000) {
-                    $largeImg = $img->resize(1000, null, function ($constraint) {
-                        $constraint->aspectRatio();
+                if ($img->width() > 1000 || $img->height() > 565) {
+                    $largeImg = $img->resize(1000, 565, function ($constraint) {
                         $constraint->upsize();
                     });
                 } else {
@@ -59,9 +58,8 @@ class ArticleController extends Controller
                 $largeImgName = time() . '.' . $request->file('artImage')->extension();
                 $largeImg->save(public_path('assets/public/article/' . $largeImgName));
 
-                if ($img->width() > 300) {
-                    $smallImg = $img->resize(300, null, function ($constraint) {
-                        $constraint->aspectRatio();
+                if ($img->width() > 535 || $img->height() > 300) {
+                    $smallImg = $img->resize(535, 300, function ($constraint) {
                         $constraint->upsize();
                     });
                 } else {
@@ -138,9 +136,8 @@ class ArticleController extends Controller
 
                 $img = Image::make($request->file('artImage'));
 
-                if ($img->width() > 1000) {
-                    $largeImg = $img->resize(1000, null, function ($constraint) {
-                        $constraint->aspectRatio();
+                if ($img->width() > 1000 || $img->height() > 565) {
+                    $largeImg = $img->resize(1000, 565, function ($constraint) {
                         $constraint->upsize();
                     });
                 } else {
@@ -150,9 +147,8 @@ class ArticleController extends Controller
                 $largeImgName = time() . '.' . $request->file('artImage')->extension();
                 $largeImg->save(public_path('assets/public/article/' . $largeImgName));
 
-                if ($img->width() > 300) {
-                    $smallImg = $img->resize(300, null, function ($constraint) {
-                        $constraint->aspectRatio();
+                if ($img->width() > 535 || $img->height() > 300) {
+                    $smallImg = $img->resize(535, 300, function ($constraint) {
                         $constraint->upsize();
                     });
                 } else {

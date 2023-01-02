@@ -65,7 +65,7 @@ class JobVacancyController extends Controller
         $skill = SkillList::where('slug', $skill)->first();
 
         if (isset($skill)) {
-            $jobs = $skill->job_skill;
+            $jobs = $skill->job_skill()->paginate(16);
         } else {
             $jobs = [];
         }
@@ -81,7 +81,7 @@ class JobVacancyController extends Controller
         if (isset($location)) {
             $partner = Partner::where('address', 'LIKE', '%' . $location . '%')->get();
             foreach ($partner as $partner_job) {
-                $jobs = $partner_job->jobs;
+                $jobs = $partner_job->jobs()->paginate(16);
             }
         } else {
             $jobs = [];

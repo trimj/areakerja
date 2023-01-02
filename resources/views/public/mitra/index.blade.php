@@ -8,7 +8,9 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
             @forelse($partners as $mitra)
                 <div class="card-group">
-                    <img class="photo" src="{{ asset('assets/public/photo') . '/' . $mitra->photo }}" alt="{{ Str::slug($mitra->name) }}" loading="lazy" onerror="this.src='{{ asset('assets/public/photo/default_photo.png') }}'">
+                    <div class="photo">
+                        <img src="{{ asset('assets/public/photo') . '/' . $mitra->photo }}" alt="{{ Str::slug($mitra->name) }}" loading="lazy" onerror="this.src='{{ asset('assets/public/photo/default_photo.png') }}'">
+                    </div>
                     <div class="body">
                         <div class="title">
                             <a href="{{ route('public.mitra.show', $mitra->id) }}" title="{{ $mitra->name }}">{{ $mitra->name }}</a>

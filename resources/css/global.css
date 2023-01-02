@@ -175,12 +175,16 @@
         @apply flex flex-col h-full bg-white ring-2 ring-gray-100 rounded-lg shadow transition duration-300 ease-in-out hover:shadow-lg hover:ring-areakerja/40;
     }
 
-    .card-group img.thumbnail {
-        @apply rounded-t-lg max-h-52;
+    .card-group .thumbnail, .card-group .photo {
+        @apply max-h-48;
     }
 
-    .card-group img.photo {
-        @apply rounded-t-lg max-h-52 h-auto w-auto object-cover hover:object-contain;
+    .card-group .thumbnail img {
+        @apply rounded-t-lg h-full m-auto;
+    }
+
+    .card-group .photo img {
+        @apply rounded-t-lg h-full m-auto object-fill hover:object-contain;
     }
 
     .card-group .body {
