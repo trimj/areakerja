@@ -27,7 +27,9 @@
                 </div>
             </form>
             @can('create-role')
-                <a class="btn btn-primary" href="{{ route('admin.role.create') }}">Add New</a>
+                <div>
+                    <a class="btn btn-primary" href="{{ route('admin.role.create') }}">Add New</a>
+                </div>
             @endcan
         </div>
         <div class="table-group">
