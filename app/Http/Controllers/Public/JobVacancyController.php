@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
 use App\Models\JobCandidate;
-use App\Models\Partner;
 use App\Models\SkillList;
 use Illuminate\Http\Request;
 use App\Models\JobVacancy;
@@ -60,36 +59,19 @@ class JobVacancyController extends Controller
         ]);
     }
 
-    public function indexSkill($skill = null)
+    public function indexSkill(SkillList $skill)
     {
-        $skill = SkillList::where('slug', $skill)->first();
-
-        if (isset($skill)) {
-            $jobs = $skill->job_skill()->paginate(16);
-        } else {
-            $jobs = [];
-        }
-
         return view('public.jobvacancy.index', [
             'page_title' => $this->page_title,
-            'jobs' => $jobs,
+            'jobs' => $skill->job_skill()->paginate(16),
         ]);
     }
 
-    public function indexLocation($location = null)
+    public function indexLocation($location)
     {
-        if (isset($location)) {
-            $partner = Partner::where('address', 'LIKE', '%' . $location . '%')->get();
-            foreach ($partner as $partner_job) {
-                $jobs = $partner_job->jobs()->paginate(16);
-            }
-        } else {
-            $jobs = [];
-        }
-
         return view('public.jobvacancy.index', [
             'page_title' => $this->page_title,
-            'jobs' => $jobs,
+            'jobs' => JobVacancy::where('address', 'LIKE', '%' . $location . '%')->paginate(16),
         ]);
     }
 

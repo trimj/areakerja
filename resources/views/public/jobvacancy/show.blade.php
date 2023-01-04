@@ -9,8 +9,7 @@
                     <div class="text-gray-400 font-semibold"><a href="{{ route('public.lowongan.indexSkill', $jobVacancy->main_skill->slug) }}">{{ $jobVacancy->main_skill->name }}</a></div>
                 </div>
                 <div class="space-y-2">
-                    <div class="font-bold text-xl">Deskripsi</div>
-                    <div>@bb($jobVacancy->description)</div>
+                    <div class="article">@bb($jobVacancy->description)</div>
                 </div>
                 <div class="space-y-2">
                     <div class="font-bold text-xl">Keterangan</div>
