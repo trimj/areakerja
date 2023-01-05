@@ -17,37 +17,44 @@ class EditHargaController extends Controller
 {
     public function index()
     {
-        if (Cookie::get('edit-harga') == null) {
-            $email = Email::whereDate('created_at', Carbon::today())->where('user_id', '=', Auth::id())->first();
-            $sent = true;
-            if (!isset($email)) {
-                $code = random_int(100000, 999999);
-                Email::create([
-                    'code' => $code,
-                    'user_id' => Auth::id(),
-                    'type' => 'edit-harga',
-                    'sent_at' => Carbon::now()->timestamp,
-                ]);
-            } else {
-                $sent_at = new Carbon($email->sent_at);
-                if ($sent_at->addMinutes(5)->timestamp <= Carbon::now()->timestamp) {
-                    $email->sent_at = Carbon::now()->toDateTimeString();
-                    $code = $email->code;
-                    $email->save();
-                } else {
-                    $sent = false;
-                }
-            }
-            if ($sent) {
-                Mail::to('super-admin@mail.com')->send(new EditHarga($code));
-            }
-            return view('finance.verifikasi', compact('sent'));
-        } else {
-            $harga = Price::all();
-            $product = Product::all();
-            $no = 1;
-            return view('finance.edit-harga', compact('harga', 'product','no'));
-         }
+        # Dimatikan sementara menyesuaikan desain UI/UX
+        # Kalau sudah fix akan dihapus
+        // if (Cookie::get('edit-harga') == null) {
+        //     $email = Email::whereDate('created_at', Carbon::today())->where('user_id', '=', Auth::id())->first();
+        //     $sent = true;
+        //     if (!isset($email)) {
+        //         $code = random_int(100000, 999999);
+        //         Email::create([
+        //             'code' => $code,
+        //             'user_id' => Auth::id(),
+        //             'type' => 'edit-harga',
+        //             'sent_at' => Carbon::now()->timestamp,
+        //         ]);
+        //     } else {
+        //         $sent_at = new Carbon($email->sent_at);
+        //         if ($sent_at->addMinutes(5)->timestamp <= Carbon::now()->timestamp) {
+        //             $email->sent_at = Carbon::now()->toDateTimeString();
+        //             $code = $email->code;
+        //             $email->save();
+        //         } else {
+        //             $sent = false;
+        //         }
+        //     }
+        //     if ($sent) {
+        //         Mail::to('super-admin@mail.com')->send(new EditHarga($code));
+        //     }
+        //     return view('finance.verifikasi', compact('sent'));
+        // } else {
+        //     $harga = Price::all();
+        //     $product = Product::all();
+        //     $no = 1;
+        //     return view('finance.edit-harga', compact('harga', 'product','no'));
+        // }
+
+        $harga = Price::all();
+        $product = Product::all();
+        $no = 1;
+        return view('finance.edit-harga', compact('harga', 'product','no'));
     }
 
     public function store(Request $request)
