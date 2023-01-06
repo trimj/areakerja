@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\CandidateController as AdminCandidateController;
 use App\Http\Controllers\Admin\PartnerController as AdminPartnerController;
 use App\Http\Controllers\Admin\JobVacancyController as AdminJobVacancyController;
 use App\Http\Controllers\Admin\SkillController as AdminSkillController;
+use App\Http\Controllers\Admin\CoinLogController as AdminCoinLogController;
 
 // Mitra
 use App\Http\Controllers\Mitra\PageController as MitraPageController;
@@ -138,6 +139,16 @@ Route::middleware('auth')->group(function () {
 //                    Route::get('/edit/{jobVacancy:id}', 'edit')->name('.edit');
                     Route::put('/edit/{skill:id}', 'update')->name('.update');
                     Route::delete('/destroy/{skill:id}', 'destroy')->name('.destroy');
+                });
+            });
+            // Manage Coin Logs
+            Route::controller(AdminCoinLogController::class)->name('.coinlog')->group(function () {
+                Route::get('/coins/logs', 'index')->name('.index');
+                Route::prefix('/coin/log')->group(function () {
+                    Route::get('/show/{coinLog:id}', 'show')->name('.show');
+                    Route::delete('/destroy/{coinLog:id}', 'destroy')->name('.destroy');
+                    Route::post('/restore/{coinLog:id}', 'restore')->name('.restore');
+                    Route::delete('/destroy/{coinLog:id}/force', 'forceDestroy')->name('.forceDestroy');
                 });
             });
         });

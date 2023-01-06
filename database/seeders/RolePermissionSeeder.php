@@ -31,6 +31,13 @@ class RolePermissionSeeder extends Seeder
         Permission::create(['name' => 'access-kandidatcp']);
         Permission::create(['name' => 'access-usercp']);
 
+        // Coins History
+        Permission::create(['name' => 'manage-coin-log']);
+        Permission::create(['name' => 'view-coin-log']);
+        Permission::create(['name' => 'delete-coin-log']);
+        Permission::create(['name' => 'restore-coin-log']);
+        Permission::create(['name' => 'forceDelete-coin-log']);
+
         // Manage Article
         Permission::create(['name' => 'manage-article']);
         Permission::create(['name' => 'create-article']);
@@ -206,7 +213,13 @@ class RolePermissionSeeder extends Seeder
             'create-role',
             'edit-role',
             'delete-role',
-            'sync-role-permission'
+            'sync-role-permission',
+            //Coin Logs
+            'manage-coin-log',
+            'view-coin-log',
+            'delete-coin-log',
+            'restore-coin-log',
+            'forceDelete-coin-log',
         ]);
 
         User::find(1)->syncRoles('Super Admin');
