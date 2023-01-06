@@ -19,10 +19,6 @@
         @apply mt-10;
     }
 
-    section:last-child, .section:last-child {
-        @apply mb-0;
-    }
-
     button, .btn {
         @apply py-2 px-4 font-semibold rounded-md text-white hover:ring hover:ring-transparent;
     }
