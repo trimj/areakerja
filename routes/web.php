@@ -8,6 +8,11 @@ use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\RolePermissionController as AdminRoleController;
+use App\Http\Controllers\Admin\CandidateController as AdminCandidateController;
+use App\Http\Controllers\Admin\PartnerController as AdminPartnerController;
+use App\Http\Controllers\Admin\JobVacancyController as AdminJobVacancyController;
+use App\Http\Controllers\Admin\SkillController as AdminSkillController;
+use App\Http\Controllers\Admin\CoinLogController as AdminCoinLogController;
 
 // Mitra
 use App\Http\Controllers\Mitra\PageController as MitraPageController;
@@ -60,47 +65,105 @@ Route::middleware('auth')->group(function () {
             // Manage Article (CRUD)
             Route::controller(AdminArticleController::class)->name('.article')->group(function () {
                 Route::get('/articles', 'index')->name('.index');
-                Route::get('/article/new', 'create')->name('.create');
-                Route::post('/article/new', 'store')->name('.store');
-                // Route::get('/article/show/{article:id}', 'show')->name('.show');
-                Route::get('/article/edit/{article:id}', 'edit')->name('.edit');
-                Route::put('/article/edit/{article:id}', 'update')->name('.update');
-                Route::delete('/articles/delete/{article:id}', 'destroy')->name('.destroy');
+                Route::prefix('/article')->group(function () {
+                    Route::get('/new', 'create')->name('.create');
+                    Route::post('/new', 'store')->name('.store');
+                    // Route::get('/show/{article:id}', 'show')->name('.show');
+                    Route::get('/edit/{article:id}', 'edit')->name('.edit');
+                    Route::put('/edit/{article:id}', 'update')->name('.update');
+                    Route::delete('/delete/{article:id}', 'destroy')->name('.destroy');
+                });
             });
             // Manage User
             Route::controller(AdminUserController::class)->name('.user')->group(function () {
                 Route::get('/users', 'index')->name('.index');
-                Route::get('/user/edit/{user:id}', 'edit')->name('.edit');
-                Route::put('/user/edit/{user:id}/photo', 'updatePhoto')->name('.update.photo');
-                Route::put('/user/edit/{user:id}/information', 'updateInformation')->name('.update.information');
-                Route::get('/user/edit/{id}/role', function ($id) {
-                    return abort(404);
+                Route::prefix('/user')->group(function () {
+                    Route::get('/edit/{user:id}', 'edit')->name('.edit');
+                    Route::put('/edit/{user:id}/photo', 'updatePhoto')->name('.update.photo');
+                    Route::put('/edit/{user:id}/information', 'updateInformation')->name('.update.information');
+                    Route::get('/edit/{id}/role', function ($id) {
+                        return abort(404);
+                    });
+                    Route::put('/edit/{user:id}/role', 'updateRole')->name('.update.role');
                 });
-                Route::put('/user/edit/{user:id}/role', 'updateRole')->name('.update.role');
             });
             // Manage Roles
             Route::controller(AdminRoleController::class)->name('.role')->group(function () {
                 Route::get('/roles', 'index')->name('.index');
-                Route::get('/role/create', 'create')->name('.create');
-                Route::post('/role/create', 'store')->name('.store');
-                Route::get('/role/edit/{role:id}', 'edit')->name('.edit');
-                Route::put('/role/edit/{role:id}', 'update')->name('.update');
-                Route::post('/role/edit/{role:id}/sync', 'syncPermissions')->name('.permission.sync');
-                Route::delete('/role/edit/{role:id}/delete', 'destroy')->name('.destroy');
+                Route::prefix('/role')->group(function () {
+                    Route::get('/create', 'create')->name('.create');
+                    Route::post('/create', 'store')->name('.store');
+                    Route::get('/edit/{role:id}', 'edit')->name('.edit');
+                    Route::put('/edit/{role:id}', 'update')->name('.update');
+                    Route::post('/edit/{role:id}/sync', 'syncPermissions')->name('.permission.sync');
+                    Route::delete('/edit/{role:id}/delete', 'destroy')->name('.destroy');
+                });
+            });
+            // Manage Candidates
+            Route::controller(AdminCandidateController::class)->name('.candidate')->group(function () {
+                Route::get('/candidates', 'index')->name('.index');
+                Route::prefix('/candidate')->group(function () {
+                    Route::get('/show/{candidate:id}', 'show')->name('.show');
+                    Route::get('/edit/{candidate:id}', 'edit')->name('.edit');
+                    Route::put('/edit/{candidate:id}', 'update')->name('.update');
+                    Route::delete('/destroy/{candidate:id}', 'destroy')->name('.destroy');
+                });
+            });
+            // Manage Partners
+            Route::controller(AdminPartnerController::class)->name('.partner')->group(function () {
+                Route::get('/partners', 'index')->name('.index');
+                Route::prefix('/partner')->group(function () {
+                    Route::get('/show/{partner:id}', 'show')->name('.show');
+                    Route::get('/edit/{partner:id}', 'edit')->name('.edit');
+//                    Route::put('/edit/{partner:id}', 'update')->name('.update');
+//                    Route::delete('/destroy/{partner:id}', 'destroy')->name('.destroy');
+                });
+            });
+            // Manage Job Vacancies
+            Route::controller(AdminJobVacancyController::class)->name('.lowongan')->group(function () {
+                Route::get('/lowongan', 'index')->name('.index');
+                Route::prefix('/lowongan')->group(function () {
+                    Route::get('/create', 'create')->name('.create');
+                    Route::post('/create', 'store')->name('.store');
+                    Route::get('/edit/{jobVacancy:id}', 'edit')->name('.edit');
+                    Route::put('/edit/{jobVacancy:id}', 'update')->name('.update');
+                    Route::delete('/destroy/{jobVacancy:id}', 'destroy')->name('.destroy');
+                });
+            });
+            // Manage Skills
+            Route::controller(AdminSkillController::class)->name('.skill')->group(function () {
+                Route::get('/skills', 'index')->name('.index');
+                Route::prefix('/skill')->group(function () {
+//                    Route::get('/create', 'create')->name('.create');
+                    Route::post('/create', 'store')->name('.store');
+//                    Route::get('/edit/{jobVacancy:id}', 'edit')->name('.edit');
+                    Route::put('/edit/{skill:id}', 'update')->name('.update');
+                    Route::delete('/destroy/{skill:id}', 'destroy')->name('.destroy');
+                });
+            });
+            // Manage Coin Logs
+            Route::controller(AdminCoinLogController::class)->name('.coinlog')->group(function () {
+                Route::get('/coins/logs', 'index')->name('.index');
+                Route::prefix('/coin/log')->group(function () {
+                    Route::get('/show/{coinLog:id}', 'show')->name('.show');
+                    Route::delete('/destroy/{coinLog:id}', 'destroy')->name('.destroy');
+                    Route::post('/restore/{coinLog:id}', 'restore')->name('.restore');
+                    Route::delete('/destroy/{coinLog:id}/force', 'forceDestroy')->name('.forceDestroy');
+                });
             });
         });
-        
+
         // Finance Pages
         Route::prefix('finance')->name('finance')->middleware('permission:access-financecp')->group(function () {
-            Route::controller(DashboardFinanceController::class)->group(function(){
+            Route::controller(DashboardFinanceController::class)->group(function () {
                 Route::get('/', 'index');
             });
-            
-            Route::get('/invoice', function(){
-                    return view('finance.invoice');
+
+            Route::get('/invoice', function () {
+                return view('finance.invoice');
             })->name('.invoice');
-            
-            Route::controller(EditHargaController::class)->name('.edit-harga')->group(function(){
+
+            Route::controller(EditHargaController::class)->name('.edit-harga')->group(function () {
                 Route::get('/edit-harga', 'index')->name('.index');
                 Route::post('/edit-harga', 'store')->name('.store');
                 Route::get('/edit-harga/{id}', 'update')->name('.update');
@@ -167,7 +230,7 @@ Route::middleware('auth')->group(function () {
 
         // Candidate Routes
         Route::name('kandidat')->group(function () {
-            Route::prefix('kandidat-cp')->group(function () {
+            Route::prefix('kandidat-cp')->middleware('permission:access-kandidatcp')->group(function () {
                 Route::any('/', function () {
                     return redirect()->route('kandidat.dashboard');
                 })->name('.cp');
@@ -183,24 +246,9 @@ Route::middleware('auth')->group(function () {
             Route::post('/{job:id}/lamar/kerja', [CandidateJobVacancyController::class, 'registerJobForMe'])->name('.lowongan.registerJobForMe');
         });
 
-        // Candidate Routes
-        Route::prefix('kandidat')->name('kandidat')->group(function () {
-            Route::any('/', function () {
-                return redirect()->route('kandidat.dashboard');
-            })->name('.cp');
-            Route::controller(CandidatePageController::class)->group(function () {
-                Route::get('/dashboard', 'dashboard')->name('.dashboard');
-            });
-            Route::controller(CandidateJobVacancyController::class)->prefix('/lowongan')->name('.lowongan')->group(function () {
-                Route::get('/', 'index')->name('.index');
-                Route::put('/job-candidate/{jobCandidate:id}/request/mitra/accept', 'acceptJobFromMitra')->name('.acceptJobFromMitra');
-                Route::put('/job-candidate/{jobCandidate:id}/request/mitra/reject', 'rejectJobFromMitra')->name('.rejectJobFromMitra');
-            });
-        });
-
         // User Routes
         Route::name('member')->group(function () {
-            Route::prefix('/member-cp')->group(function () {
+            Route::prefix('/member-cp')->middleware('permission:access-usercp')->group(function () {
                 Route::any('/', function () {
                     return redirect()->route('member.dashboard');
                 })->name('.cp');
@@ -259,7 +307,7 @@ Route::name('public')->group(function () {
     Route::controller(PublicLowonganController::class)->name('.lowongan')->group(function () {
         Route::get('/lowongan', 'index')->name('.index');
         Route::prefix('/lowongan')->group(function () {
-            Route::get('/cari/skill/{skill}', 'indexSkill')->name('.indexSkill');
+            Route::get('/cari/skill/{skill:slug}', 'indexSkill')->name('.indexSkill');
             Route::get('/cari/lokasi/{location}', 'indexLocation')->name('.indexLocation');
             Route::get('/{job:id}-{slug}', 'showWithSlug')->name('.showWithSlug');
             Route::get('/{job:id}', 'show')->name('.show');

@@ -62,15 +62,21 @@
                                 @can('access-usercp')
                                     <a href="{{ route('member.cp') }}" class="btn-dropdown">User Panel</a>
                                 @endcan
-                                @can('access-kandidatcp')
-                                    <a href="{{ route('kandidat.cp') }}" class="btn-dropdown">Kandidat Panel</a>
-                                @endcan
-                                @can('access-mitracp')
-                                    <a href="{{ route('mitra.cp') }}" class="btn-dropdown">Mitra Panel</a>
-                                @endcan
-                                @can('access-admincp')
-                                    <a href="{{ route('admin.cp') }}" class="btn-dropdown">Admin Panel</a>
-                                @endcan
+                                @if(auth()->user()->hasRole([4]))
+                                    @can('access-mitracp')
+                                        <a href="{{ route('mitra.cp') }}" class="btn-dropdown">Mitra Panel</a>
+                                    @endcan
+                                @endif
+                                @if(auth()->user()->hasRole([5]))
+                                    @can('access-kandidatcp')
+                                        <a href="{{ route('kandidat.cp') }}" class="btn-dropdown">Kandidat Panel</a>
+                                    @endcan
+                                @endif
+                                @if(auth()->user()->hasAnyRole([1,2]))
+                                    @can('access-admincp')
+                                        <a href="{{ route('admin.cp') }}" class="btn-dropdown">Admin Panel</a>
+                                    @endcan
+                                @endif
                                 <a href="#logout" class="btn-dropdown" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                             </div>
                         </div>
