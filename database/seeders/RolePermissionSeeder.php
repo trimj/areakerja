@@ -64,6 +64,12 @@ class RolePermissionSeeder extends Seeder
         Permission::create(['name' => 'accept-pre-partner']);
         Permission::create(['name' => 'reject-pre-partner']);
 
+        // Manage Partner
+        Permission::create(['name' => 'manage-partner']);
+        Permission::create(['name' => 'create-partner']);
+        Permission::create(['name' => 'edit-partner']);
+        Permission::create(['name' => 'delete-partner']);
+
         // Manage Candidate
         Permission::create(['name' => 'manage-candidate']);
         Permission::create(['name' => 'create-candidate']);

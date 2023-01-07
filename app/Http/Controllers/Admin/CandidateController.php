@@ -75,7 +75,6 @@ class CandidateController extends Controller
 
         return redirect()->route('admin.candidate.index');
     }
-
     public function update(Request $request, Candidate $candidate)
     {
         Alert::toast('Successful', 'success');
