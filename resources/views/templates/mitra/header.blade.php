@@ -1,7 +1,7 @@
 <div class="p-4 bg-white border-b flex items-center justify-between p-4">
     <div class="font-semibold">{{ (!empty($page_title) ? $page_title : null) }}</div>
     <div class="flex items-center space-x-2">
-        <div class="text-xl cursor-pointer hover:text-areakerja"><i class="far fa-bell fa-fw"></i></div>
+        <div class="px-3 border border-areakerja rounded-md text-areakerja"><span class="font-medium mr-2">{{ auth()->user()->partner->coins }}</span><i class="fas fa-coins fa-fw"></i></div>
         <div @click.away="open = false" class="relative z-20" x-data="{ open: false }">
             <button @click="open = !open" class="btn-dropdown text-sm">
                 <img class="h-6 w-6 rounded-full border" src="{{ asset('assets/public/photo') . '/' . auth()->user()->photo }}" alt="" onerror="this.src='{{ asset('assets/public/photo/default_photo.png') }}'">

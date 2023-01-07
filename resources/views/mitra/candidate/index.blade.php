@@ -23,11 +23,6 @@
                     </div>
                 </div>
             </form>
-            @can('create-job-vacancy')
-                <div>
-                    <a class="btn btn-primary" href="{{ route('mitra.lowongan.create') }}">Add New</a>
-                </div>
-            @endcan
         </div>
         <div class="table-group">
             <table class="table-auto">

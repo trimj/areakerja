@@ -12,7 +12,7 @@
                     <label for="mainSkill">Main Skill</label>
                     <select name="mainSkill" id="mainSkill">
                         @if (!empty($candidate->skill_id))
-                            <option value="{{ $candidate->skill_id }}">{{ $candidate->skill_list->name }}</option>
+                            <option value="{{ $candidate->skill_id }}">{{ $candidate->main_skill->name }}</option>
                         @endif
                         <optgroup>
                             @foreach ($mainSkills as $skill)

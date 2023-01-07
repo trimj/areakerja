@@ -11,6 +11,7 @@ class Partner extends Model
 
     protected $fillable = [
         'user_id',
+        'coins',
         // Information
         'description',
         'email',
@@ -26,6 +27,7 @@ class Partner extends Model
     ];
 
     protected $casts = [
+        'coins' => 'integer',
         'address' => 'array',
         'submitted_at' => 'datetime',
         'approved_at' => 'datetime',
