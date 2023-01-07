@@ -69,7 +69,10 @@ class CoinLogController extends Controller
 
     public function show(CoinLog $coinLog)
     {
-        //
+        return view('admin.logs.coin.show', [
+            'page_title' => $this->page_title,
+            'log' => $coinLog,
+        ]);
     }
 
     public function destroy(CoinLog $coinLog)

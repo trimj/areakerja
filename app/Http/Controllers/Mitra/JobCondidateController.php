@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Mitra;
 use App\Http\Controllers\Controller;
 use App\Models\Candidate;
 use App\Models\CandidateUnlock;
+use App\Models\CoinLog;
 use App\Models\JobCandidate;
 use App\Models\JobVacancy;
 use App\Models\Partner;
@@ -93,13 +94,23 @@ class JobCondidateController extends Controller
             $mitra = auth()->user()->partner;
         }
 
-//        dd($mitra->coins - $this->payToUnlock);
-
         if (($mitra->coins - $this->payToUnlock) >= 0) {
             try {
                 DB::transaction(function () use ($candidate, $mitra) {
+                    $afterPaid = $mitra->coins - $this->payToUnlock;
+
                     Partner::where('id', $mitra->id)->update([
-                        'coins' => $mitra->coins - $this->payToUnlock,
+                        'coins' => $afterPaid,
+                    ]);
+
+                    CoinLog::create([
+                        'partner_id' => $mitra->id,
+                        'candidate_id' => $candidate->id,
+                        'coins' => $this->payToUnlock,
+                        'type' => 'out',
+                        'detail' => 'Used ' . $this->payToUnlock . ' coin(s) to unlock candidate: ' . $candidate->user->name,
+                        'before' => $mitra->coins,
+                        'after' => $afterPaid,
                     ]);
 
                     CandidateUnlock::create([

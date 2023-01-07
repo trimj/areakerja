@@ -16,7 +16,7 @@ class MitraSeeder extends Seeder
             //1
             [
                 'user_id' => 4,
-                'coins' => 2,
+                'coins' => 5,
                 'description' => 'Seven Inc membuka kesempatan buat Kamu yang ingin menjajal pengalaman kerja di bisnis yang dijalankan Seven Inc',
                 'phone' => '89529002944',
                 'email' => 'mail@magangjogja.com',
@@ -31,7 +31,7 @@ class MitraSeeder extends Seeder
             //2
             [
                 'user_id' => 11,
-                'coins' => 0,
+                'coins' => 2,
                 'description' => 'Universitas Esa Unggul (UEU) didirikan pada tahun 1993 di bawah naungan Yayasan Pendidikan Kemala Bangsa adalah Perguruan Tinggi Swasta terkemuka dan menjadi salah satu Universitas Swasta terbaik di Indonesia.',
                 'phone' => '81390075454',
                 'email' => 'kampusbekasi@esaunggul.ac.id',
