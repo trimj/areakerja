@@ -50,12 +50,6 @@ class RolePermissionSeeder extends Seeder
         Permission::create(['name' => 'edit-job-vacancy']);
         Permission::create(['name' => 'delete-job-vacancy']);
 
-        // Manage Partner
-        Permission::create(['name' => 'manage-partner']);
-        Permission::create(['name' => 'create-partner']);
-        Permission::create(['name' => 'edit-partner']);
-        Permission::create(['name' => 'delete-partner']);
-
         // Manage Calon Kandidat
         Permission::create(['name' => 'accept-pre-candidate']);
         Permission::create(['name' => 'reject-pre-candidate']);
