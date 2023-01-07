@@ -6,6 +6,8 @@
             <table class="table-auto">
                 <thead>
                 <th>Name</th>
+                <th>Coins</th>
+                <th>Role</th>
                 <th>Action</th>
                 </thead>
                 <tbody>
@@ -14,6 +16,8 @@
                         <td>
                             <a href="{{ route('public.mitra.showWithSlug', ['mitra' => $partner->id, 'slug' => Str::slug($partner->user->name)]) }}" target="_blank">{{ $partner->user->name }}</a>
                         </td>
+                        <td class="text-center">{{ number_format($partner->coins) }}</td>
+                        <td class="text-center">{{ $partner->user->getRoleNames()->first() }}</td>
                         <td class="text-center">
                             <a href="{{ route('admin.partner.show', ['partner' => $partner->id]) }}" class="btn btn-small btn-tertiary"><i class="fas fa-eye"></i></a>
                             @can('edit-partner')

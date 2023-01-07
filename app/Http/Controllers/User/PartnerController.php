@@ -17,9 +17,7 @@ class PartnerController extends Controller
 
     public function __construct()
     {
-//        $this->middleware('can:access-admincp');
-//        $this->middleware('can:edit-user')->only('edit', 'update');
-//        $this->middleware('can:edit-user-role')->only('updateRole');
+        $this->middleware('permission:daftar-mitra');
     }
 
     public function index()

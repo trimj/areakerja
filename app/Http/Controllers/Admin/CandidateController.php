@@ -49,9 +49,9 @@ class CandidateController extends Controller
 
     public function destroy(Candidate $candidate)
     {
-        $candidate->delete();
-
+        // Role: Member
         $candidate->user->syncRoles([6]);
+        $candidate->delete();
 
         Alert::toast('Successful', 'success');
         return redirect()->route('admin.candidate.index');
@@ -65,6 +65,7 @@ class CandidateController extends Controller
                 'rejected_at' => null,
             ]);
 
+            // Role: Kandidat
             $candidate->user->syncRoles([5]);
 
             Alert::toast('Successful', 'success');
@@ -72,9 +73,9 @@ class CandidateController extends Controller
             Alert::toast('Something error!', 'error');
         }
 
-
         return redirect()->route('admin.candidate.index');
     }
+
     public function update(Request $request, Candidate $candidate)
     {
         Alert::toast('Successful', 'success');
@@ -90,6 +91,7 @@ class CandidateController extends Controller
                 'rejected_at' => date('Y-m-d h:i:s', time()),
             ]);
 
+            // Role: Calon Kandidat
             $candidate->user->syncRoles([7]);
 
             Alert::toast('Successful', 'success');
