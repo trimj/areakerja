@@ -14,11 +14,11 @@
                 @can('access-admincp')
                     <a class="btn-sidebar @if (Route::is('admin.cp', 'admin.dashboard')) active @endif" href="{{ route('admin.cp') }}"><i class="fas fa-home fa-fw mr-2"></i>Dashboard</a>
                 @endcan
-                @can('manage-article')
-                    <a class="btn-sidebar @if (Route::is('admin.article.*')) active @endif" href="{{ route('admin.article.index') }}"><i class="fas fa-newspaper fa-fw mr-2"></i>Articles</a>
-                @endcan
                 @can('manage-coin-log')
                     <a class="btn-sidebar @if (Route::is('admin.coinlog.*')) active @endif" href="{{ route('admin.coinlog.index') }}"><i class="fas fa-coins fa-fw mr-2"></i>Coin Logs</a>
+                @endcan
+                @can('manage-article')
+                    <a class="btn-sidebar @if (Route::is('admin.article.*')) active @endif" href="{{ route('admin.article.index') }}"><i class="fas fa-newspaper fa-fw mr-2"></i>Articles</a>
                 @endcan
                 @can('manage-job-vacancy')
                     <a class="btn-sidebar @if (Route::is('admin.lowongan.*')) active @endif" href="{{ route('admin.lowongan.index') }}"><i class="fas fa-briefcase fa-fw mr-2"></i>Job Vacancies</a>

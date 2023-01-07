@@ -96,11 +96,29 @@
     </section>
     <section>
         <div class="flex justify-center items-center space-x-2">
+            @can('accept-pre-candidate')
+                <form action="{{ route('admin.candidate.acceptPreCandidate', ['candidate' => $candidate->id]) }}" method="post" onsubmit="return confirm('Are you sure?');" class="space-y-0">
+                    @csrf
+                    @method('patch')
+                    <button type="submit" class="btn btn-success">Accept as Candidate</button>
+                </form>
+            @endcan
+            @if(!empty($candidate->submitted_at) && auth()->user()->can('accept-pre-candidate'))
+                <form action="{{ route('admin.candidate.rejectPreCandidate', ['candidate' => $candidate->id]) }}" method="post" onsubmit="return confirm('Are you sure?');" class="space-y-0">
+                    @csrf
+                    @method('patch')
+                    <button type="submit" class="btn btn-error">Reject as Candidate</button>
+                </form>
+            @endif
+        </div>
+    </section>
+    <section>
+        <div class="flex justify-center items-center space-x-2">
             @can('edit-candidate')
                 <a class="btn btn-secondary" href="{{ route('admin.candidate.edit', ['candidate' => $candidate->id]) }}">Edit Candidate</a>
             @endcan
             @can('delete-candidate')
-                <form action="{{ route('admin.candidate.destroy', $candidate->id) }}" method="post" onsubmit="return confirm('Are you sure?');" class="space-y-0">
+                <form action="{{ route('admin.candidate.destroy', ['candidate' => $candidate->id]) }}" method="post" onsubmit="return confirm('Are you sure?');" class="space-y-0">
                     @csrf
                     @method('delete')
                     <button type="submit" class="btn btn-error">Delete Candidate</button>

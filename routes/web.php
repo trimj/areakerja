@@ -107,6 +107,8 @@ Route::middleware('auth')->group(function () {
                     Route::get('/edit/{candidate:id}', 'edit')->name('.edit');
                     Route::put('/edit/{candidate:id}', 'update')->name('.update');
                     Route::delete('/destroy/{candidate:id}', 'destroy')->name('.destroy');
+                    Route::patch('/accept/{candidate:id}', 'acceptPreCandidate')->name('.acceptPreCandidate');
+                    Route::patch('/reject/{candidate:id}', 'rejectPreCandidate')->name('.rejectPreCandidate');
                 });
             });
             // Manage Partners
@@ -202,12 +204,6 @@ Route::middleware('auth')->group(function () {
                 Route::get('/{jobVacancy:id}/edit', 'edit')->name('.edit');
                 Route::put('/{jobVacancy:id}/edit', 'update')->name('.update');
                 Route::delete('/{jobVacancy:id}/delete', 'destroy')->name('.destroy');
-
-                // Manage Job Candidate by Skill
-                Route::controller(MitraJobCandidateBySKillController::class)->name('.candidate')->group(function () {
-                    Route::get('/{jobVacancy:id}/candidates/skill', 'candidateBySkill')->name('.bySkill');
-                });
-
                 // Manage Job Candidates
                 Route::controller(MitraJobCandidateController::class)->name('.candidate')->group(function () {
                     Route::prefix('/kandidat')->group(function () {
@@ -217,6 +213,7 @@ Route::middleware('auth')->group(function () {
                         Route::put('/{candidate:id}/submit', 'submitCandidate')->name('.submit');
                     });
                 });
+                // Manage Applicants
                 Route::controller(MitraJobPelamarController::class)->name('.pelamar')->group(function () {
                     Route::prefix('/pelamar')->group(function () {
                         Route::get('/', 'index')->name('.index');

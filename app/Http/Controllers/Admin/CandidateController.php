@@ -17,6 +17,8 @@ class CandidateController extends Controller
         $this->middleware('can:create-candidate')->only('create', 'store');
         $this->middleware('can:edit-candidate')->only('edit', 'update');
         $this->middleware('can:delete-candidate')->only('destroy');
+        $this->middleware('can:accept-pre-candidate')->only('acceptPreCandidate');
+        $this->middleware('can:reject-pre-candidate')->only('rejectPreCandidate');
     }
 
     public function index(Request $request)
@@ -45,12 +47,6 @@ class CandidateController extends Controller
         ]);
     }
 
-    public function update(Request $request, Candidate $candidate)
-    {
-        Alert::toast('Successful', 'success');
-        return redirect()->route('admin.candidate.show', ['candidate' => $candidate->id]);
-    }
-
     public function destroy(Candidate $candidate)
     {
         $candidate->delete();
@@ -58,6 +54,49 @@ class CandidateController extends Controller
         $candidate->user->syncRoles([6]);
 
         Alert::toast('Successful', 'success');
+        return redirect()->route('admin.candidate.index');
+    }
+
+    public function acceptPreCandidate(Candidate $candidate)
+    {
+        if (!empty($candidate->submitted_at)) {
+            $candidate->update([
+                'approved_at' => date('Y-m-d h:i:s', time()),
+                'rejected_at' => null,
+            ]);
+
+            $candidate->user->syncRoles([5]);
+
+            Alert::toast('Successful', 'success');
+        } else {
+            Alert::toast('Something error!', 'error');
+        }
+
+
+        return redirect()->route('admin.candidate.index');
+    }
+    public function update(Request $request, Candidate $candidate)
+    {
+        Alert::toast('Successful', 'success');
+        return redirect()->route('admin.candidate.show', ['candidate' => $candidate->id]);
+    }
+
+    public function rejectPreCandidate(Candidate $candidate)
+    {
+        if (!empty($candidate->submitted_at)) {
+            $candidate->update([
+                'submitted_at' => null,
+                'approved_at' => null,
+                'rejected_at' => date('Y-m-d h:i:s', time()),
+            ]);
+
+            $candidate->user->syncRoles([7]);
+
+            Alert::toast('Successful', 'success');
+        } else {
+            Alert::toast('Something error!', 'error');
+        }
+
         return redirect()->route('admin.candidate.index');
     }
 }

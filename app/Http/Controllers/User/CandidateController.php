@@ -9,30 +9,11 @@ use Illuminate\Http\Request;
 use App\Models\SkillList;
 use App\Models\Candidate;
 use App\Models\Partner;
-use App\Models\User;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
-use Image;
-use Alert;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class CandidateController extends Controller
 {
     protected $page_title = 'Daftar Kandidat';
-
-    private function steps(int $step, int $allSteps = 6)
-    {
-        $arr = [];
-        for ($i = 1; $i <= $allSteps; $i++) {
-            if ($i == $step) {
-                $arr[$i] = 'active';
-            } else if ($i < $step) {
-                $arr[$i] = 'done';
-            } else {
-                $arr[$i] = null;
-            }
-        }
-        return $arr;
-    }
 
     public function __construct()
     {
@@ -61,6 +42,21 @@ class CandidateController extends Controller
             'page_title' => $this->page_title,
             'candidate' => $candidate,
         ]);
+    }
+
+    private function steps(int $step, int $allSteps = 6)
+    {
+        $arr = [];
+        for ($i = 1; $i <= $allSteps; $i++) {
+            if ($i == $step) {
+                $arr[$i] = 'active';
+            } else if ($i < $step) {
+                $arr[$i] = 'done';
+            } else {
+                $arr[$i] = null;
+            }
+        }
+        return $arr;
     }
 
     public function informationStore(Request $request)
@@ -333,6 +329,8 @@ class CandidateController extends Controller
             $candidate->update([
                 'tos' => true,
                 'submitted_at' => date('Y-m-d H:i:s', time()),
+                'approved_at' => null,
+                'rejected_at' => null,
             ]);
             auth()->user()->syncRoles(7); // Calon Kandidat (Role)
         } else {
