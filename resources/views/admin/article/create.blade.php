@@ -28,15 +28,24 @@
         @csrf
         <div class="upload-group">
             <label for="artImage">Article Cover</label>
-            <input type="file" name="artImage" id="artImage">
+            <input type="file" name="artImage" id="artImage" @error('artImage') class="textbox-error" @enderror>
+            @error('artImage')
+            <span class="text-error">{{ $errors->first('artImage') }}</span>
+            @enderror
         </div>
         <div>
             <label for="artTitle">Article Title</label>
-            <input type="text" name="artTitle" id="artTitle" placeholder="Title" value="{{ old('artTitle') }}">
+            <input type="text" name="artTitle" id="artTitle" placeholder="Title" value="{{ old('artTitle') }}" @error('artTitle') class="textbox-error" @enderror>
+            @error('artTitle')
+            <span class="text-error">{{ $errors->first('artTitle') }}</span>
+            @enderror
         </div>
         <div>
             <label for="artContent">Article Content</label>
-            <textarea name="artContent" id="artContent" rows="25">{{ old('artContent') }}</textarea>
+            <textarea name="artContent" id="artContent" rows="25" @error('artContent') class="textbox-error" @enderror>{{ old('artContent') }}</textarea>
+            @error('artContent')
+            <span class="text-error">{{ $errors->first('artContent') }}</span>
+            @enderror
         </div>
         <div class="text-right">
             <button type="submit" class="btn btn-primary">Create Article</button>

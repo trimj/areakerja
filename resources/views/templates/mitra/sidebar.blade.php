@@ -13,7 +13,7 @@
             <div :class="{'block': open, 'hidden': !open}" class="menu">
                 <a class="btn-sidebar @if (Route::is('mitra.cp', 'mitra.dashboard')) active @endif" href="{{ route('mitra.cp') }}"><i class="fas fa-home fa-fw mr-2"></i>Dashboard</a>
                 @can('manage-job-vacancy')
-                    <a class="btn-sidebar @if (Route::is('mitra.lowongan.index')) active @endif" href="{{ route('mitra.lowongan.index') }}"><i class="fas fa-briefcase fa-fw mr-2"></i>Lowongan</a>
+                    <a class="btn-sidebar @if (Route::is('mitra.lowongan.index', 'mitra.lowongan.create', 'mitra.lowongan.edit')) active @endif" href="{{ route('mitra.lowongan.index') }}"><i class="fas fa-briefcase fa-fw mr-2"></i>Lowongan</a>
                 @endcan
                 @can('manage-job-candidate')
                     <a class="btn-sidebar @if (Route::is('mitra.lowongan.candidate.*')) active @endif" href="{{ route('mitra.lowongan.candidate.index') }}"><i class="fas fa-user-shield fa-fw mr-2"></i>Kandidat</a>

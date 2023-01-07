@@ -14,8 +14,23 @@
                 @can('access-admincp')
                     <a class="btn-sidebar @if (Route::is('admin.cp', 'admin.dashboard')) active @endif" href="{{ route('admin.cp') }}"><i class="fas fa-home fa-fw mr-2"></i>Dashboard</a>
                 @endcan
+                @can('manage-coin-log')
+                    <a class="btn-sidebar @if (Route::is('admin.coinlog.*')) active @endif" href="{{ route('admin.coinlog.index') }}"><i class="fas fa-coins fa-fw mr-2"></i>Coin Logs</a>
+                @endcan
                 @can('manage-article')
                     <a class="btn-sidebar @if (Route::is('admin.article.*')) active @endif" href="{{ route('admin.article.index') }}"><i class="fas fa-newspaper fa-fw mr-2"></i>Articles</a>
+                @endcan
+                @can('manage-job-vacancy')
+                    <a class="btn-sidebar @if (Route::is('admin.lowongan.*')) active @endif" href="{{ route('admin.lowongan.index') }}"><i class="fas fa-briefcase fa-fw mr-2"></i>Job Vacancies</a>
+                @endcan
+                @can('manage-skill')
+                    <a class="btn-sidebar @if (Route::is('admin.skill.*')) active @endif" href="{{ route('admin.skill.index') }}"><i class="fas fa-dumbbell fa-fw mr-2"></i>Skills</a>
+                @endcan
+                @can('manage-partner')
+                    <a class="btn-sidebar @if (Route::is('admin.partner.*')) active @endif" href="{{ route('admin.partner.index') }}"><i class="fas fa-handshake fa-fw mr-2"></i>Partners</a>
+                @endcan
+                @can('manage-candidate')
+                    <a class="btn-sidebar @if (Route::is('admin.candidate.*')) active @endif" href="{{ route('admin.candidate.index') }}"><i class="fas fa-user-check fa-fw mr-2"></i>Candidates</a>
                 @endcan
                 @can('manage-user')
                     <a class="btn-sidebar @if (Route::is('admin.user.*')) active @endif" href="{{ route('admin.user.index') }}"><i class="fas fa-users fa-fw mr-2"></i>Users</a>

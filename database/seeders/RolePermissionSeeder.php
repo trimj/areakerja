@@ -14,16 +14,15 @@ class RolePermissionSeeder extends Seeder
 {
     public function run()
     {
-        Role::create(['name' => 'Super Admin']);
-
-        $adminRole = Role::create(['name' => 'Admin']);
-        $financeRole = Role::create(['name' => 'Finance']);
-        $partnerRole = Role::create(['name' => 'Mitra']);
-        $candidateRole = Role::create(['name' => 'Kandidat']);
-        $userRole = Role::create(['name' => 'Member']);
-
-        $calonKandidatRole = Role::create(['name' => 'Calon Kandidat']);
-        $calonMitraRole = Role::create(['name' => 'Calon Mitra']);
+        // All Default Roles
+        Role::create(['name' => 'Super Admin']);                            // ID = 1
+        $adminRole = Role::create(['name' => 'Admin']);                     // ID = 2
+        $financeRole = Role::create(['name' => 'Finance']);                 // ID = 3
+        $partnerRole = Role::create(['name' => 'Mitra']);                   // ID = 4
+        $candidateRole = Role::create(['name' => 'Kandidat']);              // ID = 5
+        $userRole = Role::create(['name' => 'Member']);                     // ID = 6
+        $calonKandidatRole = Role::create(['name' => 'Calon Kandidat']);    // ID = 7
+        $calonMitraRole = Role::create(['name' => 'Calon Mitra']);          // ID = 8
 
         // Control Panel
         Permission::create(['name' => 'access-admincp']);
@@ -31,6 +30,13 @@ class RolePermissionSeeder extends Seeder
         Permission::create(['name' => 'access-mitracp']);
         Permission::create(['name' => 'access-kandidatcp']);
         Permission::create(['name' => 'access-usercp']);
+
+        // Coins History
+        Permission::create(['name' => 'manage-coin-log']);
+        Permission::create(['name' => 'view-coin-log']);
+        Permission::create(['name' => 'delete-coin-log']);
+        Permission::create(['name' => 'restore-coin-log']);
+        Permission::create(['name' => 'forceDelete-coin-log']);
 
         // Manage Article
         Permission::create(['name' => 'manage-article']);
@@ -44,11 +50,31 @@ class RolePermissionSeeder extends Seeder
         Permission::create(['name' => 'edit-job-vacancy']);
         Permission::create(['name' => 'delete-job-vacancy']);
 
+        // Manage Calon Kandidat
+        Permission::create(['name' => 'accept-pre-candidate']);
+        Permission::create(['name' => 'reject-pre-candidate']);
+
+        // Manage Calon Mitra
+        Permission::create(['name' => 'accept-pre-partner']);
+        Permission::create(['name' => 'reject-pre-partner']);
+
+        // Manage Partner
+        Permission::create(['name' => 'manage-partner']);
+        Permission::create(['name' => 'create-partner']);
+        Permission::create(['name' => 'edit-partner']);
+        Permission::create(['name' => 'delete-partner']);
+
         // Manage Candidate
-        Permission::create(['name' => 'manage-kandidat']);
-        Permission::create(['name' => 'create-kandidat']);
-        Permission::create(['name' => 'edit-kandidat']);
-        Permission::create(['name' => 'delete-kandidat']);
+        Permission::create(['name' => 'manage-candidate']);
+        Permission::create(['name' => 'create-candidate']);
+        Permission::create(['name' => 'edit-candidate']);
+        Permission::create(['name' => 'delete-candidate']);
+
+        // Manage Skills
+        Permission::create(['name' => 'manage-skill']);
+        Permission::create(['name' => 'create-skill']);
+        Permission::create(['name' => 'edit-skill']);
+        Permission::create(['name' => 'delete-skill']);
 
         // Manage Job Candidate (Mitra)
         Permission::create(['name' => 'manage-job-candidate']);
@@ -195,7 +221,13 @@ class RolePermissionSeeder extends Seeder
             'create-role',
             'edit-role',
             'delete-role',
-            'sync-role-permission'
+            'sync-role-permission',
+            //Coin Logs
+            'manage-coin-log',
+            'view-coin-log',
+            'delete-coin-log',
+            'restore-coin-log',
+            'forceDelete-coin-log',
         ]);
 
         User::find(1)->syncRoles('Super Admin');

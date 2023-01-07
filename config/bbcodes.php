@@ -141,39 +141,55 @@ return [
 
     'linebreak' => [
         'pattern' => '/\r\n/',
-        'replace' => '<br />',
+        'replace' => '<br>',
         'content' => '',
     ],
     // Added
-    'namedquote' => [
-        'pattern' => '/\[quote\=(.*?)\](.*)\[\/quote\]/s',
-        'replace' => '<blockquote><small>$1</small>$2</blockquote>',
-        'content' => '$2',
+    'br' => [
+        'pattern' => '/\[br\]/',
+        'replace' => '<br>',
+        'content' => '',
     ],
+
     'imageheight' => [
         'pattern' => '/\[img height=(.*?)\](.*?)\[\/img\]/s',
         'replace' => '<img src="$2" style="height:$1px">',
         'content' => '$2'
     ],
+
     'imagewidth' => [
         'pattern' => '/\[img width=(.*?)\](.*?)\[\/img\]/s',
         'replace' => '<img src="$2" style="width:$1px">',
         'content' => '$2'
     ],
+
     'imageshort' => [
         'pattern' => '/\[img=(.*?)x(.*?)\](.*?)\[\/img\]/s',
         'replace' => '<img src="$3" style="width:$1\px; height:$2px">',
         'content' => '$3'
     ],
+
     'justify' => [
         'pattern' => '/\[justify\](.*?)\[\/justify\]/s',
         'replace' => '<p style="text-align:justify;">$1</p>',
         'content' => '$1',
     ],
+
     'horizontalrule' => [
-        'pattern' => '/\[hr\]/s',
+        'pattern' => '/\[hr\]/',
         'replace' => '<hr>',
         'content' => '',
     ],
 
+    'paragraph' => [
+        'pattern' => '/\[p\](.*?)\[\/p\]/s',
+        'replace' => '<p>$1</p>',
+        'content' => '$1',
+    ],
+
+    'font-family' => [
+        'pattern' => '/\[font\=(.*?)\](.*?)\[\/font\]/s',
+        'replace' => '<span style="font-family: $1">$2</span>',
+        'content' => '$2',
+    ],
 ];

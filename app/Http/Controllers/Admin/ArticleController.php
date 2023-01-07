@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Article\Admin\ArticleStoreRequest;
+use App\Http\Requests\Article\Admin\ArticleUpdateRequest;
 use Illuminate\Http\Request;
 
 // Added
@@ -63,17 +65,13 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(ArticleStoreRequest $storeRequest)
     {
-        $request->validate([
-            'artImage' => ['required', 'image', 'dimensions:min_width=500,min_height=300'],
-            'artTitle' => ['required', 'string', 'max:100'],
-            'artContent' => ['required', 'string', 'max:65535']
-        ]);
+        $validated = $storeRequest->validated();
 
-        DB::transaction(function () use ($request) {
-            if ($request->hasfile('artImage')) {
-                $img = Image::make($request->file('artImage'));
+        DB::transaction(function () use ($validated, $storeRequest) {
+            if ($storeRequest->hasfile('artImage')) {
+                $img = Image::make($validated['artImage']);
 
                 if ($img->width() > 1000 || $img->height() > 565) {
                     $largeImg = $img->resize(1000, 565, function ($constraint) {
@@ -83,7 +81,7 @@ class ArticleController extends Controller
                     $largeImg = $img;
                 }
 
-                $largeImgName = time() . '.' . $request->file('artImage')->extension();
+                $largeImgName = time() . '.' . $validated['artImage']->extension();
                 $largeImg->save(public_path('assets/public/article/' . $largeImgName));
 
                 if ($img->width() > 535 || $img->height() > 300) {
@@ -94,7 +92,7 @@ class ArticleController extends Controller
                     $smallImg = $img;
                 }
 
-                $smallImgName = time() . '.' . $request->file('artImage')->extension();
+                $smallImgName = time() . '.' . $validated['artImage']->extension();
                 $smallImg->save(public_path('assets/public/article/thumb/' . $smallImgName));
 
                 $largeImg->destroy();
@@ -106,10 +104,10 @@ class ArticleController extends Controller
 
             Article::create([
                 'user_id' => auth()->user()->id,
-                'title' => $request->artTitle,
-                'slug' => Str::slug($request->artTitle, '-'),
-//                'content' => str_replace(["\r\n", "\r", "\n"], "\n", $request->artContent),
-                'content' => strip_tags($request->artContent),
+                'title' => $validated['artTitle'],
+                'slug' => Str::slug($validated['artTitle'], '-'),
+//                'content' => strip_tags(str_replace(["\r\n", "\r", "\n"], "\n", $validated['artContent'])),
+                'content' => strip_tags($validated['artContent']),
                 'image' => $largeImgName,
             ]);
         });
@@ -129,6 +127,7 @@ class ArticleController extends Controller
             $article->delete();
         });
 
+        Alert::toast('Successful', 'success');
         return redirect()->route('admin.article.index');
     }
 
@@ -147,22 +146,18 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function update(Request $request, Article $article)
+    public function update(ArticleUpdateRequest $updateRequest, Article $article)
     {
-        $request->validate([
-            'artImage' => ['nullable', 'image', 'dimensions:min_width=500,min_height=300'],
-            'artTitle' => ['required', 'string', 'max:100'],
-            'artContent' => ['required', 'string', 'max:65535']
-        ]);
+        $validated = $updateRequest->validated();
 
-        DB::transaction(function () use ($request, $article) {
-            if ($request->hasfile('artImage')) {
+        DB::transaction(function () use ($validated, $updateRequest, $article) {
+            if ($updateRequest->hasfile('artImage')) {
                 if (!empty($article->image)) {
                     File::delete(public_path('assets/public/article/' . $article->image));
                     File::delete(public_path('assets/public/article/thumb/' . $article->image));
                 }
 
-                $img = Image::make($request->file('artImage'));
+                $img = Image::make($validated['artImage']);
 
                 if ($img->width() > 1000 || $img->height() > 565) {
                     $largeImg = $img->resize(1000, 565, function ($constraint) {
@@ -172,7 +167,7 @@ class ArticleController extends Controller
                     $largeImg = $img;
                 }
 
-                $largeImgName = time() . '.' . $request->file('artImage')->extension();
+                $largeImgName = time() . '.' . $validated['artImage']->extension();
                 $largeImg->save(public_path('assets/public/article/' . $largeImgName));
 
                 if ($img->width() > 535 || $img->height() > 300) {
@@ -183,7 +178,7 @@ class ArticleController extends Controller
                     $smallImg = $img;
                 }
 
-                $smallImgName = time() . '.' . $request->file('artImage')->extension();
+                $smallImgName = time() . '.' . $validated['artImage']->extension();
                 $smallImg->save(public_path('assets/public/article/thumb/' . $smallImgName));
 
                 $largeImg->destroy();
@@ -194,14 +189,15 @@ class ArticleController extends Controller
             }
 
             Article::where('id', $article->id)->update([
-                'title' => $request->artTitle,
-                'slug' => Str::slug($request->artTitle, '-'),
-//                'content' => str_replace(["\r\n", "\r", "\n"], "\n", $request->artContent),
-                'content' => strip_tags($request->artContent),
+                'title' => $validated['artTitle'],
+                'slug' => Str::slug($validated['artTitle'], '-'),
+//                'content' => strip_tags(str_replace(["\r\n", "\r", "\n"], "\n", $validated['artContent'])),
+                'content' => strip_tags($validated['artContent']),
                 'image' => $largeImgName,
             ]);
         });
 
+        Alert::toast('Successful', 'success');
         return redirect()->route('admin.article.index');
     }
 }

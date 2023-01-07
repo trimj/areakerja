@@ -4,16 +4,18 @@
     <section class="max-w-screen-lg">
         <div class="flex flex-col justify-center items-center space-y-2">
             <div class="font-bold text-4xl">{{ $article->title }}</div>
-            <div class="flex justify-center items-center space-x-5">
-                <div>{{ $article->author->name }}</div>
-                <div>{{ date_format($article->created_at, 'd F Y') }}</div>
+            <div class="flex justify-center items-center space-x-7">
+                <div class="flex items-center space-x-2"><i class="far fa-user-circle"></i><span>{{ $article->author->name }}</span></div>
+                <div class="flex items-center space-x-2"><i class="far fa-clock"></i><span>{{ date_format($article->created_at, 'd F Y') }}</span></div>
             </div>
         </div>
         <div class="flex justify-center my-10">
             <img class="rounded-lg shadow max-w-xl" src="{{ asset('assets/public/article/' . $article->image) }}" alt="{{ $article->slug }}">
         </div>
-        <div>@bb($article->content)</div>
-        <div class="flex flex-col justify-center items-center space-y-2 mt-10">
+        <div class="article">@bb($article->content)</div>
+    </section>
+    <section>
+        <div class="flex flex-col justify-center items-center space-y-2">
             <div class="font-semibold text-xl tracking-widest uppercase">Share</div>
             <div class="flex items-center justify-center space-x-5 text-3xl">
                 <a href="{{ 'https://pinterest.com/pin/create/button/?url=' . url()->current() . '&description=' . urlencode($article->title) }}" target="_blank"><i class="fab fa-pinterest"></i></a>

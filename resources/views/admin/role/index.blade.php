@@ -63,7 +63,7 @@
                                     <form action="{{ route('admin.role.destroy', $role->id) }}" method="post" onsubmit="return confirm('Are you sure?');" class="space-y-0">
                                         @csrf
                                         @method('delete')
-                                        <button type="submit" class="btn btn-small btn-danger"><i class="fas fa-trash"></i></button>
+                                        <button type="submit" class="btn btn-small btn-error"><i class="fas fa-trash"></i></button>
                                     </form>
                                 @endcan
                             </td>

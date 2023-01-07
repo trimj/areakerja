@@ -7,13 +7,16 @@ use App\Models\Candidate;
 use App\Models\CandidateUnlock;
 use App\Models\JobCandidate;
 use App\Models\JobVacancy;
+use App\Models\Partner;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class JobCondidateController extends Controller
 {
     private $page_title = 'Kandidat';
+
+    private $payToUnlock = 1;
 
     public function __construct()
     {
@@ -55,7 +58,7 @@ class JobCondidateController extends Controller
 
         return view('mitra.candidate.index', [
             'page_title' => 'Kandidat ' . $this->page_title,
-            'candidates' => $candidates->orderBy($sortby, $orderby)->paginate(20),
+            'candidates' => $candidates->whereNotNull('approved_at')->orderBy($sortby, $orderby)->paginate(20),
         ]);
     }
 
@@ -90,13 +93,30 @@ class JobCondidateController extends Controller
             $mitra = auth()->user()->partner;
         }
 
-        CandidateUnlock::create([
-            'candidate_id' => $candidate->id,
-            'mitra_id' => $mitra->id,
-            'unlocked_at' => date('Y-m-d h:i:s', time()),
-        ]);
+//        dd($mitra->coins - $this->payToUnlock);
 
-        Alert::toast('Successful', 'success');
+        if (($mitra->coins - $this->payToUnlock) >= 0) {
+            try {
+                DB::transaction(function () use ($candidate, $mitra) {
+                    Partner::where('id', $mitra->id)->update([
+                        'coins' => $mitra->coins - $this->payToUnlock,
+                    ]);
+
+                    CandidateUnlock::create([
+                        'candidate_id' => $candidate->id,
+                        'mitra_id' => $mitra->id,
+                        'unlocked_at' => date('Y-m-d h:i:s', time()),
+                    ]);
+                });
+
+                Alert::toast('Successful', 'success');
+            } catch (\Exception $e) {
+                Alert::toast('Something error!', 'error');
+            }
+        } else {
+            Alert::toast('You don\'t have enough coins', 'error');
+        }
+
         return redirect()->route('mitra.lowongan.candidate.show', ['candidate' => $candidate->id]);
     }
 
@@ -122,7 +142,7 @@ class JobCondidateController extends Controller
             'unlock_id' => $candidate->unlocked->id,
             'job_id' => intval($request->lowongan),
             'candidate_id' => $candidate->id,
-            'mitra_id' => $candidate->unlocked->mitra_id,
+            'mitra_id' => $mitra->mitra_id,
             's_mitra' => date('Y-m-d h:i:s', time()),
         ]);
 
