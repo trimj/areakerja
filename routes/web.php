@@ -39,7 +39,6 @@ use App\Http\Controllers\Public\MitraProfileController as PublicMitraProfileCont
 // Finance
 use App\Http\Controllers\Finance\DashboardFinanceController;
 use App\Http\Controllers\Finance\EditHargaController;
-use App\Http\Controllers\Finance\FinanceActivityController;
 use FontLib\Table\Type\name;
 
 require_once __DIR__ . '/auth.php';
@@ -161,6 +160,9 @@ Route::middleware('auth')->group(function () {
         Route::prefix('finance')->name('finance')->middleware('permission:access-financecp')->group(function () {
             Route::controller(DashboardFinanceController::class)->group(function () {
                 Route::get('/', 'index');
+                Route::get('/riwayat', 'index')->name('.index');
+                Route::get('/riwayat/show/{role:id}', 'show')->name('.show');
+                Route::post('/riwayat/permission/{role:id}/sync', 'syncPermissions')->name('.permission.sync');
             });
 
             Route::get('/invoice', function () {
@@ -174,20 +176,7 @@ Route::middleware('auth')->group(function () {
                 // Route::get('/edit-harga/{id}', 'show')->name('.show');
                 Route::put('/edit-harga/{id}', 'update')->name('.update');
             });
-            Route::get('cetak/laporan', [FinanceActivityController::class, 'cetak_pdf'])->name('.cetakfinanceactivity');
-            Route::get('finance-activity', [FinanceActivityController::class, 'index'])->name('.financeactivity');
             Route::post('finance/simpanharga', [EditHargaController::class, 'simpanharga'])->name('.simpanharga');
-        });
-
-        Route::controller(DashboardFinanceController::class)->name('riwayat')->group(function () {
-            Route::get('/riwayat', 'index')->name('.index');
-            Route::get('/riwayat/create', 'create')->name('.create');
-            Route::post('/riwayat/create', 'store')->name('.store');
-            // Route::get('/riwayat/edit/{role:id}', 'edit')->name('.edit');
-            Route::get('/riwayat/show/{role:id}', 'show')->name('.show');
-            Route::put('/riwayat/edit/{role:id}', 'update')->name('.update');
-            Route::post('/riwayat/permission/{role:id}/sync', 'syncPermissions')->name('.permission.sync');
-            Route::delete('/riwayat/delete/{role:id}/delete', 'destroy')->name('.delete');
         });
 
         Route::prefix('mitra-cp')->name('mitra')->middleware('permission:access-mitracp')->group(function () {

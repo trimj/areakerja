@@ -13,13 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('finance_activities', function (Blueprint $table) {
-            $table->id();
-            $table->date('date');
-            $table->string('name');
-            $table->string('company');
-            $table->timestamps();
-        });
+        Schema::dropIfExists('finance_activities');
     }
 
     /**

@@ -147,8 +147,17 @@
                                     <?php if ($data['promo_status'] == 1) {
                                         echo 'checked';
                                     } ?>>
-                                <input type="hidden" value="0" name="tombol[]"
-                                    id="tombolhidden{{ $no }}" onchange="sum({{ $no }})" disabled>
+                                <?php if ($data['promo_status'] == 1) {
+                                    ?>    
+                                    <input type="hidden" value="0" name="tombol[]"
+                                        id="tombolhidden{{ $no }}" onchange="sum({{ $no }})" disabled>
+                                        <?php
+                                    }else {
+                                        ?>
+                                        <input type="hidden" value="0" name="tombol[]"
+                                        id="tombolhidden{{ $no }}" onchange="sum({{ $no }})">
+                                        <?php
+                                    } ?>
                                 <div
                                     class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-main2 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-main">
                                 </div>
