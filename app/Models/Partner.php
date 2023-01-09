@@ -48,4 +48,9 @@ class Partner extends Model
     {
         return $this->hasMany(CandidateUnlock::class, 'mitra_id', 'id');
     }
+
+    public function financial()
+    {
+        return $this->hasMany(Financial::class, 'partner_id', 'id');
+    }
 }
