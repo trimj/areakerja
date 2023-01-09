@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('financials', function (Blueprint $table) {
+        Schema::create('invoices', function (Blueprint $table) {
             $table->id();
 
             $table->bigInteger('coin_log_id')->unsigned();
@@ -36,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('financials');
+        Schema::dropIfExists('invoices');
     }
 };
