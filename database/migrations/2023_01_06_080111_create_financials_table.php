@@ -15,11 +15,16 @@ return new class extends Migration
     {
         Schema::create('financials', function (Blueprint $table) {
             $table->id();
-            $table->string('billing_name', 100);
-            $table->date('date');
-            $table->bigInteger('total');
-            $table->string('payment_status', 15);
-            $table->string('payment_method', 55);
+
+            $table->bigInteger('coin_log_id')->unsigned();
+            $table->foreign('coin_log_id')->references('id')->on('coin_logs')->onDelete('cascade');
+
+            $table->bigInteger('partner_id')->unsigned();
+            $table->foreign('partner_id')->references('id')->on('partners')->onDelete('cascade');
+            
+            $table->integer('amount')->default(0);
+            $table->enum('payment_status', ['pending', 'success', 'failed', 'expired', 'canceled'])->default('pending');
+            $table->string('snap_token')->nullable();
             $table->timestamps();
         });
     }
