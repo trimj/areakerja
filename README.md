@@ -13,3 +13,6 @@ Terminal 1 (Dev)
 
 Terminal 2 (Dev)
 1. `npm run watch`
+
+NGROK
+`ngrok http --scheme=http 8000`
