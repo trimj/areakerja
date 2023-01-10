@@ -119,8 +119,10 @@ Route::middleware('auth')->group(function () {
                 Route::prefix('/partner')->group(function () {
                     Route::get('/show/{partner:id}', 'show')->name('.show');
                     Route::get('/edit/{partner:id}', 'edit')->name('.edit');
-//                    Route::put('/edit/{partner:id}', 'update')->name('.update');
-//                    Route::delete('/destroy/{partner:id}', 'destroy')->name('.destroy');
+                    Route::put('/edit/{partner:id}', 'update')->name('.update');
+                    Route::delete('/destroy/{partner:id}', 'destroy')->name('.destroy');
+                    Route::patch('/accept/{partner:id}', 'acceptPrePartner')->name('.acceptPrePartner');
+                    Route::patch('/reject/{partner:id}', 'rejectPrePartner')->name('.rejectPrePartner');
                 });
             });
             // Manage Job Vacancies

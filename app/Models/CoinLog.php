@@ -15,7 +15,6 @@ class CoinLog extends Model
         'partner_id',
         'candidate_id',
         'job_id',
-        'coins',
         'type',
         'detail',
         'before',
@@ -26,7 +25,6 @@ class CoinLog extends Model
         'candidate_id' => 'integer',
         'mitra_id' => 'integer',
         'job_id' => 'integer',
-        'coins' => 'integer',
         'before' => 'integer',
         'after' => 'integer',
     ];

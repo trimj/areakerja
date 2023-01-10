@@ -5,27 +5,28 @@
         <div class="table-group">
             <table class="table-auto">
                 <thead>
-                <th></th>
                 <th>Mitra</th>
                 <th>Type</th>
-                <th>Coins</th>
+                <th>Detail</th>
                 <th>Action</th>
                 </thead>
                 <tbody>
                 @forelse($coinLogs as $log)
                     <tr>
-                        <td></td>
-                        <td>{{ $log->mitra->user->name }}</td>
-                        @if(!empty($log->candidate_id))
-                            <td>{{ $log->candidate->user->name }}</td>
-                        @endif
-                        @if(!empty($log->job_id))
-                            <td>{{ $log->job->title }}</td>
-                        @endif
-                        <td>{{ $log->coins }}</td>
-                        <td>{{ $log->before }}</td>
-                        <td>{{ $log->after }}</td>
                         <td>
+                            <a href="{{ route('public.mitra.show', ['mitra' => $log->partner_id]) }}" target="_blank">{{ $log->mitra->user->name }}</a>
+                        </td>
+                        <td class="text-center text-lg">
+                            @if($log->type == 'in')
+                                <i class="far fa-plus-square text-success"></i>
+                            @elseif($log->type == 'out')
+                                <i class="far fa-minus-square text-error"></i>
+                            @else
+                                <i class="far fa-question-circle text-gray-400"></i>
+                            @endif
+                        </td>
+                        <td>{{ $log->detail }}</td>
+                        <td class="flex items-center justify-center space-x-2">
                             @can('view-coin-log')
                                 <a href="{{ route('admin.coinlog.show', ['coinLog' => $log->id]) }}" class="btn btn-small btn-secondary" target="_blank"><i class="fas fa-eye"></i></a>
                             @endcan
@@ -43,7 +44,7 @@
                                 <form action="{{ route('admin.coinlog.destroy', ['coinLog' => $log->id]) }}" method="post" onsubmit="return confirm('Are you sure?');" class="space-y-0">
                                     @csrf
                                     @method('delete')
-                                    <button type="submit" class="btn btn-small btn-warning"><i class="fas fa-trash"></i></button>
+                                    <button type="submit" class="btn btn-small btn-danger"><i class="fas fa-trash"></i></button>
                                 </form>
                             @endif
                         </td>

@@ -139,10 +139,6 @@
 @endsection
 
 @section('footerJS')
-    @include('templates.member.location.provinsi')
-    @include('templates.member.location.kota')
-    @include('templates.member.location.kecamatan')
-    @include('templates.member.location.kelurahan')
     <script>
         function birthdate(date) {
             var options = {day: 'numeric', month: 'long', year: 'numeric'};

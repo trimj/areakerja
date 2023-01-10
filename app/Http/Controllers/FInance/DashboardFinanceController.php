@@ -32,6 +32,6 @@ class DashboardFinanceController extends Controller
 
     public function ajaxGetLastYearInvoice(Request $request)
     {
-        return response()->json(Invoice::all());        
+        return response()->json(Invoice::all());
     }
 }

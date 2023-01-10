@@ -71,7 +71,6 @@
         </div>
         <!-- endcard -->
     </div>
-
     <div class="ml-4 mb-4">
         <!-- chard -->
         <div class=" w-full relative mt-4">

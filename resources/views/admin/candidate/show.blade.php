@@ -96,19 +96,21 @@
     </section>
     <section>
         <div class="flex justify-center items-center space-x-2">
-            @can('accept-pre-candidate')
-                <form action="{{ route('admin.candidate.acceptPreCandidate', ['candidate' => $candidate->id]) }}" method="post" onsubmit="return confirm('Are you sure?');" class="space-y-0">
-                    @csrf
-                    @method('patch')
-                    <button type="submit" class="btn btn-success">Accept as Candidate</button>
-                </form>
-            @endcan
-            @if(!empty($candidate->submitted_at) && auth()->user()->can('accept-pre-candidate'))
-                <form action="{{ route('admin.candidate.rejectPreCandidate', ['candidate' => $candidate->id]) }}" method="post" onsubmit="return confirm('Are you sure?');" class="space-y-0">
-                    @csrf
-                    @method('patch')
-                    <button type="submit" class="btn btn-error">Reject as Candidate</button>
-                </form>
+            @if(!empty($candidate->submitted_at) && $candidate->user->hasRole(5))
+                @can('accept-pre-candidate')
+                    <form action="{{ route('admin.candidate.acceptPreCandidate', ['candidate' => $candidate->id]) }}" method="post" onsubmit="return confirm('Are you sure?');" class="space-y-0">
+                        @csrf
+                        @method('patch')
+                        <button type="submit" class="btn btn-success">Accept as Candidate</button>
+                    </form>
+                @endcan
+                @can('accept-pre-candidate')
+                    <form action="{{ route('admin.candidate.rejectPreCandidate', ['candidate' => $candidate->id]) }}" method="post" onsubmit="return confirm('Are you sure?');" class="space-y-0">
+                        @csrf
+                        @method('patch')
+                        <button type="submit" class="btn btn-error">Reject as Candidate</button>
+                    </form>
+                @endcan
             @endif
         </div>
     </section>
@@ -129,10 +131,6 @@
 @endsection
 
 @section('footerJS')
-    @include('templates.member.location.provinsi')
-    @include('templates.member.location.kota')
-    @include('templates.member.location.kecamatan')
-    @include('templates.member.location.kelurahan')
     <script>
         function birthdate(date) {
             var options = {day: 'numeric', month: 'long', year: 'numeric'};
