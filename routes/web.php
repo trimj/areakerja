@@ -41,6 +41,7 @@ use App\http\Controllers\Public\MoreaboutController as PublicMoreaboutController
 // Finance
 use App\Http\Controllers\Finance\DashboardFinanceController;
 use App\Http\Controllers\Finance\EditHargaController;
+use App\Http\Controllers\Finance\InvoiceController;
 use FontLib\Table\Type\name;
 
 require_once __DIR__ . '/auth.php';
@@ -165,9 +166,13 @@ Route::middleware('auth')->group(function () {
                 Route::post('/riwayat/permission/{role:id}/sync', 'syncPermissions')->name('.permission.sync');
             });
 
-            Route::get('/invoice', function () {
-                return view('finance.invoice');
-            })->name('.invoice');
+            // Route::get('/invoice', function () {
+            //     return view('finance.invoice');
+            // })->name('.invoice');
+            Route::controller(InvoiceController::class)->name('.invoice')->group(function(){
+                Route::get('/invoice','index')->name('.index');
+                Route::get('/invoice/detail/{id}','show')->name('.show');
+            });
 
             Route::controller(EditHargaController::class)->name('.edit-harga')->group(function () {
                 Route::get('/edit-harga', 'index')->name('.index');
