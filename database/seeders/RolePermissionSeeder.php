@@ -24,112 +24,113 @@ class RolePermissionSeeder extends Seeder
         $calonKandidatRole = Role::create(['name' => 'Calon Kandidat']);    // ID = 7
         $calonMitraRole = Role::create(['name' => 'Calon Mitra']);          // ID = 8
 
-        // Control Panel
-        Permission::create(['name' => 'access-admincp']);
-        Permission::create(['name' => 'access-financecp']);
-        Permission::create(['name' => 'access-mitracp']);
-        Permission::create(['name' => 'access-kandidatcp']);
-        Permission::create(['name' => 'access-usercp']);
+        $permissions = [
+            // Control Panel
+            'access-admincp',
+            'access-financecp',
+            'access-mitracp',
+            'access-kandidatcp',
+            'access-usercp',
+            // Coin Logs
+            'manage-coin-log',
+            'view-coin-log',
+            'delete-coin-log',
+            'restore-coin-log',
+            'forceDelete-coin-log',
+            // Top Up Coins
+            'top-up-coin',
+            'view-own-invoice',
+            'transaction-top-up-coin',
+            // Manage Article
+            'manage-article',
+            'create-article',
+            'edit-article',
+            'delete-article',
+            // Manage Job Vacancy
+            'manage-job-vacancy',
+            'create-job-vacancy',
+            'edit-job-vacancy',
+            'delete-job-vacancy',
+            // Manage Calon Kandidat
+            'accept-pre-candidate',
+            'reject-pre-candidate',
+            // Manage Calon Mitra
+            'accept-pre-partner',
+            'reject-pre-partner',
+            // Manage Partner
+            'manage-partner',
+            'create-partner',
+            'edit-partner',
+            'delete-partner',
+            // Manage Candidate
+            'manage-candidate',
+            'create-candidate',
+            'edit-candidate',
+            'delete-candidate',
+            // Manage Skills
+            'manage-skill',
+            'create-skill',
+            'edit-skill',
+            'delete-skill',
+            // Manage Job Candidate (Mitra)
+            'manage-job-candidate',
+            'submit-job-candidate',
+            'accept-job-candidate',
+            'reject-job-candidate',
+            'remove-job-candidate',
+            'view-job-candidate',
+            'unlock-job-candidate',
+            // Manage User
+            'manage-user',
+            'create-user',
+            'edit-user',
+            'delete-user',
+            'manage-user-role',
+            'give-user-role',
+            'revoke-user-role',
+            'give-user-permission',
+            'revoke-user-permission',
+            // Manage Role & Permission
+            'manage-role',
+            'create-role',
+            'edit-role',
+            'delete-role',
+            'sync-role-permission',
+            // Finance
+            'manage-wallet',
+            'access-wallet',
+            'create-wallet',
+            'edit-wallet',
+            'delete-wallet',
+            'manage-income',
+            'access-income',
+            'create-income',
+            'edit-income',
+            'delete-income',
+            'manage-expense',
+            'access-expense',
+            'create-expense',
+            'edit-expense',
+            'delete-expense',
+            'export-report',
+            // Kandidat
+            'manage-my-job',
+            'accept-job-from-mitra',
+            'reject-job-from-mitra',
+            'register-job-for-me',
+            // Member
+            'daftar-kandidat',
+            'daftar-mitra',
+        ];
 
-        // Coins History
-        Permission::create(['name' => 'manage-coin-log']);
-        Permission::create(['name' => 'view-coin-log']);
-        Permission::create(['name' => 'delete-coin-log']);
-        Permission::create(['name' => 'restore-coin-log']);
-        Permission::create(['name' => 'forceDelete-coin-log']);
+        foreach ($permissions as $permission) {
+            Permission::create(['name' => $permission]);
+        }
 
-        // Manage Article
-        Permission::create(['name' => 'manage-article']);
-        Permission::create(['name' => 'create-article']);
-        Permission::create(['name' => 'edit-article']);
-        Permission::create(['name' => 'delete-article']);
-
-        // Manage Job Vacancy
-        Permission::create(['name' => 'manage-job-vacancy']);
-        Permission::create(['name' => 'create-job-vacancy']);
-        Permission::create(['name' => 'edit-job-vacancy']);
-        Permission::create(['name' => 'delete-job-vacancy']);
-
-        // Manage Calon Kandidat
-        Permission::create(['name' => 'accept-pre-candidate']);
-        Permission::create(['name' => 'reject-pre-candidate']);
-
-        // Manage Calon Mitra
-        Permission::create(['name' => 'accept-pre-partner']);
-        Permission::create(['name' => 'reject-pre-partner']);
-
-        // Manage Partner
-        Permission::create(['name' => 'manage-partner']);
-        Permission::create(['name' => 'create-partner']);
-        Permission::create(['name' => 'edit-partner']);
-        Permission::create(['name' => 'delete-partner']);
-
-        // Manage Candidate
-        Permission::create(['name' => 'manage-candidate']);
-        Permission::create(['name' => 'create-candidate']);
-        Permission::create(['name' => 'edit-candidate']);
-        Permission::create(['name' => 'delete-candidate']);
-
-        // Manage Skills
-        Permission::create(['name' => 'manage-skill']);
-        Permission::create(['name' => 'create-skill']);
-        Permission::create(['name' => 'edit-skill']);
-        Permission::create(['name' => 'delete-skill']);
-
-        // Manage Job Candidate (Mitra)
-        Permission::create(['name' => 'manage-job-candidate']);
-        Permission::create(['name' => 'submit-job-candidate']);
-        Permission::create(['name' => 'accept-job-candidate']);
-        Permission::create(['name' => 'reject-job-candidate']);
-        Permission::create(['name' => 'remove-job-candidate']);
-        Permission::create(['name' => 'view-job-candidate']);
-        Permission::create(['name' => 'unlock-job-candidate']);
-
-        // Manage User
-        Permission::create(['name' => 'manage-user']);
-        Permission::create(['name' => 'create-user']);
-        Permission::create(['name' => 'edit-user']);
-        Permission::create(['name' => 'delete-user']);
-        Permission::create(['name' => 'manage-user-role']);
-        Permission::create(['name' => 'give-user-role']);
-        Permission::create(['name' => 'revoke-user-role']);
-        Permission::create(['name' => 'give-user-permission']);
-        Permission::create(['name' => 'revoke-user-permission']);
-
-        // Manage Role & Permission
-        Permission::create(['name' => 'manage-role']);
-        Permission::create(['name' => 'create-role']);
-        Permission::create(['name' => 'edit-role']);
-        Permission::create(['name' => 'delete-role']);
-        Permission::create(['name' => 'sync-role-permission']);
-
-        // Finance
-        Permission::create(['name' => 'manage-wallet']);
-        Permission::create(['name' => 'access-wallet']);
-        Permission::create(['name' => 'create-wallet']);
-        Permission::create(['name' => 'edit-wallet']);
-        Permission::create(['name' => 'delete-wallet']);
-        Permission::create(['name' => 'manage-income']);
-        Permission::create(['name' => 'access-income']);
-        Permission::create(['name' => 'create-income']);
-        Permission::create(['name' => 'edit-income']);
-        Permission::create(['name' => 'delete-income']);
-        Permission::create(['name' => 'manage-expense']);
-        Permission::create(['name' => 'access-expense']);
-        Permission::create(['name' => 'create-expense']);
-        Permission::create(['name' => 'edit-expense']);
-        Permission::create(['name' => 'delete-expense']);
-        Permission::create(['name' => 'export-report']);
-
-        // Kandidat
-        Permission::create(['name' => 'manage-my-job']);
-        Permission::create(['name' => 'accept-job-from-mitra']);
-        Permission::create(['name' => 'reject-job-from-mitra']);
-        Permission::create(['name' => 'register-job-for-me']);
-
-        // Member
-        Permission::create(['name' => 'daftar-kandidat']);
-        Permission::create(['name' => 'daftar-mitra']);
+//        Permission::create([
+//            'name' => 'transaction-top-up-coin',
+//            'guard_name' => 'api',
+//        ]);
 
         $calonKandidatRole->givePermissionTo([
             'access-usercp',
@@ -170,6 +171,9 @@ class RolePermissionSeeder extends Seeder
             'remove-job-candidate',
             'view-job-candidate',
             'unlock-job-candidate',
+            'top-up-coin',
+            'view-own-invoice',
+            'transaction-top-up-coin',
         ]);
 
         $financeRole->givePermissionTo([

@@ -44,4 +44,13 @@ class DashboardFinanceController extends Controller
             ['riwayat']
         ));
     }
+
+    public function ajaxPagination(Request $request)
+    {
+        $items = FinanceActivity::paginate(1);
+        if ($request->ajax()) {
+            return view('data', compact('items'));
+        }
+        return view('items',compact('items'));
+    }
 }
