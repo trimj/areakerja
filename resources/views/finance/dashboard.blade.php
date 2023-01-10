@@ -33,10 +33,7 @@
                             <span class="text-sm">Admin</span>
                         </div>
                         <div class="flex flex-col w-full">
-                            <div class=" flex flex-row gap-2">
-                                <button class="rounded-full items-center bg-main mt-4 w-28 h-8">
-                                    Sleep
-                                </button>
+                            <div class=" flex flex-row gap-2 ml-auto">
                                 <button class="rounded-full items-center bg-main mt-4 w-28 h-8" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     Log out
                                 </button>
