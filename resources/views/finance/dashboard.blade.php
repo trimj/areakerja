@@ -55,7 +55,6 @@
                                 Jumlah Saldo Saat ini
                             </h6>
                             <span class="text-xl font-semibold">Rp. {{ $saldo['jumlah'] }}</span>
-                            <span class="text-xl font-semibold">Rp. {{ $saldo['jumlah'] }}</span>
                         </div>
                     </div>
                 </div>
@@ -65,7 +64,6 @@
                             <h6 class="text-xs font-medium leading-none tracking-wider text-gray-500 uppercase-light">
                                 Rata - Rata Pendapatan
                             </h6>
-                            <span class="text-xl font-semibold">Rp. {{ $saldo['mean'] }}</span>
                             <span class="text-xl font-semibold">Rp. {{ $saldo['mean'] }}</span>
                         </div>
                     </div>
@@ -136,24 +134,6 @@
                                 <th>
                                     <p class="text-center">Aksi</p>
                                 </th>
-                                <th>
-                                    <p class="text-center">ID Order</p>
-                                </th>
-                                <th>
-                                    <p class="text-center">Nama</p>
-                                </th>
-                                <th>
-                                    <p class="text-center">Tanggal</p>
-                                </th>
-                                <th>
-                                    <p class="text-center">Total</p>
-                                </th>
-                                <th>
-                                    <p class="text-center">Payment Status</p>
-                                </th>
-                                <th>
-                                    <p class="text-center">Aksi</p>
-                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -162,11 +142,8 @@
                                     <td class="text-center">{{ $value->id }}</td>
                                     <td class="text-center">{{ $value->partner->user->name }}</td>
                                     <td class="text-center">{{ date('d M, Y', strtotime($value->created_at)) }}</td>
-                                    <td class="text-center">RP. {{ $value->amount }}</td>
-                                    <td class="text-center">{{ date('d M, Y', strtotime($value->created_at)) }}</td>
-                                    <td class="text-center">RP. {{ $value->amount }}</td>
+                                    <td class="text-center">RP. {{ $value->price }}</td>
                                     <td class="text-center">{{ $value->payment_status }}</td>
-                                    <td class="text-center">
                                     <td class="text-center">
                                         <button
                                             class="py-2 px-8 text-sm text-white bg-main hover:bg-orange-500 rounded-full"

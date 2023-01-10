@@ -20,6 +20,7 @@ return new class extends Migration {
 
             $table->string('invoice');
             $table->integer('amount')->default(0);
+            $table->integer('price')->default(0);
             $table->enum('payment_status', ['pending', 'success', 'failed', 'expired', 'canceled'])->default('pending');
             $table->string('payment_method', 55)->nullable();
             $table->timestamps();

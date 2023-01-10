@@ -53,8 +53,8 @@
                                         </thead>
                                         <tbody class="w-full">
                                             <tr class="h-12">
-                                                <td class="w-16">{{$invoice->logkoin->id}}</td>
-                                                <td>Coin {{$invoice->logkoin->coins}}</td>
+                                                <td class="w-16">{{$invoice->invoice}}</td>
+                                                <td>Coin {{$invoice->amount}}</td>
                                                 <td class="text-right w-56">Rp. {{$invoice->amount}} </td>
                                             </tr>
                                             <tr class="h-12">
