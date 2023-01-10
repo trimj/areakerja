@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Public;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class MoreaboutController extends Controller
+class AboutController extends Controller
 {
     public function index(){
-        return view('public.about.index');
+        return  view('public.about.index');
     }
 }

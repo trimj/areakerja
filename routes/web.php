@@ -35,7 +35,7 @@ use App\Http\Controllers\Public\ArticleController as PublicArticleController;
 use App\Http\Controllers\Public\JobVacancyController as PublicLowonganController;
 use App\http\Controllers\Public\ContactController as PublicContactController;
 use App\Http\Controllers\Public\MitraProfileController as PublicMitraProfileController;
-use App\http\Controllers\Public\MoreaboutController as PublicMoreaboutController;
+use App\Http\Controllers\Public\AboutController as PublicAboutController;
 
 
 // Finance
@@ -291,6 +291,7 @@ Route::middleware('auth')->group(function () {
 Route::name('public')->group(function () {
     Route::get('/', [PublicHomeController::class, 'index'])->name('.home');
     Route::get('/contact', [PublicContactController::class, 'index'])->name('.contact');
+    Route::get('/tentangkami', [PublicAboutController::class, 'index'])->name('.about');
 
     Route::controller(PublicArticleController::class)->name('.article')->group(function () {
         Route::get('/tips-kerja', 'index')->name('.index');
