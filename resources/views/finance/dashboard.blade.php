@@ -33,7 +33,7 @@
                                 <button class="rounded-full items-center bg-main mt-4 w-28 h-8">
                                     Sleep
                                 </button>
-                                <button class="rounded-full items-center bg-main mt-4 w-28 h-8">
+                                <button class="rounded-full items-center bg-main mt-4 w-28 h-8" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     Log out
                                 </button>
                             </div>
