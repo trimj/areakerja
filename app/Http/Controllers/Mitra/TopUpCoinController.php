@@ -38,7 +38,7 @@ class TopUpCoinController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'coin' => ['required', 'numeric', 'min:5', 'max:10000'],
+            'coin' => ['required', 'numeric', 'min:5', 'max:1000'],
         ]);
 
         $invoice_unique = uniqid();
