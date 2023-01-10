@@ -13,22 +13,15 @@ class Invoice extends Model
     protected $table = 'invoices';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'coin_log_id',
         'partner_id',
         'invoice',
         'amount',
         'payment_status',
-        'snap_token',
     ];
 
     public function partner()
     {
         return $this->hasOne(Partner::class, 'id', 'partner_id');
-    }
-
-    public function logkoin()
-    {
-        return $this->hasOne(CoinLog::class, 'id', 'coin_log_id');
     }
 
     public function statusPending()
@@ -43,7 +36,7 @@ class Invoice extends Model
         $this->save();
     }
 
-    public function statusFailes()
+    public function statusFailed()
     {
         $this->attributes['payment_status'] = 'failed';
         $this->save();

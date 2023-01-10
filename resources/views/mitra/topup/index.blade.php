@@ -83,4 +83,28 @@
             </div>
         </div>
     </section>
+    <section>
+        <div class="table-group">
+            <table class="table-auto">
+                <thead>
+                <th>Invoice</th>
+                <th>amount</th>
+                <th>Status</th>
+                </thead>
+                <tbody>
+                @forelse($invoices as $invoice)
+                    <tr>
+                        <td class="text-center">#{{ $invoice->invoice }}</td>
+                        <td class="text-center">{{ $invoice->amount }}</td>
+                        <td class="text-center capitalize">{{ $invoice->payment_status }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td class="text-center" colspan="100%"></td>
+                    </tr>
+                @endforelse
+                </tbody>
+            </table>
+        </div>
+    </section>
 @endsection

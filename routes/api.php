@@ -20,7 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::controller(MitraTopUpCoinController::class)->middleware('permission:top-up-coin')->prefix('/mitra-cp/topup')->name('mitra.topup')->group(function () {
-    Route::post('/coins/proses', 'store')->name('.proses');
-    Route::post('/coins/notification', 'notification')->name('.notification');
-});
+Route::post('/topup/coins/notification', [MitraTopUpCoinController::class, 'notification']);

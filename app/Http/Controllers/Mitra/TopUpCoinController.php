@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Mitra;
 
 use App\Http\Controllers\Controller;
+use App\Models\CoinLog;
 use App\Models\Invoice;
+use App\Models\Partner;
 use App\Models\Price;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +18,7 @@ class TopUpCoinController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:top-up-coin');
+        $this->middleware('permission:top-up-coin')->except('notification');
 
         \Midtrans\Config::$serverKey = config('services.midtrans.serverKey');
         \Midtrans\Config::$isProduction = config('services.midtrans.isProduction');
@@ -29,6 +31,7 @@ class TopUpCoinController extends Controller
         return view('mitra.topup.index', [
             'page_title' => $this->page_title,
             'coin' => Price::where('type', 'coin')->first(),
+            'invoices' => Invoice::where('partner_id', auth()->user()->partner->id)->orderBy('created_at', 'desc')->limit(5)->get(),
         ]);
     }
 
@@ -43,7 +46,6 @@ class TopUpCoinController extends Controller
         $coin_price = Price::where('type', 'coin')->first();
 
         $invoice = Invoice::create([
-            'coin_log_id' => $request->donor_mail,
             'partner_id' => $user->partner->id,
             'invoice' => $invoice_unique,
             'amount' => intval($request->coin),
@@ -63,7 +65,7 @@ class TopUpCoinController extends Controller
             'item_details' => [
                 [
                     'id' => 'Top Up Coin',
-                    'price' => $coin_price * $invoice->amount,
+                    'price' => $coin_price->price * $invoice->amount,
                     'quantity' => 1,
                     'name' => 'Top Up ' . $invoice->amount . ' Coin(s)',
                 ],
@@ -91,7 +93,28 @@ class TopUpCoinController extends Controller
             $orderId = $notification->order_id;
             $fraudStatus = $notification->fraud_status;
 
-            $invoice = Invoice::where('')->first();
+            $invoice = Invoice::where('invoice', $orderId)->first();
+
+            if ($transactionStatus == 'capture') {
+                if ($paymentType == 'credit_card') {
+                    if ($fraudStatus == 'challenge') {
+                        $invoice->statusPending();
+                    } else {
+                        $invoice->statusSuccess();
+                    }
+                }
+            } else if ($transactionStatus == 'settlement') {
+                Partner::where('id', $invoice->partner_id)->increment('coins', intval($invoice->amount));
+                $invoice->statusSuccess();
+            } else if ($transactionStatus == 'pending') {
+                $invoice->statusPending();
+            } else if ($transactionStatus == 'deny') {
+                $invoice->statusFailed();
+            } else if ($transactionStatus == 'expire') {
+                $invoice->statusExpired();
+            } else if ($transactionStatus == 'cancel') {
+                $invoice->statusCanceled();
+            }
         });
 
         return;

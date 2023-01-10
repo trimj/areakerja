@@ -15,6 +15,7 @@ class CoinLog extends Model
         'partner_id',
         'candidate_id',
         'job_id',
+        'invoice',
         'type',
         'detail',
         'before',

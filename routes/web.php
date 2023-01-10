@@ -224,8 +224,9 @@ Route::middleware('auth')->group(function () {
             // Top-Up Coins
             Route::controller(MitraTopUpCoinController::class)->prefix('/topup')->name('.topup')->group(function () {
                 Route::get('/coins', 'index')->name('.index');
-                Route::get('/coins/finish', [DonationController::class, 'donasi_finish'])->name('.finish');
-                Route::get('/coins/error', [DonationController::class, 'donasi_error'])->name('.error');
+                Route::post('/coins/proses', 'store')->name('.proses');
+                Route::get('/coins/finish', 'transactionFinish')->name('.finish');
+                Route::get('/coins/error', 'transactionError')->name('.error');
             });
         });
 
