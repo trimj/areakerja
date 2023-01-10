@@ -23,4 +23,8 @@ class Invoice extends Model
     {
         return $this->hasOne(Partner::class, 'id', 'partner_id');
     }
+    public function logkoin()
+    {
+        return $this->hasOne(CoinLog::class, 'id', 'coin_log_id');
+    }
 }

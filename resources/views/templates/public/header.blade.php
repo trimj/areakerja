@@ -77,6 +77,11 @@
                                         <a href="{{ route('admin.cp') }}" class="btn-dropdown">Admin Panel</a>
                                     @endcan
                                 @endif
+                                @if(auth()->user()->hasRole([3]))
+                                    @can('access-financecp')
+                                        <a href="{{ route('finance') }}" class="btn-dropdown">Finance</a>
+                                    @endcan
+                                @endif
                                 <a href="#logout" class="btn-dropdown" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                             </div>
                         </div>

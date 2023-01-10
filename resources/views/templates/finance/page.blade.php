@@ -4,10 +4,12 @@
 @include('templates.finance.head')
 
 <body>
-    <div x-data="setup()" x-init="$refs.loading.classList.add('hidden'); setColors(color);" :class="{ 'dark': isDark}">
+    <div x-data="setup()" x-init="$refs.loading.classList.add('hidden');
+    setColors(color);" :class="{ 'dark': isDark }">
         <div class="flex h-screen antialiased text-gray-900 bg-gray-100">
             <!-- Loading screen -->
-            <div x-ref="loading" class="fixed inset-0 z-50 flex items-center justify-center text-2xl font-semibold text-white bg-primary-darker">
+            <div x-ref="loading"
+                class="fixed inset-0 z-50 flex items-center justify-center text-2xl font-semibold text-white bg-primary-darker">
                 Loading.....
             </div>
             @include('templates.finance.sidebar')
@@ -17,9 +19,8 @@
             </div>
         </div>
     </div>
-    <!-- All javascript code in this project for now is just for demo DON'T RELY ON IT  -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.bundle.min.js"></script>
-    <script src="{{asset('js/finance.js')}}"></script>
+    <script src="{{ asset('js/finance.js') }}"></script>
     <script src="https://kit.fontawesome.com/d770eb273a.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/flowbite@1.5.3/dist/flowbite.js"></script>
 
@@ -33,7 +34,7 @@
                 return (
                     !!window.matchMedia &&
                     window.matchMedia("(prefers-color-scheme: dark)")
-                        .matches
+                    .matches
                 );
             };
 
@@ -84,6 +85,7 @@
             };
 
             const updateBarChart = (on) => {
+                console.log('masuk');
                 const data = {
                     data: randomData(),
                     backgroundColor: "rgb(207, 250, 254)",

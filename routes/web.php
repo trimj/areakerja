@@ -35,10 +35,13 @@ use App\Http\Controllers\Public\ArticleController as PublicArticleController;
 use App\Http\Controllers\Public\JobVacancyController as PublicLowonganController;
 use App\http\Controllers\Public\ContactController as PublicContactController;
 use App\Http\Controllers\Public\MitraProfileController as PublicMitraProfileController;
+use App\http\Controllers\Public\MoreaboutController as PublicMoreaboutController;
+
 
 // Finance
 use App\Http\Controllers\Finance\DashboardFinanceController;
 use App\Http\Controllers\Finance\EditHargaController;
+use App\Http\Controllers\Finance\InvoiceController;
 use FontLib\Table\Type\name;
 
 require_once __DIR__ . '/auth.php';
@@ -162,12 +165,16 @@ Route::middleware('auth')->group(function () {
                 Route::get('/', 'index');
                 Route::get('/riwayat', 'index')->name('.index');
                 Route::get('/riwayat/show/{role:id}', 'show')->name('.show');
-                Route::post('/riwayat/permission/{role:id}/sync', 'syncPermissions')->name('.permission.sync');
+                Route::get('/riwayat/tahun', 'ajaxGetLastYearInvoice')->name('.ajax.lastyear');
             });
 
-            Route::get('/invoice', function () {
-                return view('finance.invoice');
-            })->name('.invoice');
+            // Route::get('/invoice', function () {
+            //     return view('finance.invoice');
+            // })->name('.invoice');
+            Route::controller(InvoiceController::class)->name('.invoice')->group(function(){
+                Route::get('/invoice','index')->name('.index');
+                Route::get('/invoice/detail/{id}','show')->name('.show');
+            });
 
             Route::controller(EditHargaController::class)->name('.edit-harga')->group(function () {
                 Route::get('/edit-harga', 'index')->name('.index');

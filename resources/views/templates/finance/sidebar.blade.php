@@ -19,8 +19,8 @@
                 </a>
             </div>
 
-            <div x-data="{ isActive: {{Route::is('finance.invoice') ? 'true' : 'false'}}, open: {{Route::is('finance.invoice') ? 'true' : 'false'}}}">
-                <a href="{{route('finance.invoice')}}"
+            <div x-data="{ isActive: {{Route::is('finance.invoice.index') ? 'true' : 'false'}}, open: {{Route::is('finance.invoice.index') ? 'true' : 'false'}}}">
+                <a href="{{route('finance.invoice.index')}}"
                     class="flex items-center p-2 pl-3 text-tertiary-text transition-colors rounded-md hover:text-white hover:bg-tertiary-active"
                     :class="{'bg-tertiary-active': isActive || open}" role="button" aria-haspopup="true"
                     :aria-expanded="(open || isActive) ? 'true' : 'false'">
@@ -46,21 +46,16 @@
 
         <!-- Sidebar footer -->
         <div class="flex-shrink-0 px-2 py-4 space-y-2">
-            <div class="flex flex-row items-center justify-center">
-                <img src="{{asset('assets/finance/dummy.svg')}}" alt="" class="rounded-full w-11 mr-4">
-                <i class="fa-solid fa-arrow-right-from-bracket text-3xl text-tertiary-text"></i>
+            <div class="md:mt-auto mt-2 border-t-2 border-polar4/20 lg:border-0 lg:border-transparent">
+                <div class="flex items-center justify-between cursor-pointer px-5 py-3 hover:bg-polar4/20 text-white" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <img class="h-10 w-10 rounded-full" src="{{ asset('assets/public/photo') . '/' . auth()->user()->photo }}" alt="" onerror="this.src='{{ asset('assets/public/photo/default_photo.png') }}'">
+                    <div class="text-left ml-2">
+                        <div class="text-base text-white font-semibold">{{ Str::words(auth()->user()->name, 3, null) }} </div>
+                        <div class="text-sm text-white font-normal">{{ auth()->user()->getRoleNames()->first() }}</div>
+                    </div>
+                    <i class="fas fa-sign-out-alt fa-fw text-xl ml-auto"></i>
+                </div>
             </div>
-            <button @click="openSettingsPanel" type="button"
-                class="flex items-center justify-center w-full px-4 py-2 text-sm text-tertiary-text rounded-md bg-primary hover:bg-white focus:outline-none focus:ring focus:ring-primary-dark focus:ring-offset-1 focus:ring-offset-white">
-                <span aria-hidden="true">
-                    <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-                    </svg>
-                </span>
-                <span>Customize</span>
-            </button>
         </div>
     </div>
 </aside>
