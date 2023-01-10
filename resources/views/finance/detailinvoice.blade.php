@@ -20,9 +20,13 @@
                                 <div class="flex flex-col">
                                     <p class="text-xl font-bold">Billed To:</p>
                                     <p class="text-base">{{$invoice->partner->user->name}}</p>
-                                    <p class="text-base">1234 Main</p>
-                                    <p class="text-base">{{$invoice->partner->address['provinsi']}}</p>
-                                    <p class="text-base">{{$invoice->partner->address['jalan']}}</p>
+                                    @foreach( array_reverse($invoice->partner->address) as $key => $address)
+                                    @if($key != 'jalan')
+                                    <p class="text-base">{{$invoice->partner->address[$key]}}</p>
+                                    @else
+                                        {{ $invoice->partner->address[$key] }}
+                                    @endif
+                                    @endforeach
                                 </div>
                             </div>
 
