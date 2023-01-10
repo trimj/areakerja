@@ -127,6 +127,7 @@
       <path value="$PROJECT_DIR$/vendor/phenx/php-font-lib" />
       <path value="$PROJECT_DIR$/vendor/phenx/php-svg-lib" />
       <path value="$PROJECT_DIR$/vendor/rwx-rwx/laravel-bbcode-parser" />
+      <path value="$PROJECT_DIR$/vendor/midtrans/midtrans-php" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.0" />

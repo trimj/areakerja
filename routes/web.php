@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-// Added
 // Admin
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -19,6 +18,7 @@ use App\Http\Controllers\Mitra\PageController as MitraPageController;
 use App\Http\Controllers\Mitra\JobVacancyController as MitraLowonganController;
 use App\Http\Controllers\Mitra\JobCondidateController as MitraJobCandidateController;
 use App\Http\Controllers\Mitra\JobPelamarController as MitraJobPelamarController;
+use App\Http\Controllers\Mitra\TopUpCoinController as MitraTopUpCoinController;
 
 // Candidate
 use App\Http\Controllers\Candidate\PageController as CandidatePageController;
@@ -171,9 +171,9 @@ Route::middleware('auth')->group(function () {
             // Route::get('/invoice', function () {
             //     return view('finance.invoice');
             // })->name('.invoice');
-            Route::controller(InvoiceController::class)->name('.invoice')->group(function(){
-                Route::get('/invoice','index')->name('.index');
-                Route::get('/invoice/detail/{id}','show')->name('.show');
+            Route::controller(InvoiceController::class)->name('.invoice')->group(function () {
+                Route::get('/invoice', 'index')->name('.index');
+                Route::get('/invoice/detail/{id}', 'show')->name('.show');
             });
 
             Route::controller(EditHargaController::class)->name('.edit-harga')->group(function () {
@@ -220,6 +220,12 @@ Route::middleware('auth')->group(function () {
                         Route::put('/{jobCandidate:id}/reject', 'rejectCandidate')->name('.reject');
                     });
                 });
+            });
+            // Top-Up Coins
+            Route::controller(MitraTopUpCoinController::class)->prefix('/topup')->name('.topup')->group(function () {
+                Route::get('/coins', 'index')->name('.index');
+                Route::get('/coins/finish', [DonationController::class, 'donasi_finish'])->name('.finish');
+                Route::get('/coins/error', [DonationController::class, 'donasi_error'])->name('.error');
             });
         });
 
