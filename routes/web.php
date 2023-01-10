@@ -163,7 +163,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('/', 'index');
                 Route::get('/riwayat', 'index')->name('.index');
                 Route::get('/riwayat/show/{role:id}', 'show')->name('.show');
-                Route::post('/riwayat/permission/{role:id}/sync', 'syncPermissions')->name('.permission.sync');
+                Route::get('/riwayat/tahun', 'ajaxGetLastYearInvoice')->name('.ajax.lastyear');
             });
 
             // Route::get('/invoice', function () {

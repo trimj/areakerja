@@ -12,7 +12,14 @@ class DashboardFinanceController extends Controller
     public function index()
     {
         $riwayat = Invoice::all();
-        return view('finance.dashboard', compact('riwayat'));
+        // $saldo = [];
+        $saldo['jumlah'] = 0;
+        $saldo['mean'] = 0;
+        if (count($riwayat) > 0) {
+            $saldo['jumlah'] = $riwayat->sum('amount');
+            $saldo['mean'] = $saldo['jumlah']/$riwayat->count();
+        }
+        return view('finance.dashboard', compact(['riwayat', 'saldo']));
     }
 
     public function show($id)
@@ -23,12 +30,8 @@ class DashboardFinanceController extends Controller
         ));
     }
 
-    public function ajaxPagination(Request $request)
+    public function ajaxGetLastYearInvoice(Request $request)
     {
-        $items = FinanceActivity::paginate(1);
-        if ($request->ajax()) {
-            return view('data', compact('items'));
-        }
-        return view('items',compact('items'));
+        return response()->json(Invoice::all());        
     }
 }
