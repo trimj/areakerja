@@ -29,7 +29,7 @@ class TopUpCoinController extends Controller
         return view('mitra.topup.index', [
             'page_title' => $this->page_title,
             'coin' => Price::where('type', 'coin')->first(),
-            'invoices' => Invoice::where('partner_id', auth()->user()->partner->id)->orderBy('created_at', 'desc')->paginate(3),
+            'invoices' => Invoice::where('partner_id', auth()->user()->partner->id)->orderBy('created_at', 'desc')->paginate(10),
         ]);
     }
 
