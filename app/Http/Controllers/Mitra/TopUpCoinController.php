@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\Mitra;
 
 use App\Http\Controllers\Controller;
-use App\Models\CoinLog;
 use App\Models\Invoice;
 use App\Models\Partner;
 use App\Models\Price;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class TopUpCoinController extends Controller
@@ -31,7 +29,7 @@ class TopUpCoinController extends Controller
         return view('mitra.topup.index', [
             'page_title' => $this->page_title,
             'coin' => Price::where('type', 'coin')->first(),
-            'invoices' => Invoice::where('partner_id', auth()->user()->partner->id)->orderBy('created_at', 'desc')->limit(5)->get(),
+            'invoices' => Invoice::where('partner_id', auth()->user()->partner->id)->orderBy('created_at', 'desc')->paginate(3),
         ]);
     }
 
@@ -41,20 +39,20 @@ class TopUpCoinController extends Controller
             'coin' => ['required', 'numeric', 'min:5', 'max:1000'],
         ]);
 
-        $invoice_unique = uniqid();
         $user = auth()->user();
         $coin_price = Price::where('type', 'coin')->first();
 
         $invoice = Invoice::create([
             'partner_id' => $user->partner->id,
-            'invoice' => $invoice_unique,
+            'invoice' => uniqid(),
             'amount' => intval($request->coin),
+            'price' => intval($coin_price->price),
         ]);
 
         $payload = [
             'transaction_details' => [
                 'order_id' => $invoice->invoice,
-                'gross_amount' => $invoice->amount, // no decimal allowed for creditcard
+                'gross_amount' => intval($invoice->amount), // no decimal allowed for creditcard
             ],
 
             'customer_details' => [
@@ -64,10 +62,10 @@ class TopUpCoinController extends Controller
 
             'item_details' => [
                 [
-                    'id' => 'Top Up Coin',
-                    'price' => $coin_price->price * $invoice->amount,
+                    'id' => 'Top Up ' . intval($invoice->amount) . ' Coin(s)',
+                    'price' => intval($invoice->price) * intval($invoice->amount),
                     'quantity' => 1,
-                    'name' => 'Top Up ' . $invoice->amount . ' Coin(s)',
+                    'name' => 'Top Up ' . intval($invoice->amount) . ' Coin(s)',
                 ],
             ],
         ];
@@ -100,12 +98,13 @@ class TopUpCoinController extends Controller
                     if ($fraudStatus == 'challenge') {
                         $invoice->statusPending();
                     } else {
-                        $invoice->statusSuccess();
+                        Partner::where('id', $invoice->partner_id)->increment('coins', intval($invoice->amount));
+                        $invoice->statusSuccess($paymentType);
                     }
                 }
             } else if ($transactionStatus == 'settlement') {
                 Partner::where('id', $invoice->partner_id)->increment('coins', intval($invoice->amount));
-                $invoice->statusSuccess();
+                $invoice->statusSuccess($paymentType);
             } else if ($transactionStatus == 'pending') {
                 $invoice->statusPending();
             } else if ($transactionStatus == 'deny') {
@@ -122,7 +121,6 @@ class TopUpCoinController extends Controller
 
     public function transactionFinish()
     {
-        Alert::success('Success', 'Thanks for purchasing our produnct!');
         return redirect()->route('mitra.topup.index');
     }
 

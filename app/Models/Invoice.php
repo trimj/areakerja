@@ -16,16 +16,14 @@ class Invoice extends Model
         'partner_id',
         'invoice',
         'amount',
+        'price',
         'payment_status',
+        'payment_method',
     ];
 
     public function partner()
     {
         return $this->hasOne(Partner::class, 'id', 'partner_id');
-    }
-    public function logkoin()
-    {
-        return $this->hasOne(CoinLog::class, 'id', 'coin_log_id');
     }
 
     public function statusPending()
@@ -34,9 +32,10 @@ class Invoice extends Model
         $this->save();
     }
 
-    public function statusSuccess()
+    public function statusSuccess($paymentType)
     {
         $this->attributes['payment_status'] = 'success';
+        $this->attributes['payment_method'] = $paymentType;
         $this->save();
     }
 

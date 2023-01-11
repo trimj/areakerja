@@ -171,9 +171,9 @@ Route::middleware('auth')->group(function () {
             // Route::get('/invoice', function () {
             //     return view('finance.invoice');
             // })->name('.invoice');
-            Route::controller(InvoiceController::class)->name('.invoice')->group(function(){
-                Route::get('/invoice','index')->name('.index');
-                Route::get('/invoice/detail/{id}','show')->name('.show');
+            Route::controller(InvoiceController::class)->name('.invoice')->group(function () {
+                Route::get('/invoice', 'index')->name('.index');
+                Route::get('/invoice/detail/{id}', 'show')->name('.show');
             });
 
             Route::controller(EditHargaController::class)->name('.edit-harga')->group(function () {
