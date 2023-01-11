@@ -34,7 +34,8 @@
                         </div>
                         <div class="flex flex-col w-full">
                             <div class=" flex flex-row gap-2 ml-auto">
-                                <button class="rounded-full items-center bg-main mt-4 w-28 h-8" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <button class="rounded-full items-center bg-main mt-4 w-28 h-8"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     Log out
                                 </button>
                             </div>
@@ -91,8 +92,8 @@
                         </button>
                     </div>
                 </div>
-                <div class="relative p-4 h-80">
-                    <canvas id="barChart"></canvas>
+                <div class="relative p-4">
+                    <canvas id="myBarChart"></canvas>
                 </div>
             </div>
         </div>
@@ -101,6 +102,7 @@
 
     <div class="flex flex-row w-96 sm:w-auto ml-4 bg-white">
         <div class="container mx-auto py-6 px-4" x-cloak>
+        <div class="container mx-auto py-6 px-4" x-cloak>
             <div class="mb-4 flex justify-between items-center">
                 <div class="flex flex-row">
                     <p class="text-xl">Riwayat Transaksi Terakhir</p>
@@ -108,7 +110,9 @@
             </div>
 
             <div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative">
+            <div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative">
                 <div class="table-responsive">
+                    <table class="table table-striped table-hover" id="riwayat-transaksi" style="width:100%;">
                     <table class="table table-striped table-hover" id="riwayat-transaksi" style="width:100%;">
                         <thead>
                             <tr>
@@ -138,7 +142,7 @@
                                     <td class="text-center">{{ $value->id }}</td>
                                     <td class="text-center">{{ $value->partner->user->name }}</td>
                                     <td class="text-center">{{ date('d M, Y', strtotime($value->created_at)) }}</td>
-                                    <td class="text-center">RP. {{ $value->amount }}</td>
+                                    <td class="text-center">RP. {{ $value->price }}</td>
                                     <td class="text-center">{{ $value->payment_status }}</td>
                                     <td class="text-center">
                                         <button
@@ -201,13 +205,13 @@
                                                                 <label for="text"
                                                                     class=" bg-white px-2 block mb-2 text-lg text-gray-900 dark:text-gray-900">Nama</label>
                                                                 <label for="text"
-                                                                    class=" bg-white px-2 block mb-2 text-lg font-semibold text-gray-900 dark:text-gray-900">{{$value->partner->user->name}}</label>
+                                                                    class=" bg-white px-2 block mb-2 text-lg font-semibold text-gray-900 dark:text-gray-900">{{ $value->partner->user->name }}</label>
                                                             </div>
                                                             <div class="w-1/2">
                                                                 <label for="text"
                                                                     class=" bg-white px-2 block mb-2 text-lg text-gray-900 dark:text-gray-900">Email</label>
                                                                 <label for="text"
-                                                                    class=" bg-white px-2 block mb-2 text-lg font-semibold text-gray-900 dark:text-gray-900">{{$value->partner->email}}</label>
+                                                                    class=" bg-white px-2 block mb-2 text-lg font-semibold text-gray-900 dark:text-gray-900">{{ $value->partner->email }}</label>
                                                             </div>
                                                         </div>
                                                         <div class="w-1/2">
@@ -215,14 +219,14 @@
                                                                 class=" bg-white px-2 block mb-2 text-lg text-gray-900 dark:text-gray-900">Nomor
                                                                 Telepon</label>
                                                             <label for="text"
-                                                                class=" bg-white px-2 block mb-2 text-lg font-semibold text-gray-900 dark:text-gray-900">{{$value->partner->phone}}</label>
+                                                                class=" bg-white px-2 block mb-2 text-lg font-semibold text-gray-900 dark:text-gray-900">{{ $value->partner->phone }}</label>
                                                         </div>
                                                         <div class="w-full">
                                                             <label for="text"
                                                                 class=" bg-white px-2 block mb-2 text-lg text-gray-900 dark:text-gray-900">Metode
                                                                 Pembayaran</label>
                                                             <label for="text"
-                                                                class=" bg-white px-2 block mb-2 text-lg font-semibold text-gray-900 dark:text-gray-900">{{$value->payment_method}}
+                                                                class=" bg-white px-2 block mb-2 text-lg font-semibold text-gray-900 dark:text-gray-900">{{ $value->payment_method }}
                                                             </label>
                                                         </div>
                                                         <div class="w-full">
@@ -230,7 +234,7 @@
                                                                 class=" bg-white px-2 block mb-2 text-lg text-gray-900 dark:text-gray-900">Total
                                                                 Pembayaran</label>
                                                             <label for="text"
-                                                                class=" bg-white px-2 block mb-2 text-lg font-semibold text-gray-900 dark:text-gray-900">{{$value->amount}}
+                                                                class=" bg-white px-2 block mb-2 text-lg font-semibold text-gray-900 dark:text-gray-900">{{ $value->amount }}
                                                             </label>
                                                         </div>
                                                         <img src="{{ asset('assets/public/images/logo.png') }}"
@@ -265,19 +269,12 @@
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script>
-        let data;
+        const _xdata = JSON.parse('{!! json_encode($amount['amount']['values']) !!}');        
+        const _ydata = JSON.parse('{!! json_encode($amount['amount']['months']) !!}');        
+        const _ymax = {{ $amount['max'] }};
         $(document).ready(function() {
             $('#riwayat-transaksi').DataTable();
-            $.ajax({
-                url: 'http://127.0.0.1:8000/finance/riwayat/tahun',
-                type: 'GET',
-                success: function(data) {
-                    data = data;
-                },
-                error: function(e) {
-                    console.log(e);
-                }
-            });
+
         });
     </script>
 @endsection

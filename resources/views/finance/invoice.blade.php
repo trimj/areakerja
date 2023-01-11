@@ -13,8 +13,8 @@
                             <p class="mb-5">{{$data->partner->user->name}}</p>
                         </div>
                         <div class="flex flex-col flex-grow relative px-3">
-                            <p>Invoice #123456</p>
-                            <p>{{$data->logkoin->type}}</p>
+                            <p>{{$data->invoice}}</p>
+                            <p>Pembelian Koin</p>
                             <p class="absolute bottom-0"><i class="fa-regular fa-money-bill-1 mr-2"></i>{{$data->amount}} <i
                                     class="fa-solid fa-calendar-days mr-2 ml-4"></i> {{$data->created_at}}</p>
                         </div>
