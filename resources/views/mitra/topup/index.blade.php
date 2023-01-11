@@ -116,15 +116,36 @@
             <table class="table-auto">
                 <thead>
                 <th>Invoice</th>
-                <th>amount</th>
+                <th>Amount</th>
+                <th>Price</th>
+                <th>Payment Method</th>
                 <th>Status</th>
                 </thead>
                 <tbody>
                 @forelse($invoices as $invoice)
                     <tr>
-                        <td class="text-center">#{{ $invoice->invoice }}</td>
+                        <td class="text-center">
+                            <div class="font-semibold">{{ Str::upper($invoice->invoice) }}</div>
+                            <div class="text-xs text-gray-400 font-medium">{{ date_format($invoice->created_at, 'd F Y, H:i') }}</div>
+                        </td>
                         <td class="text-center"><span>{{ $invoice->amount }}</span><i class="fas fa-coins ml-2 text-areakerja"></i></td>
-                        <td class="text-center capitalize">{{ $invoice->payment_status }}</td>
+                        <td class="text-center">Rp. {{ number_format($invoice->price) }}</td>
+                        <td class="text-center">{{ Str::headline($invoice->payment_method) }}</td>
+                        <td class="text-center capitalize">
+                            @if($invoice->payment_status == 'pending')
+                                <span class="badge badge-info">Pending</span>
+                            @elseif($invoice->payment_status == 'success')
+                                <span class="badge badge-success">Success</span>
+                            @elseif($invoice->payment_status == 'failed')
+                                <span class="badge badge-error">Failed</span>
+                            @elseif($invoice->payment_status == 'expired')
+                                <span class="badge badge-secondary">Expired</span>
+                            @elseif($invoice->payment_status == 'canceled')
+                                <span class="badge badge-secondary">Canceled</span>
+                            @else
+                                <span class="badge badge-error">Error</span>
+                            @endif
+                        </td>
                     </tr>
                 @empty
                     <tr>
@@ -134,5 +155,8 @@
                 </tbody>
             </table>
         </div>
+    </section>
+    <section>
+        <div class="text-center">{{ $invoices->links() }}</div>
     </section>
 @endsection
