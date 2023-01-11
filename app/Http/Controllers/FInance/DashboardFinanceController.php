@@ -50,6 +50,8 @@ class DashboardFinanceController extends Controller
             }
         }
         $amount['max'] = max($amount['amount']['values']);
+        $amount['amount']['values'] = array_reverse($amount['amount']['values']);
+        $amount['amount']['months'] = array_reverse($amount['amount']['months']);
         return view('finance.dashboard', compact(['riwayat', 'saldo', 'amount']));
     }
 
