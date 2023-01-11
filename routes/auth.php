@@ -99,14 +99,14 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
 
     // Profile Information...
     if (Features::enabled(Features::updateProfileInformation())) {
-        Route::put('/member/settings/information', [ProfileInformationController::class, 'update'])
+        Route::put('/member-cp/settings/information', [ProfileInformationController::class, 'update'])
             ->middleware([config('fortify.auth_middleware', 'auth') . ':' . config('fortify.guard')])
             ->name('user-profile-information.update');
     }
 
     // Passwords...
     if (Features::enabled(Features::updatePasswords())) {
-        Route::put('/member/settings/password', [PasswordController::class, 'update'])
+        Route::put('/member-cp/settings/password', [PasswordController::class, 'update'])
             ->middleware([config('fortify.auth_middleware', 'auth') . ':' . config('fortify.guard')])
             ->name('user-password.update');
     }
