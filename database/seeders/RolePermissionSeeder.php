@@ -127,11 +127,6 @@ class RolePermissionSeeder extends Seeder
             Permission::create(['name' => $permission]);
         }
 
-//        Permission::create([
-//            'name' => 'transaction-top-up-coin',
-//            'guard_name' => 'api',
-//        ]);
-
         $calonKandidatRole->givePermissionTo([
             'access-usercp',
             'daftar-kandidat',

@@ -13,7 +13,6 @@ return new class extends Migration {
             $table->bigInteger('partner_id')->unsigned();
             $table->bigInteger('candidate_id')->unsigned()->nullable();
             $table->bigInteger('job_id')->unsigned()->nullable();
-            $table->bigInteger('invoice')->unsigned()->nullable();
             $table->enum('type', ['in', 'out']);
             $table->text('detail')->nullable();
             $table->integer('before')->nullable();

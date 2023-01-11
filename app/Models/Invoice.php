@@ -16,7 +16,9 @@ class Invoice extends Model
         'partner_id',
         'invoice',
         'amount',
+        'price',
         'payment_status',
+        'payment_method',
     ];
 
     public function partner()
@@ -34,9 +36,10 @@ class Invoice extends Model
         $this->save();
     }
 
-    public function statusSuccess()
+    public function statusSuccess($paymentType)
     {
         $this->attributes['payment_status'] = 'success';
+        $this->attributes['payment_method'] = $paymentType;
         $this->save();
     }
 
