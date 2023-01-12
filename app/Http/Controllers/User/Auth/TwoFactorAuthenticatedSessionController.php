@@ -23,7 +23,7 @@ class TwoFactorAuthenticatedSessionController extends Controller
     public function create(TwoFactorLoginRequest $request): TwoFactorChallengeViewResponse
     {
         if (!$request->hasChallengedUser()) {
-            Alert::toast('error', 'Something Error!');
+            Alert::toast('Login First!', 'error');
             throw new HttpResponseException(redirect()->route('login'));
         }
 
@@ -39,7 +39,7 @@ class TwoFactorAuthenticatedSessionController extends Controller
 
             event(new RecoveryCodeReplaced($user, $code));
         } elseif (!$request->hasValidCode()) {
-            Alert::toast('error', 'Code Invalid!');
+            Alert::toast('Code Invalid!', 'error');
             return app(FailedTwoFactorLoginResponse::class)->toResponse($request);
         }
 
