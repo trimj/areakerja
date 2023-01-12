@@ -60,9 +60,6 @@
                         <div class="information">
                             <div class="author"></div>
                             <div class="another">
-                                @can('manage-job-candidate')
-                                    <a href="{{ route('mitra.lowongan.candidate.show', $job->id) }}" class="btn btn-small btn-primary"><i class="fas fa-user"></i></a>
-                                @endcan
                                 @can('edit-job-vacancy')
                                     <a href="{{ route('mitra.lowongan.edit', $job->id) }}" class="btn btn-small btn-secondary"><i class="fas fa-edit"></i></a>
                                 @endcan
