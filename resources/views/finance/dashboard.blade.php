@@ -81,7 +81,7 @@
                         Jumlah Uang
                     </h4>
                     <div class="flex items-center space-x-2">
-                        <span class="text-sm text-gray-500">Last year</span>
+                        <span class="text-sm text-gray-500">12 bulan terakhir</span>
                         <button class="relative focus:outline-none" x-cloak
                             @click="isOn = !isOn; $parent.updateBarChart(isOn)">
                             <div class="w-12 h-6 transition rounded-full outline-none bg-primary-100">

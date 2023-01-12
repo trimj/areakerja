@@ -16,24 +16,42 @@ class DashboardFinanceController extends Controller
         $saldo['jumlah'] = 0;
         $saldo['mean'] = 0;
         if (count($riwayat) > 0) {
-            $saldo['jumlah'] = $riwayat->sum('amount');
-            $saldo['mean'] = $saldo['jumlah']/$riwayat->count();
+            $saldo['jumlah'] = $riwayat->sum('price');
+            $saldo['mean'] = $saldo['jumlah'] / $riwayat->count();
         }
-        $data = Invoice::whereYear('created_at', now()->year -1)->get()->groupBy(function($data){
-            return Carbon::parse($data->created_at)->format('M');
-        });
-        foreach ($data as $key => $value) {
-            $amountTemp[$key] = $value->sum('amount');
+        $data = [];
+        $month = now()->month;
+        $year = now()->year;
+        for ($i=0; $i <= 11 ; $i++) {
+            if ($month == 0) {
+                $month = 12;
+                $year--;
+            }
+            array_push($data, 
+                Invoice::whereMonth('created_at', $month)
+                ->whereYear('created_at', $year)
+                ->get()
+                ->groupBy(function ($data) {
+                    return Carbon::parse($data->created_at)->format('M');
+                })
+            );
+            $month--;
         }
-        $amount['amount']['months'] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        foreach ($amount['amount']['months'] as $key => $value) {
-            if (!isset($amountTemp[$value])) {
+        $amount = [];
+        foreach ($data as $monthKey => $monthData) {
+            if (count($monthData)==0) {
                 $amount['amount']['values'][] = 0;
+                $amount['amount']['months'][] = date("M", mktime(0, 0, 0, now()->month-$monthKey, 1));
             } else {
-                $amount['amount']['values'][] = $amountTemp[$value];
+                foreach ($monthData as $key => $value) {
+                    $amount['amount']['values'][] = $value[0]->price;
+                    $amount['amount']['months'][] = $key;
+                }
             }
         }
-        $amount['max']=max($amount['amount']['values']);
+        $amount['max'] = max($amount['amount']['values']);
+        $amount['amount']['values'] = array_reverse($amount['amount']['values']);
+        $amount['amount']['months'] = array_reverse($amount['amount']['months']);
         return view('finance.dashboard', compact(['riwayat', 'saldo', 'amount']));
     }
 
@@ -51,6 +69,6 @@ class DashboardFinanceController extends Controller
         if ($request->ajax()) {
             return view('data', compact('items'));
         }
-        return view('items',compact('items'));
+        return view('items', compact('items'));
     }
 }
