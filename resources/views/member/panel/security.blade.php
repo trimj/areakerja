@@ -46,6 +46,7 @@
                         @csrf
                         <button class="btn btn-primary" type="submit">Generate Recovery Codes</button>
                     </form>
+                    <a href="{{ route('two-factor.show-recovery-codes') }}" class="btn btn-secondary mt-5">Show Recovery Codes</a>
                 @endif
                 <form action="{{ route('two-factor.disable') }}" method="post">
                     @csrf

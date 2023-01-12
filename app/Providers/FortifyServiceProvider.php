@@ -26,7 +26,7 @@ class FortifyServiceProvider extends ServiceProvider
             public function toResponse($request)
             {
                 Alert::toast('Goodbye', 'success');
-                return redirect()->route('public.home');
+                return redirect()->route('login');
             }
         });
 
