@@ -7,6 +7,7 @@
 @hasSection('content')
     @yield('content')
 @endif
+@include('sweetalert::alert')
 </body>
 
 </html>

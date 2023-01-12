@@ -16,7 +16,7 @@ use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Contracts\LogoutResponse;
 use Laravel\Fortify\Contracts\LoginResponse;
 use Illuminate\Support\Str;
-use Alert;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -26,7 +26,7 @@ class FortifyServiceProvider extends ServiceProvider
             public function toResponse($request)
             {
                 Alert::toast('Goodbye', 'success');
-                return redirect()->route('public.home');
+                return redirect()->route('login');
             }
         });
 
@@ -38,7 +38,7 @@ class FortifyServiceProvider extends ServiceProvider
             }
         });
 
-        Fortify::ignoreRoutes();
+//        Fortify::ignoreRoutes();
     }
 
     public function boot()
@@ -80,6 +80,10 @@ class FortifyServiceProvider extends ServiceProvider
 
         Fortify::confirmPasswordView(function () {
             return view('auth.confirm-password');
+        });
+        
+        Fortify::twoFactorChallengeView(function () {
+            return view('auth.two-factor-challenge');
         });
     }
 }

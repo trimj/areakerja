@@ -12,9 +12,13 @@ use Laravel\Fortify\Http\Controllers\NewPasswordController;
 use Laravel\Fortify\Http\Controllers\PasswordController;
 use Laravel\Fortify\Http\Controllers\PasswordResetLinkController;
 use Laravel\Fortify\Http\Controllers\ProfileInformationController;
-use Laravel\Fortify\Http\Controllers\RecoveryCodeController;
+
+//use Laravel\Fortify\Http\Controllers\RecoveryCodeController;
+use App\Http\Controllers\User\Auth\RecoveryCodeController;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
-use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController;
+
+//use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController;
+use App\Http\Controllers\User\Auth\TwoFactorAuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticationController;
 use Laravel\Fortify\Http\Controllers\TwoFactorQrCodeController;
 use Laravel\Fortify\Http\Controllers\TwoFactorSecretKeyController;
@@ -155,19 +159,24 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
             ->middleware($twoFactorMiddleware)
             ->name('two-factor.disable');
 
-        Route::get('/user/two-factor-qr-code', [TwoFactorQrCodeController::class, 'show'])
-            ->middleware($twoFactorMiddleware)
-            ->name('two-factor.qr-code');
+//        Route::get('/user/two-factor-qr-code', [TwoFactorQrCodeController::class, 'show'])
+//            ->middleware($twoFactorMiddleware)
+//            ->name('two-factor.qr-code');
 
-        Route::get('/user/two-factor-secret-key', [TwoFactorSecretKeyController::class, 'show'])
-            ->middleware($twoFactorMiddleware)
-            ->name('two-factor.secret-key');
+//        Route::get('/user/two-factor-secret-key', [TwoFactorSecretKeyController::class, 'show'])
+//            ->middleware($twoFactorMiddleware)
+//            ->name('two-factor.secret-key');
 
-        Route::get('/user/two-factor-recovery-codes', [RecoveryCodeController::class, 'index'])
-            ->middleware($twoFactorMiddleware)
-            ->name('two-factor.recovery-codes');
+//        Route::get('/user/two-factor-recovery-codes', [RecoveryCodeController::class, 'index'])
+//            ->middleware($twoFactorMiddleware)
+//            ->name('two-factor.recovery-codes');
 
         Route::post('/user/two-factor-recovery-codes', [RecoveryCodeController::class, 'store'])
-            ->middleware($twoFactorMiddleware);
+            ->middleware($twoFactorMiddleware)
+            ->name('two-factor.generate-recovery-codes');
+
+        Route::get('/user/two-factor-recovery-codes', [RecoveryCodeController::class, 'show'])
+            ->middleware($twoFactorMiddleware)
+            ->name('two-factor.show-recovery-codes');
     }
 });

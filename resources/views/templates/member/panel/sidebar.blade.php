@@ -12,6 +12,7 @@
         <nav>
             <div :class="{'block': open, 'hidden': !open}" class="menu">
                 <a class="btn-sidebar @if (Route::is('member.cp', 'member.dashboard')) active @endif" href="{{ route('member.cp') }}"><i class="fas fa-home fa-fw mr-2"></i>Dashboard</a>
+                <a class="btn-sidebar @if (Route::is('member.security')) active @endif" href="{{ route('member.security') }}"><i class="fas fa-fingerprint fa-fw mr-2"></i>Security</a>
                 <a class="btn-sidebar @if (Route::is('member.settings')) active @endif" href="{{ route('member.settings') }}"><i class="fas fa-user-cog fa-fw mr-2"></i>Settings</a>
                 <div class="md:mt-auto mt-2 border-t-2 border-polar4/20 lg:border-0 lg:border-transparent">
                     <div class="flex items-center justify-between cursor-pointer px-5 py-3 hover:bg-polar4/20" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

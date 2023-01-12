@@ -24,14 +24,14 @@ class UserControlPanelController extends Controller
     public function dashboard()
     {
         return view('member.panel.dashboard', [
-            'page_title' => $this->page_title,
+            'page_title' => 'Dashboard - ' . $this->page_title,
         ]);
     }
 
     public function settings()
     {
         return view('member.panel.settings', [
-            'page_title' => $this->page_title,
+            'page_title' => 'Settings - ' . $this->page_title,
         ]);
     }
 
@@ -70,5 +70,12 @@ class UserControlPanelController extends Controller
 
         Alert::toast('Successful', 'success');
         return redirect()->route('member.settings');
+    }
+
+    public function security()
+    {
+        return view('member.panel.security', [
+            'page_title' => 'Security - ' . $this->page_title,
+        ]);
     }
 }

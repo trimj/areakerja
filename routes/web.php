@@ -42,7 +42,6 @@ use App\Http\Controllers\Public\AboutController as PublicAboutController;
 use App\Http\Controllers\Finance\DashboardFinanceController;
 use App\Http\Controllers\Finance\EditHargaController;
 use App\Http\Controllers\Finance\InvoiceController;
-use FontLib\Table\Type\name;
 
 require_once __DIR__ . '/auth.php';
 
@@ -260,6 +259,7 @@ Route::middleware('auth')->group(function () {
                     route::prefix('/settings')->name('.settings')->group(function () {
                         Route::put('/update-photo', 'updatePhoto')->name('.updatePhoto');
                     });
+                    Route::get('/security', 'security')->name('.security');
                 });
             });
             Route::prefix('/member')->group(function () {
