@@ -6,4 +6,6 @@
     {{-- CSS --}}
     <link rel="stylesheet" href="{{ asset('css/global.css') }}">
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+    {{-- JS --}}
+    <script src="{{ asset('js/global.js') }}" defer></script>
 </head>

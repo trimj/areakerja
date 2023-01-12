@@ -63,14 +63,11 @@
 
     .footer .links a {
         @apply block mb-1 last:mb-0;
+        @apply hover:pl-2;
     }
 
     .footer .newsletter .title, .footer .links .title {
         @apply font-semibold pb-2 text-lg;
-    }
-
-    .footer .links a {
-        @apply hover:pl-2;
     }
 
     .footer .main-section {
